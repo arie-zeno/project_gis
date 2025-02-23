@@ -8,7 +8,7 @@
 @section('dashboard-content')
     <div class="card border-0 shadow" style="background: #fff;">
         <div class="card-body">
-            @if ($biodata != null)
+            @if ($biodata->tempat_tinggal != null)
                 <div class="row">
                     <div class="col-sm-2">
                         <img src="{{ $biodata->foto ? asset('storage/' . $biodata->foto) : asset('img/il_1.svg') }}"
@@ -18,25 +18,23 @@
                         <h2 class="fw-light">{{ $biodata->nama }}</h2>
                         <h5 class="fw-light mb-4">{{ $biodata->nim }} </h5>
                         <table>
-                            <tr>
-                                <td class="fw-bold" style="width: 200px">Angkatan</td>
-                                <td style="width: 300px">{{ $biodata->angkatan }}</td>
-                            </tr>
+
+
                             <tr>
                                 <td class="fw-bold" style="width: 200px">Provinsi</td>
-                                <td style="width: 300px">{{ Str::title($biodata->province->name) }}</td>
+                                <td style="width: 300px">{{ Str::title($biodata->tempat_tinggal->province->name) }}</td>
                             </tr>
                             <tr>
                                 <td class="fw-bold" style="width: 200px">Kabupaten/Kota</td>
-                                <td style="width: 300px">{{ Str::title($biodata->regency->name) }}</td>
+                                <td style="width: 300px">{{ Str::title($biodata->tempat_tinggal->regency->name) }}</td>
                             </tr>
                             <tr>
                                 <td class="fw-bold" style="width: 200px">Kecamatan</td>
-                                <td style="width: 300px">{{ Str::title($biodata->district->name) }}</td>
+                                <td style="width: 300px">{{ Str::title($biodata->tempat_tinggal->district->name) }}</td>
                             </tr>
                             <tr>
                                 <td class="fw-bold" style="width: 200px">Kelurahan</td>
-                                <td style="width: 300px">{{ Str::title($biodata->village->name) }}</td>
+                                <td style="width: 300px">{{ Str::title($biodata->tempat_tinggal->village->name) }}</td>
                             </tr>
 
                         </table>
@@ -48,7 +46,7 @@
             @else
                 <div class="card border-0 shadow" style="background: #fff;">
                     <div class="card-body">
-                        <h2>Anda belum mengisi biodata, <a href="{{ route('isi.biodata') }}">isi biodata</a></h2>
+                        <h2>Anda belum mengisi asal daerah, <a href="{{ route('isi.tempat') }}">isi asal daerah</a></h2>
                     </div>
                 </div>
             @endif
@@ -57,27 +55,29 @@
 @endsection
 
 @if ($biodata != null)
-    @section('js')
-        <script>
-            var map = L.map('map2').setView([{{ $biodata->koordinat }}], 16.86);
-            var baseLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors'
-            })
-            baseLayer.addTo(map);
+    @if ($biodata->tempat_tinggal != null)
+        @section('js')
+            <script>
+                var map = L.map('map2').setView([{{ $biodata->tempat_tinggal->koordinat }}], 16.86);
+                var baseLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                })
+                baseLayer.addTo(map);
 
-            // // get location
-            // var inputKoordinat = document.querySelector("#koordinat"),
-            //     curLocation = [{{ $biodata->koordinat }}]
+                // // get location
+                // var inputKoordinat = document.querySelector("#koordinat"),
+                //     curLocation = [{{ $biodata->koordinat }}]
 
-            // // map.attributionControl.setPrefix(false)
+                // // map.attributionControl.setPrefix(false)
 
-            // var marker = new L.marker(curLocation, {
-            //     draggable: "false"
-            // });
-            var marker = new L.marker([{{ $biodata->koordinat }}]);
+                // var marker = new L.marker(curLocation, {
+                //     draggable: "false"
+                // });
+                var marker = new L.marker([{{ $biodata->tempat_tinggal->koordinat }}]);
 
 
-            map.addLayer(marker);
-        </script>
-    @endsection
+                map.addLayer(marker);
+            </script>
+        @endsection
+    @endif
 @endif

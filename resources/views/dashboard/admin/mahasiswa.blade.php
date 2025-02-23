@@ -6,24 +6,24 @@
             <div class="card border-0 shadow" style="background: #fff;">
                 <div class="card-body">
                     <div id="toolbar">
-                        <h4>Data mahasiswa</h4>
+                        <button class=" btn btn-sm  btn-success"> Import</button></h4>
                     </div>
 
                     <table data-toggle="table" data-search="true" data-toolbar="#toolbar" >
                         <thead>
                             <tr class="text-center">
                                 <th>Nama</th>
-                                <th>NIM</th>
+                                <th>E-Mail</th>
                                 <th>Angkatan</th>
                                 <th>Operasi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($biodata as $item)
+                            @foreach ($user as $item)
                                 <tr>
-                                    <td>{{ $item->nama }}</td>
-                                    <td>{{ $item->nim }}</td>
-                                    <td>{{ $item->angkatan }}</td>
+                                    <td>{{ $item->biodata->nama }}</td>
+                                    <td>{{ $item->email }}</td>
+                                    <td>{{ $item->biodata->angkatan }}</td>
                                     <td class="text-center"><button class="btn btn-sm btn-danger">Hapus</button></td>
 
                                 </tr>

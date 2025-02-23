@@ -54,4 +54,8 @@ class Regency extends Model
     {
         return $this->hasMany(District::class);
     }
+
+    public function mahasiswa(){
+        return $this->hasMany(Biodata::class,'kabupaten', 'id');
+    }
 }

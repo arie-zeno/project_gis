@@ -8,7 +8,7 @@
 @section('dashboard-content')
     <div class="card border-0 shadow" style="background: #fff;">
         <div class="card-body">
-            @if ($biodata != null)
+            @if ($biodata->sekolah != null)
                 <div class="row">
                     <div class="col-sm-2">
                         <img src="{{ $biodata->foto ? asset('storage/' . $biodata->foto) : asset('img/il_1.svg') }}"
@@ -18,25 +18,26 @@
                         <h2 class="fw-light">{{ $biodata->nama }}</h2>
                         <h5 class="fw-light mb-4">{{ $biodata->nim }} </h5>
                         <table>
+                        
                             <tr>
-                                <td class="fw-bold" style="width: 200px">Angkatan</td>
-                                <td style="width: 300px">{{ $biodata->angkatan }}</td>
+                                <td class="fw-bold" style="width: 200px">Nama Sekolah</td>
+                                <td style="width: 300px">{{ $biodata->sekolah->nama_sekolah }}</td>
                             </tr>
                             <tr>
                                 <td class="fw-bold" style="width: 200px">Provinsi</td>
-                                <td style="width: 300px">{{ Str::title($biodata->province->name) }}</td>
+                                <td style="width: 300px">{{ Str::title($biodata->sekolah->province->name) }}</td>
                             </tr>
                             <tr>
                                 <td class="fw-bold" style="width: 200px">Kabupaten/Kota</td>
-                                <td style="width: 300px">{{ Str::title($biodata->regency->name) }}</td>
+                                <td style="width: 300px">{{ Str::title($biodata->sekolah->regency->name) }}</td>
                             </tr>
                             <tr>
                                 <td class="fw-bold" style="width: 200px">Kecamatan</td>
-                                <td style="width: 300px">{{ Str::title($biodata->district->name) }}</td>
+                                <td style="width: 300px">{{ Str::title($biodata->sekolah->district->name) }}</td>
                             </tr>
                             <tr>
                                 <td class="fw-bold" style="width: 200px">Kelurahan</td>
-                                <td style="width: 300px">{{ Str::title($biodata->village->name) }}</td>
+                                <td style="width: 300px">{{ Str::title($biodata->sekolah->village->name) }}</td>
                             </tr>
 
                         </table>
@@ -48,7 +49,7 @@
             @else
                 <div class="card border-0 shadow" style="background: #fff;">
                     <div class="card-body">
-                        <h2>Anda belum mengisi biodata, <a href="{{ route('isi.biodata') }}">isi biodata</a></h2>
+                        <h2>Anda belum mengisi riwayat pendidikan, <a href="{{ route('isi.sekolah') }}">isi riwayat pendidikan</a></h2>
                     </div>
                 </div>
             @endif
@@ -57,9 +58,10 @@
 @endsection
 
 @if ($biodata != null)
+@if($biodata->sekolah != null)
     @section('js')
         <script>
-            var map = L.map('map2').setView([{{ $biodata->koordinat }}], 16.86);
+            var map = L.map('map2').setView([{{ $biodata->sekolah->koordinat }}], 16.86);
             var baseLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© OpenStreetMap contributors'
             })
@@ -74,10 +76,11 @@
             // var marker = new L.marker(curLocation, {
             //     draggable: "false"
             // });
-            var marker = new L.marker([{{ $biodata->koordinat }}]);
+            var marker = new L.marker([{{ $biodata->sekolah->koordinat }}]);
 
 
             map.addLayer(marker);
         </script>
     @endsection
+@endif
 @endif

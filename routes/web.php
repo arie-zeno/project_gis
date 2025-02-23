@@ -41,8 +41,16 @@ Route::middleware(['auth', 'role:mahasiswa'])->prefix('mahasiswa')->group(functi
     Route::get('/', [DashboardController::class, 'home'])->name('mahasiswa.home');
     Route::get('/dashboard', [DashboardController::class, 'home'])->name('mahasiswa.home');
     Route::get('/biodata', [DashboardController::class, 'biodata'])->name('mahasiswa.biodata');
+    Route::get('/sekolah', [DashboardController::class, 'sekolah'])->name('mahasiswa.sekolah');
+    Route::get('/tempat', [DashboardController::class, 'tempat'])->name('mahasiswa.tempat');
     Route::get('/biodata/isi', [DashboardController::class, 'create'])->name('isi.biodata');
     Route::post('/biodata', [DashboardController::class, 'store'])->name('store.biodata');
+
+    Route::get('/biodata/sekolah', [DashboardController::class, 'createSekolah'])->name('isi.sekolah');
+    Route::post('/sekolah', [DashboardController::class, 'storeSekolah'])->name('store.sekolah');
+
+    Route::get('/biodata/tempat', [DashboardController::class, 'createTempat'])->name('isi.tempat');
+    Route::post('/tempat', [DashboardController::class, 'storeTempat'])->name('store.tempat');
 });
 
 
@@ -52,6 +60,8 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // GIS
 Route::get('/gis-mahasiswa', [GisController::class, 'tempatTinggal'])->name('gis.mahasiswa');
+Route::get('/gis-sekolah', [GisController::class, 'sekolah'])->name('gis.sekolah');
+Route::get('/gis-domisili', [GisController::class, 'domisili'])->name('gis.domisili');
 
 // Indoregion
 

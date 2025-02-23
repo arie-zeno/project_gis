@@ -5,24 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Sekolah extends Model
+class TempatTinggal extends Model
 {
     use HasFactory;
-    protected $primaryKey = "id_sekolah";
 
-    protected $table = "sekolah";
+    protected $table = "tempat_tinggal";
     protected $fillable = [
         "id",
-        "nama_sekolah",
         "koordinat",
         'provinsi',
         'kabupaten',
         'kecamatan',
         'kelurahan',
     ];
-    public function biodata()
-    {
-        return $this->hasMany(Biodata::class, "id_sekolah", "id");
+    public function biodata(){
+        return $this->hasOne(Biodata::class, "id_tempat_tinggal", "id");
     }
 
     public function province(){
@@ -40,4 +37,5 @@ class Sekolah extends Model
     public function village(){
         return $this->belongsTo(Village::class,"kelurahan", "id");
     }
+
 }

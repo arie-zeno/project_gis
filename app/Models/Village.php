@@ -45,4 +45,8 @@ class Village extends Model
     {
         return $this->belongsTo(District::class);
     }
+
+    public function mahasiswa(){
+        return $this->hasMany(Biodata::class,'kelurahan', 'id');
+    }
 }

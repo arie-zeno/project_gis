@@ -89,6 +89,16 @@
                                 Biodata</a>
                         </li>
 
+                        <li class="mb-1 nav-item @php echo $title == "Sekolah" ? "active-nav" : ""; @endphp">
+                            <a href="{{ route('mahasiswa.sekolah') }}" class="nav-link "><i class="bi bi-people-fill me-2"></i>
+                                Sekolah</a>
+                        </li>
+
+                        <li class="mb-1 nav-item @php echo $title == "Domisili" ? "active-nav" : ""; @endphp">
+                            <a href="{{ route('mahasiswa.tempat') }}" class="nav-link "><i class="bi bi-people-fill me-2"></i>
+                                Domisili</a>
+                        </li>
+
                     @else
                         <li class="mb-1 nav-item @php echo $title == "Dashboard" ? "active-nav" : ""; @endphp">
                             <a href="{{ route('admin.dashboard') }}" class="nav-link "><i class="bi bi-house-fill me-2"></i>

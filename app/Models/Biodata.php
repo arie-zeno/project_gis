@@ -39,15 +39,27 @@ class Biodata extends Model
 
     public function sekolah()
     {
-        return $this->belongsTo(Sekolah::class);
+        return $this->belongsTo(Sekolah::class, "id_sekolah", "id");
     }
 
     public function tempat_tinggal()
     {
-        return $this->belongsTo(Tempat_Tinggal::class);
+        return $this->belongsTo(TempatTinggal::class, "id_tempat_tinggal", "id");
     }
 
-    public function provinsi(){
-        return $this->belongsTo(Province::class,"provinsi", "name");
+    public function province(){
+        return $this->belongsTo(Province::class,"provinsi", "id");
+    }
+
+    public function regency(){
+        return $this->belongsTo(Regency::class,"kabupaten", "id");
+    }
+
+    public function district(){
+        return $this->belongsTo(District::class,"kecamatan", "id");
+    }
+
+    public function village(){
+        return $this->belongsTo(Village::class,"kelurahan", "id");
     }
 }

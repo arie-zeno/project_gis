@@ -56,4 +56,7 @@ class District extends Model
     {
         return $this->hasMany(Village::class);
     }
+    public function mahasiswa(){
+        return $this->hasMany(Biodata::class,'kecamatan', 'id');
+    }
 }

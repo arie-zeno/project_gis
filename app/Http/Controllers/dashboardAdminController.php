@@ -20,10 +20,11 @@ class dashboardAdminController extends Controller
     }
 
     public function mahasiswa(){
-        $biodata = Biodata::with("user")->get();
+        $user = User::with("biodata")->where("role", "!=", "admin")->get();
+        // $biodata = Biodata::with("user")->get();
         return view("dashboard.admin.mahasiswa", [
             'title' => 'Mahasiswa',
-            'biodata' => $biodata,
+            'user' => $user,
         ]);
     }
 }
