@@ -33,9 +33,9 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'nim' => '2110131310001',
-            'name' => 'Alfika',
-            'email' => '2110131310001@mhs.ulm.ac.id',
+            'nim' => '2110131220016',
+            'name' => 'Alfika Nurfadia',
+            'email' => '2110131220016@mhs.ulm.ac.id',
             'password' => Hash::make('123'),
             'role' => 'mahasiswa',
         ]);

@@ -59,6 +59,7 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // GIS
+Route::get('/home', [GisController::class, 'home'])->name('gis.home');
 Route::get('/gis-mahasiswa', [GisController::class, 'tempatTinggal'])->name('gis.mahasiswa');
 Route::get('/gis-sekolah', [GisController::class, 'sekolah'])->name('gis.sekolah');
 Route::get('/gis-domisili', [GisController::class, 'domisili'])->name('gis.domisili');

@@ -10,6 +10,16 @@ use Illuminate\Http\Request;
 
 class GisController extends Controller
 {
+    public function home()
+    {
+        return view(
+            "GIS.home",
+            [
+                "title" => "GIS | Home"
+            ]
+        );
+    }
+
     public function tempatTinggal()
     {
         $provinsi = Province::with("mahasiswa")->where("name", "KALIMANTAN SELATAN")->get();

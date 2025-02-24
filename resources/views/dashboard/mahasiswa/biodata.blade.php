@@ -27,7 +27,7 @@
                                 <td style="width: 300px">{{ Str::title($biodata->province->name) }}</td>
                             </tr>
                             <tr>
-                                <td class="fw-bold" style="width: 200px">Kabupaten/Kota</td>
+                                <td class="fw-bold" style="width: 200px">Kota/Kabupaten</td>
                                 <td style="width: 300px">{{ Str::title($biodata->regency->name) }}</td>
                             </tr>
                             <tr>

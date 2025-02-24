@@ -4,9 +4,13 @@
     #map {
         height: 85vh;
     }
+
+    .kabupaten-label {
+    font-size: 14px; /* Ukuran lebih kecil */
+    }
 </style>
 @section('content')
-    <h1>wkwk</h1>
+    <h3>Persebaran Sekolah Asal Mahasiswa</h3>
     <div id="map"></div>
 @endsection
 
@@ -71,166 +75,99 @@
             @endphp
             var latitude = {{ $koordinats[0] }},
                 longitude = {{ $koordinats[1] }}
-
+            @if ($data['jenis_kelamin'] == 'laki-laki')
+                icon = cowoIcon
+            @else
+                icon = ceweIcon
+            @endif
             L.marker([latitude, longitude], {
+                    icon: icon
                 })
                 .addTo(map)
 
                 .bindPopup(
-                    `Nama Sekolah : {{ $data['nama_sekolah'] }} <br>
-                                       `);
+                    `Nama : {{ $data['nama'] }} <br>
+                    NIM : {{ $data['nim'] }} <br><br>
+                    <img src="{{ asset('storage/' . $data->foto) }}" class="img-thumbnail" alt="{{ $data['nama'] }}"><br><br>
+                    `);
         @endforeach
 
-        //   GeoJSON
-        let batasKecamatan = [];
-        let sub = [];
-        let colors = ["#32b8a6", "#f5cb11", "#eb7200", "#c461eb", "#6c7000", "#bf2e2e", "#46e39c", "#9fd40c", "#ad00f2",
-            "#fffb00", "#7ff2fa", "#e8a784"
-        ];
+    // GeoJSON
+    let batasKabupaten = [];
+    let sub = [];
+    let colors = ["#32b8a6", "#f5cb11", "#eb7200", "#c461eb", "#6c7000", "#bf2e2e", "#46e39c", "#9fd40c", "#ad00f2",
+        "#fffb00", "#7ff2fa", "#e8a784"
+    ];
 
-        var kabupaten = []
-        var listKabupaten = []
-        var html = ``;
+    var kabupaten = [];
+    var listKabupaten = [];
+    var html = ``;
 
-        getShape("kabBanjarmasin", "Banjarmasin");
-        getShape("kabTapin", "Tapin");
-        getShape("kabBanjarbaru", "Banjarbaru");
-        getShape("kabBanjar", "Banjar");
-        getShape("kabBaritoKuala", "BaritoKuala");
-        getShape("kabHuluSungaiSelatan", "HuluSungaiSelatan");
-        getShape("kabHuluSungaiTengah", "HuluSungaiTengah");
-        getShape("kabHuluSungaiUtara", "HuluSungaiUtara");
-        getShape("kabBalangan", "Balangan");
-        getShape("kabTabalong", "Tabalong");
-        getShape("kabTanahLaut", "TanahLaut");
-        getShape("kabTanahBumbu", "TanahBumbu");
-        getShape("kabKotabaru", "Kotabaru");
+    getShape("kabBanjarbaru", "Kota Banjarbaru");
+    getShape("kabBanjarmasin", "Kota Banjarmasin");
+    getShape("kabBalangan", "Kabupaten Balangan");
+    getShape("kabBanjar", "Kabupaten Banjar");
+    getShape("kabBaritoKuala", "Kabupaten Barito Kuala");
+    getShape("kabHuluSungaiSelatan", "Kabupaten Hulu Sungai Selatan");
+    getShape("kabHuluSungaiTengah", "Kabupaten Hulu Sungai Tengah");
+    getShape("kabHuluSungaiUtara", "Kabupaten Hulu Sungai Utara");
+    getShape("kabKotabaru", "Kabupaten Kotabaru");
+    getShape("kabTabalong", "Kabupaten Tabalong");
+    getShape("kabTanahBumbu", "Kabupaten Tanah Bumbu");
+    getShape("kabTanahLaut", "Kabupaten Tanah Laut");
+    getShape("kabTapin", "Kabupaten Tapin");
 
-        var control2 = L.control.slideMenu("", {
-            position: "topleft",
-            menuposition: "topleft",
 
-        }).addTo(map);
+    var control2 = L.control.slideMenu("", {
+        position: "topleft",
+    }).addTo(map);
 
-        var legend = L.control({
-            position: "bottomright",
+    var legend = L.control({
+        position: "bottomright",
+    });
+
+    legend.addTo(map);
+
+    // Fungsi untuk menampilkan atau menyembunyikan kabupaten dengan checkbox
+    function showKabupaten(v, i) {
+        if (v.checked === true) {
+            map.addLayer(batasKabupaten[i]);
+            map.flyTo(batasKabupaten[i].getBounds().getCenter(), 10); // Fokus ke kabupaten
+        } else {
+            map.removeLayer(batasKabupaten[i]);
+        }
+    }
+
+    function getShape(namaFile, kab) {
+        $.getJSON('/geoJSON/' + namaFile + '.geojson', (json) => {
+            html += `
+                <input type="checkbox" id="chk-${kab}" onclick="showKabupaten(this, ${batasKabupaten.length})">
+                <label for="chk-${kab}" style="cursor:pointer;" class="kabupaten-label"">
+                    <b> ${kab} </b>
+                </label>
+                <br>
+            `;
+
+            let geoLayer = L.geoJSON(json, {
+                style: (feature) => {
+                    return {
+                        fillOpacity: 0.8,
+                        weight: 3,
+                        opacity: 1,
+                        color: 'black', // Garis tepi hitam
+                        fillColor: colors[batasKabupaten.length] // Warna kabupaten tetap
+                    };
+                }
+            });
+
+            batasKabupaten.push(geoLayer);
+            kabupaten.push(geoLayer);
+            
+            // JANGAN tambahkan layer secara default agar tidak muncul di awal
+            // map.addLayer(geoLayer); // Dihapus supaya awalnya tidak tampil
+
+            control2.setContents(html);
         });
-
-        legend.onAdd = function(map) {
-            var div = L.DomUtil.create("div", "legend");
-
-            div.style.backgroundColor = "white";
-            div.style.padding = "15px";
-
-            div.innerHTML += "<h5>Keterangan : </h5>";
-            div.innerHTML += '<div><img src="/img/Logo_ULM.png" width="35"><span> : FKIP ULM</span></div>';
-            div.innerHTML += '<div><img src="/img/icon_cowo.png" width="35"><span> : Alumni (Laki-laki)</span></div>';
-            div.innerHTML += '<div><img src="/img/icon_cewe.png" width="35"><span> : Alumni (Perempuan)</span></div>';
-
-
-
-            return div;
-        };
-
-        legend.addTo(map);
-
-        function showBatas(v, i) {
-            if (v.checked === true) {
-                // map.removeLayer(batasKecamatan);
-                map.addLayer(sub[i]);
-                map.flyTo(sub[i].getBounds().getCenter());
-
-            } else {
-                map.removeLayer(sub[i]);
-
-            }
-        }
-
-        function showKecamatan(v, i) {
-            let inp = v.parentElement.querySelectorAll("." + v.id),
-                span = v.parentElement.querySelector("#label" + v.id);
-            console.log(span)
-
-
-            if (v.checked === true) {
-                // map.addLayer(batasKecamatan);
-                // var class = $(".Balangan");    
-                for (let i = 0; i < inp.length; i++) {
-                    inp[i].style.display = "";
-                }
-
-                span.className = "fa fa-chevron-down"
-
-
-                // map.flyTo(batasKecamatan[i].getBounds().getCenter());
-
-
-            } else {
-                for (let i = 0; i < inp.length; i++) {
-                    inp[i].style.display = "none";
-                }
-                // map.flyTo(batasKecamatan[i].getBounds().getCenter());
-            }
-        }
-
-        function getShape(namaFile, kab) {
-
-            $.getJSON('/geoJSON/' + namaFile + '.geojson', (json) => {
-                html = html + `
-                                <label for="${kab}" style="cursor:pointer;" class="fs-6"><b> Kabupaten ${kab} <span id="label${kab}" class="fa fa-chevron-left"></span></b></label>
-                                <input id="${kab}" style="transform:scale(0)"  type="checkbox"  onclick="showKecamatan(this, ${batasKecamatan.length})">
-                                <br>
-                        `;
-                let i = 0;
-                let j = 1;
-                geoLayer = L.geoJSON(json, {
-
-                    style: (feature) => {
-                        return {
-                            fillOpacity: 0.8,
-                            weight: 3,
-                            opacity: 1,
-                            color: 'purple',
-                            fillColor: colors[i]
-                        };
-                    },
-                    onEachFeature: (feature, layer) => {
-                        var iconLabel = L.divIcon({
-                            className: 'label-kecamatan',
-                            html: `${feature.properties.WADMKC}`
-
-                        });
-                        console.log(feature.properties.WADMKC)
-                        // if(feature.properties.WADMKC){
-
-                        html = html + `
-                                <div class="${kab}" style="display:none">
-                                <input id="${sub.length}" type="checkbox" class="kec" onclick="showBatas(this, ${sub.length})">  <label class="text-capitalize" for="${sub.length}">${feature.properties.WADMKC}</label> <br>
-                            </div>
-                            `;
-
-                        // console.log(html)
-                        sub.push(L.markerClusterGroup().addLayer(layer));
-                        L.marker(layer.getBounds().getCenter(), {
-                            icon: iconLabel
-                        }).addTo(sub[batasKecamatan.length]);
-
-                        // batasKecamatan.addLayer(sub[i]);
-                        //  sub[i].addTo(batasKecamatan);
-                        // batasKecamatan.addLayer(layer);
-                        batasKecamatan.push(L.markerClusterGroup().addLayer(sub[batasKecamatan
-                            .length]));
-                        i++;
-                        // }
-
-                    }
-                })
-                // console.log(batasKecamatan.length)
-                for (let i = 0; i < batasKecamatan.length; i++) {
-                    kabupaten.push(L.markerClusterGroup().addLayer(batasKecamatan[i]))
-                }
-                control2.setContents(html);
-            })
-        }
+    }
     </script>
 @endsection
