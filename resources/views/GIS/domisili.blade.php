@@ -6,7 +6,8 @@
     }
 
     .kabupaten-label {
-    font-size: 14px; /* Ukuran lebih kecil */
+        font-size: 14px;
+        /* Ukuran lebih kecil */
     }
 </style>
 @section('content')
@@ -70,6 +71,10 @@
         marker.bindPopup('FKIP ULM');
 
         @foreach ($biodata as $data)
+            var fotoIcon = L.icon({
+                iconUrl: "{{ asset('storage/' . $data->biodata->foto) }}",
+                iconSize: [70, 70],
+            });
             @php
                 $koordinats = explode(',', $data['koordinat']);
             @endphp
@@ -77,7 +82,9 @@
                 longitude = {{ $koordinats[1] }}
 
             L.marker([latitude, longitude], {
+                    icon: fotoIcon
                 })
+
                 .addTo(map)
 
                 .bindPopup(
@@ -85,55 +92,55 @@
                     `);
         @endforeach
 
-    // GeoJSON
-    let batasKabupaten = [];
-    let sub = [];
-    let colors = ["#32b8a6", "#f5cb11", "#eb7200", "#c461eb", "#6c7000", "#bf2e2e", "#46e39c", "#9fd40c", "#ad00f2",
-        "#fffb00", "#7ff2fa", "#e8a784"
-    ];
+        // GeoJSON
+        let batasKabupaten = [];
+        let sub = [];
+        let colors = ["#32b8a6", "#f5cb11", "#eb7200", "#c461eb", "#6c7000", "#bf2e2e", "#46e39c", "#9fd40c", "#ad00f2",
+            "#fffb00", "#7ff2fa", "#e8a784"
+        ];
 
-    var kabupaten = [];
-    var listKabupaten = [];
-    var html = ``;
+        var kabupaten = [];
+        var listKabupaten = [];
+        var html = ``;
 
-    getShape("kabBanjarbaru", "Kota Banjarbaru");
-    getShape("kabBanjarmasin", "Kota Banjarmasin");
-    getShape("kabBalangan", "Kabupaten Balangan");
-    getShape("kabBanjar", "Kabupaten Banjar");
-    getShape("kabBaritoKuala", "Kabupaten Barito Kuala");
-    getShape("kabHuluSungaiSelatan", "Kabupaten Hulu Sungai Selatan");
-    getShape("kabHuluSungaiTengah", "Kabupaten Hulu Sungai Tengah");
-    getShape("kabHuluSungaiUtara", "Kabupaten Hulu Sungai Utara");
-    getShape("kabKotabaru", "Kabupaten Kotabaru");
-    getShape("kabTabalong", "Kabupaten Tabalong");
-    getShape("kabTanahBumbu", "Kabupaten Tanah Bumbu");
-    getShape("kabTanahLaut", "Kabupaten Tanah Laut");
-    getShape("kabTapin", "Kabupaten Tapin");
+        getShape("kabBanjarbaru", "Kota Banjarbaru");
+        getShape("kabBanjarmasin", "Kota Banjarmasin");
+        getShape("kabBalangan", "Kabupaten Balangan");
+        getShape("kabBanjar", "Kabupaten Banjar");
+        getShape("kabBaritoKuala", "Kabupaten Barito Kuala");
+        getShape("kabHuluSungaiSelatan", "Kabupaten Hulu Sungai Selatan");
+        getShape("kabHuluSungaiTengah", "Kabupaten Hulu Sungai Tengah");
+        getShape("kabHuluSungaiUtara", "Kabupaten Hulu Sungai Utara");
+        getShape("kabKotabaru", "Kabupaten Kotabaru");
+        getShape("kabTabalong", "Kabupaten Tabalong");
+        getShape("kabTanahBumbu", "Kabupaten Tanah Bumbu");
+        getShape("kabTanahLaut", "Kabupaten Tanah Laut");
+        getShape("kabTapin", "Kabupaten Tapin");
 
 
-    var control2 = L.control.slideMenu("", {
-        position: "topleft",
-    }).addTo(map);
+        var control2 = L.control.slideMenu("", {
+            position: "topleft",
+        }).addTo(map);
 
-    var legend = L.control({
-        position: "bottomright",
-    });
+        var legend = L.control({
+            position: "bottomright",
+        });
 
-    legend.addTo(map);
+        legend.addTo(map);
 
-    // Fungsi untuk menampilkan atau menyembunyikan kabupaten dengan checkbox
-    function showKabupaten(v, i) {
-        if (v.checked === true) {
-            map.addLayer(batasKabupaten[i]);
-            map.flyTo(batasKabupaten[i].getBounds().getCenter(), 10); // Fokus ke kabupaten
-        } else {
-            map.removeLayer(batasKabupaten[i]);
+        // Fungsi untuk menampilkan atau menyembunyikan kabupaten dengan checkbox
+        function showKabupaten(v, i) {
+            if (v.checked === true) {
+                map.addLayer(batasKabupaten[i]);
+                map.flyTo(batasKabupaten[i].getBounds().getCenter(), 10); // Fokus ke kabupaten
+            } else {
+                map.removeLayer(batasKabupaten[i]);
+            }
         }
-    }
 
-    function getShape(namaFile, kab) {
-        $.getJSON('/geoJSON/' + namaFile + '.geojson', (json) => {
-            html += `
+        function getShape(namaFile, kab) {
+            $.getJSON('/geoJSON/' + namaFile + '.geojson', (json) => {
+                html += `
                 <input type="checkbox" id="chk-${kab}" onclick="showKabupaten(this, ${batasKabupaten.length})">
                 <label for="chk-${kab}" style="cursor:pointer;" class="kabupaten-label"">
                     <b> ${kab} </b>
@@ -141,26 +148,26 @@
                 <br>
             `;
 
-            let geoLayer = L.geoJSON(json, {
-                style: (feature) => {
-                    return {
-                        fillOpacity: 0.8,
-                        weight: 3,
-                        opacity: 1,
-                        color: 'black', // Garis tepi hitam
-                        fillColor: colors[batasKabupaten.length] // Warna kabupaten tetap
-                    };
-                }
+                let geoLayer = L.geoJSON(json, {
+                    style: (feature) => {
+                        return {
+                            fillOpacity: 0.8,
+                            weight: 3,
+                            opacity: 1,
+                            color: 'black', // Garis tepi hitam
+                            fillColor: colors[batasKabupaten.length] // Warna kabupaten tetap
+                        };
+                    }
+                });
+
+                batasKabupaten.push(geoLayer);
+                kabupaten.push(geoLayer);
+
+                // JANGAN tambahkan layer secara default agar tidak muncul di awal
+                // map.addLayer(geoLayer); // Dihapus supaya awalnya tidak tampil
+
+                control2.setContents(html);
             });
-
-            batasKabupaten.push(geoLayer);
-            kabupaten.push(geoLayer);
-            
-            // JANGAN tambahkan layer secara default agar tidak muncul di awal
-            // map.addLayer(geoLayer); // Dihapus supaya awalnya tidak tampil
-
-            control2.setContents(html);
-        });
-    }
+        }
     </script>
 @endsection
