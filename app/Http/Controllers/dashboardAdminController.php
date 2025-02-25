@@ -20,7 +20,7 @@ class dashboardAdminController extends Controller
     }
 
     public function mahasiswa(){
-        $user = User::with("biodata")->where("role", "!=", "admin")->get();
+        $user = User::with("biodata")->where("role", "!=", "admin")->paginate(10);
         // $biodata = Biodata::with("user")->get();
         return view("dashboard.admin.mahasiswa", [
             'title' => 'Mahasiswa',

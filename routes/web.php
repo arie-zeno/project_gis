@@ -3,6 +3,7 @@
 use App\Http\Controllers\dashboardAdminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GisController;
+use App\Http\Controllers\ImportUserController;
 use App\Http\Controllers\IndoRegionController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
@@ -69,3 +70,6 @@ Route::get('/gis-domisili', [GisController::class, 'domisili'])->name('gis.domis
 Route::post('/getKabupaten', [IndoRegionController::class, "getKabupaten"])->name('getKabupaten')->middleware("auth");
 Route::post('/getKecamatan', [IndoRegionController::class, "getKecamatan"])->name('getKecamatan')->middleware("auth");
 Route::post('/getKelurahan', [IndoRegionController::class, "getKelurahan"])->name('getKelurahan')->middleware("auth");
+
+// Import
+Route::post('/admin/import-users', [ImportUserController::class, 'import'])->name('import.users');

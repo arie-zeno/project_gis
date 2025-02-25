@@ -6,31 +6,110 @@
             <div class="card border-0 shadow" style="background: #fff;">
                 <div class="card-body">
                     <div id="toolbar">
-                        <button class=" btn btn-sm  btn-success"> Import</button></h4>
+                        <button class=" btn btn-sm  btn-outline-primary" type="button" data-bs-toggle="modal"
+                            data-bs-target="#addModal"> <i class="bi bi-person-plus-fill"></i>
+                            Add</button>
+                        </h4>
+                        <button class=" btn btn-sm  btn-outline-success" type="button" data-bs-toggle="modal"
+                            data-bs-target="#importModal"> <i class="bi bi-file-earmark-excel-fill"></i>
+                            Import</button></h4>
+
                     </div>
 
-                    <table data-toggle="table" data-search="true" data-toolbar="#toolbar" >
+                    <table data-toggle="table" data-search="true" data-toolbar="#toolbar">
                         <thead>
                             <tr class="text-center">
                                 <th>Nama</th>
-                                <th>E-Mail</th>
-                                <th>Angkatan</th>
+                                <th>NIM</th>
+                                <th>Biodata</th>
+                                <th>Riwayat Pendidikan</th>
                                 <th>Operasi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($user as $item)
                                 <tr>
-                                    <td>{{ $item->biodata->nama }}</td>
-                                    <td>{{ $item->email }}</td>
-                                    <td>{{ $item->biodata->angkatan }}</td>
-                                    <td class="text-center"><button class="btn btn-sm btn-danger">Hapus</button></td>
+                                    <td>{{ $item->name }}</td>
+                                    <td class="text-center">{{ $item->nim }}</td>
+                                    <td class="text-center"><i
+                                            class="bi {{ $item->biodata ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger' }} "></i>
+                                    </td>
+                                    <td class="text-center"><i
+                                            class="bi {{ $item->sekolah ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger' }} "></i>
+                                    </td>
+                                    <td class="text-center"><a href="{{$item->nim}}" class="btn btn-sm btn-outline-danger">Hapus</a>
+                                        <button class="btn btn-sm btn-outline-info">Ganti Password</button>
+                                    </td>
 
                                 </tr>
                             @endforeach
                         </tbody>
+                        <!-- Tampilkan pagination -->
                     </table>
 
+
+                </div>
+                <div class="px-4">
+
+                    {{ $user->links('pagination::bootstrap-5') }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Tambah User -->
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addModalLabel">Tambah User</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="nim" class="form-label">NIM</label>
+                            <input type="text" class="form-control" id="nim" placeholder="Contoh : 2110100000000"
+                                name="nim">
+                        </div>
+                        <div class="mb-3">
+                            <label for="nama" class="form-label">Nama</label>
+                            <input type="text" class="form-control" id="nama" placeholder="Contoh : Budi"
+                                name="nama">
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-sm btn-outline-primary">Tambah</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Import User -->
+    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="importModalLabel">Import User</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('import.users') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="input-group mb-3">
+                            <label class="input-group-text" for="inputGroupFile01">Upload File</label>
+                            <input type="file" class="form-control" id="inputGroupFile01" name="file">
+                        </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-sm btn-outline-primary">Import</button>
+                    </form>
                 </div>
             </div>
         </div>
