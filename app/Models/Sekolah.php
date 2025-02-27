@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Sekolah extends Model
 {
     use HasFactory;
-    protected $primaryKey = "id_sekolah";
 
     protected $table = "sekolah";
     protected $fillable = [
         "id",
         "nama_sekolah",
+        "jenis",
+        "status",
         "koordinat",
         'provinsi',
         'kabupaten',

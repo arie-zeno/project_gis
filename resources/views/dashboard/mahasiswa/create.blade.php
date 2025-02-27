@@ -1,6 +1,5 @@
-
 @extends('dashboard.layouts.dashboard')
-<meta name="csrf-token" content="{{csrf_token()}}"/>
+<meta name="csrf-token" content="{{ csrf_token() }}" />
 
 @section('dashboard-content')
     <style>
@@ -32,15 +31,17 @@
                                 placeholder="Masukkan no telepon" value="{{ old('telepon') }}">
                         </div>
                         <div class="mb-2">
+                            <?php
+                                $angkatan = str_split(auth()->user()->nim, 2);
+                                $angkatan = $angkatan[0];
+                            ?>
                             <label for="angkatan" class="form-label">angkatan</label>
-                            <input type="text" class="form-control" id="angkatan" name="angkatan" placeholder=""
-                                value="{{ old('angkatan') }}">
+                            <input  type="text" class="form-control" id="angkatan" name="angkatan" value="{{ $angkatan }}" >
                         </div>
 
                         <div class="mb-2">
                             <label for="jk" class="form-label">Jenis Kelamin</label>
-                            <select name="jenis_kelamin" class="form-select" aria-label="Default select example"
-                                value="{{ old('jenis_kelamin') }}">
+                            <select name="jenis_kelamin" class="form-select" aria-label="Default select example">
                                 <option selected>-- Pilih Jenis Kelamin --</option>
                                 <option value="Laki-laki">Laki-laki</option>
                                 <option value="Perempuan">Perempuan</option>
@@ -49,20 +50,27 @@
 
                         <div class="mb-2">
                             <label for="agama" class="form-label">agama</label>
-                            <input type="text" class="form-control" id="agama" name="agama" placeholder=""
-                                value="{{ old('agama') }}">
+                            <select name="agama" class="form-select" >
+                                <option selected>-- Pilih Agama --</option>
+                                <option value="Islam">Islam</option>
+                                <option value="Kristen">Kristen</option>
+                                <option value="Katolik">Katolik</option>
+                                <option value="Budha">Budha</option>
+                                <option value="Hindu">Hindu</option>
+                                <option value="Lainnya">Lainnya</option>
+                            </select>
                         </div>
 
                         <div class="mb-2">
                             <label for="tempat-lahir" class="form-label">tempat-lahir</label>
                             <input type="text" class="form-control" id="tempat-lahir" name="tempat_lahir" placeholder=""
-                                value="{{ old('tempat-lahir') }}">
+                                value="{{ old('tempat_lahir') }}">
                         </div>
 
                         <div class="mb-2">
                             <label for="tanggal-lahir" class="form-label">tanggal-lahir</label>
                             <input type="date" class="form-control" id="tanggal-lahir" name="tanggal_lahir"
-                                placeholder="" value="{{ old('tanggal-lahir') }}">
+                                placeholder="" value="{{ old('tanggal_lahir') }}">
                         </div>
 
                         <div class="mb-2">

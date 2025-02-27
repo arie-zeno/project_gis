@@ -10,35 +10,13 @@
     <div class="card border-0 shadow" style="background: #fff;">
         <div class="card-body">
             <h1>form</h1>
-            <form action="{{ route('store.sekolah') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.store.sekolah') }}" method="POST" enctype="multipart/form-data">
                 <div class="row">
                     @csrf
 
                     <div class="col-sm-12">
-                        <div class="mb-2">
-                            <label for="nama" class="form-label">Nama</label>
-                            <input type="text" class="form-control" id="nama" name="nama" disabled
-                                placeholder="Masukkan nama anda" value="{{ auth()->user()->name }}">
-                        </div>
-                        <div class="mb-2">
-                            <label for="nim" class="form-label">Nim</label>
-                            <input type="text" class="form-control" id="nim" name="nim" disabled
-                                placeholder="Masukkan nim anda" value="{{ auth()->user()->nim }}">
-                        </div>
 
-                        <div class="mb-2">
-                            <label for="id_sekolah" class="form-label">Sekolah</label>
-                            <select name="id_sekolah" id="id_sekolah" class="form-select"
-                                aria-label="Default select example" value="{{ old('id_sekolah') }}">
-                                <option selected>-- Pilih Sekolah --</option>
-                                @foreach ($sekolah as $item)
-                                    <option value="{{ $item->id }}">{{ $item->nama_sekolah }}</option>
-                                @endforeach
-                                <option value="tambah">-- Tambah Sekolah --</option>
-                            </select>
-                        </div>
-
-                        <div class="sekolah" style="display: none">
+                        <div class="sekolah">
 
                             <div class="mb-2">
                                 <label for="nama_sekolah" class="form-label">Nama Sekolah</label>
@@ -119,65 +97,56 @@
 
 @section('js')
     <script>
-        $(document).ready(function() {
-            $("#id_sekolah").change(function() {
-                if ($(this).val() === "tambah") {
-                    $(".sekolah").show(); // Menampilkan div input sekolah
-                    var map = L.map('map2').setView([-3.298618801108944, 114.58542404981114], 16.86);
-                    var baseLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        attribution: '© OpenStreetMap contributors'
-                    })
-                    baseLayer.addTo(map);
+        var map = L.map('map2').setView([-3.298618801108944, 114.58542404981114], 16.86);
+        var baseLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        })
+        baseLayer.addTo(map);
 
-                    // get location
-                    var inputKoordinat = document.querySelector("#koordinat"),
-                        curLocation = [-3.298618801108944, 114.58542404981114]
+        // get location
+        var inputKoordinat = document.querySelector("#koordinat"),
+            curLocation = [-3.298618801108944, 114.58542404981114]
 
-                    map.attributionControl.setPrefix(false)
+        map.attributionControl.setPrefix(false)
 
-                    var marker = new L.marker(curLocation, {
-                        draggable: "true"
-                    });
+        var marker = new L.marker(curLocation, {
+            draggable: "true"
+        });
 
-                    marker.on("dragend", (event) => {
-                        var position = marker.getLatLng();
-                        marker.setLatLng(position, {
-                            draggable: "true"
-                        }).bindPopup(position).update();
-                        $("#koordinat").val(`${position.lat}, ${position.lng}`).keyup();
-                    });
+        marker.on("dragend", (event) => {
+            var position = marker.getLatLng();
+            marker.setLatLng(position, {
+                draggable: "true"
+            }).bindPopup(position).update();
+            $("#koordinat").val(`${position.lat}, ${position.lng}`).keyup();
+        });
 
 
 
-                    map.addLayer(marker);
+        map.addLayer(marker);
 
-                    map.on("click", (e) => {
-                        if (!marker) {
-                            marker = L.marker(e.latlng).addTo(map);
-                        } else {
-                            console.log(e.latlng)
-                            marker.setLatLng(e.latlng);
-                        }
-                        map.flyTo([e.latlng.lat, e.latlng.lng]);
-                        inputKoordinat.value = `${e.latlng.lat}, ${e.latlng.lng}`;
-                    })
+        map.on("click", (e) => {
+            if (!marker) {
+                marker = L.marker(e.latlng).addTo(map);
+            } else {
+                console.log(e.latlng)
+                marker.setLatLng(e.latlng);
+            }
+            map.flyTo([e.latlng.lat, e.latlng.lng]);
+            inputKoordinat.value = `${e.latlng.lat}, ${e.latlng.lng}`;
+        })
 
-                    inputKoordinat.addEventListener("input", (e) => {
-                        console.log(inputKoordinat.value)
-                        let koord = inputKoordinat.value.split(",")
-                        if (!marker) {
-                            marker = L.marker(koord).addTo(map);
-                        } else {
+        inputKoordinat.addEventListener("input", (e) => {
+            console.log(inputKoordinat.value)
+            let koord = inputKoordinat.value.split(",")
+            if (!marker) {
+                marker = L.marker(koord).addTo(map);
+            } else {
 
-                            marker.setLatLng(new L.LatLng(koord[0], koord[1]));
-                            map.flyTo([koord[0], koord[1]]);
+                marker.setLatLng(new L.LatLng(koord[0], koord[1]));
+                map.flyTo([koord[0], koord[1]]);
 
-                        }
-                    });
-                } else {
-                    $(".sekolah").hide(); // Menyembunyikan jika memilih yang lain
-                }
-            });
+            }
         });
     </script>
     <script>

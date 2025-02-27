@@ -22,7 +22,7 @@ class ImportUserController extends Controller
 
         Excel::import(new UsersImport, $request->file('file'));
 
-        Alert::success('Sukses!', 'Data pengguna berhasil diimport!');
+        toast('Data pengguna berhasil diimport!', 'success')->position('center');
         return redirect()->back();
     }
 }

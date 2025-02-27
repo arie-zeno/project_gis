@@ -36,6 +36,16 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/', [dashboardAdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/dashboard', [dashboardAdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/mahasiswa', [dashboardAdminController::class, 'mahasiswa'])->name('admin.mahasiswa');
+    Route::post('/mahasiswa', [dashboardAdminController::class, 'store'])->name('store.mahasiswa');
+    Route::delete('/mahasiswa/hapus/{nim}', [dashboardAdminController::class, 'hapusMahasiswa'])->name('hapus.mahasiswa');
+    
+    Route::post('/mahasiswa/ganti/{nim}', [dashboardAdminController::class, 'gantiPassword'])->name('ganti.password');
+    
+    Route::get('/sekolah', [dashboardAdminController::class, 'sekolah'])->name('admin.sekolah');
+    Route::get('/sekolah/tambah', [dashboardAdminController::class, 'tambahSekolah'])->name('tambah.sekolah');
+    Route::post('/sekolah', [dashboardAdminController::class, 'storeSekolah'])->name('admin.store.sekolah');
+    Route::delete('/sekolah/hapus/{id}', [dashboardAdminController::class, 'hapusSekolah'])->name('hapus.sekolah');
+
 });
 // Dashboard Mahasiswa
 Route::middleware(['auth', 'role:mahasiswa'])->prefix('mahasiswa')->group(function () {

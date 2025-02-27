@@ -51,13 +51,15 @@
                     <div class="col-sm-4">
                         <img height="300" class="" src="/img/il_1.svg" alt="">
                     </div>
-                    <div class="col-sm-4 d-flex  align-items-center">
+                    <div class="col-sm-4 d-flex flex-column justify-content-center align-items-center">
                         <h2
                             style="background: linear-gradient(135deg, #6a11cb, #2575fc);
                         -webkit-background-clip: text;
                         background-clip: text;
                         -webkit-text-fill-color: transparent;">
                             Anda belum mengisi biodata.</h2>
+
+                        <a href="{{ route('isi.biodata') }}" class="link-tambah">Isi Biodata</a>
                     </div>
                 </div>
             @endif
@@ -66,57 +68,10 @@
 
 
     <div class="row mt-3">
-        @if ($biodata == null)
-            <div class="col-sm-4">
-                <div class="card border-0 shadow" style="background: #fff;">
-                    <div class="card-body">
 
-                        <div class="row align-items-center justify-content-between">
-                            <div class="col-sm-6">
-                                <h4 class=""
-                                    style="background: linear-gradient(135deg, #6a11cb, #2575fc); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
-                                    <i class="me-2 bi bi-person-fill"></i> Biodata Pribadi
-                                </h4>
-                                <p>Anda belum mengisi Biodata Pribadi.</p>
-
-                            </div>
-                            <div class="col-sm-6 d-flex justify-content-end">
-                                <a href="{{ route('isi.biodata') }}" class="link-tambah">Isi Biodata</a>
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endif
-        @if ($biodata == null)
-            <div class="col-sm-4">
-                <div class="card border-0 shadow" style="background: #fff;">
-
-                    <div class="card-body">
-                        <div class="row align-items-center justify-content-between">
-                            <div class="col-sm-6">
-                                <h4 class=""
-                                    style="background: linear-gradient(135deg, #6a11cb, #2575fc); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
-                                    <i class="me-2 bi bi-mortarboard-fill"></i> Riwayat Pendidikan
-                                </h4>
-                                <p>Anda belum mengisi Riwayat Pendidikan.</p>
-
-                            </div>
-                            <div class="col-sm-6 d-flex justify-content-end">
-                                <a href="{{ route('isi.sekolah') }}" class="link-tambah">Isi Riwayat Pendidikan</a>
-
-                            </div>
-
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        @elseif($biodata != null)
+        @if ($biodata != null)
             @if ($biodata->sekolah == null)
-                <div class="col-sm-4">
+                <div class="col-sm-6">
                     <div class="card border-0 shadow" style="background: #fff;">
 
                         <div class="card-body">
@@ -139,8 +94,9 @@
 
                     </div>
                 </div>
-            @elseif($biodata->tempat_tinggal == null)
-                <div class="col-sm-4">
+            @endif
+            @if ($biodata->tempat_tinggal == null)
+                <div class="col-sm-6">
                     <div class="card border-0 shadow" style="background: #fff;">
 
                         <div class="card-body">

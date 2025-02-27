@@ -110,7 +110,7 @@ class DashboardController extends Controller
 
         // Redirect dengan pesan sukses
         alert("Success", "Biodata berhasil ditambahkan");
-        return redirect()->route('mahasiswa.biodata');
+        return redirect()->route('mahasiswa.home');
     }
 
     public function createSekolah()
@@ -143,6 +143,8 @@ class DashboardController extends Controller
         $request->validate([
             'id_sekolah' => 'required',
             'nama_sekolah' => 'nullable|string|max:255',
+            'jenis' => 'required',
+            'status' => 'required',
         ]);
 
         $biodata = Biodata::findOrFail(auth()->user()->nim);
@@ -152,6 +154,8 @@ class DashboardController extends Controller
             $sekolah = Sekolah::create([
                 'id' => $request->id,
                 'nama_sekolah' => $request->nama_sekolah,
+                'jenis' => $request->jenis,
+                'status' => $request->status,
                 'provinsi' => $request->provinsi,
                 'kabupaten' => $request->kabupaten,
                 'kecamatan' => $request->kecamatan,

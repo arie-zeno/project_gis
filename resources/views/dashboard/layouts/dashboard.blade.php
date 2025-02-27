@@ -48,16 +48,17 @@
         transform: scale(1.1);
 
     }
-    a.link-tambah{
+
+    a.link-tambah {
         background: linear-gradient(135deg, #6a11cb, #2575fc);
-        padding:  5px 10px;
+        padding: 5px 10px;
         border-radius: 10px;
         text-decoration: none;
         color: white;
         transition: 0.2s;
     }
 
-    a.link-tambah:hover{
+    a.link-tambah:hover {
         transform: scale(1.1);
     }
 </style>
@@ -85,20 +86,22 @@
                         </li>
 
                         <li class="mb-1 nav-item @php echo $title == "Biodata" ? "active-nav" : ""; @endphp">
-                            <a href="{{ route('mahasiswa.biodata') }}" class="nav-link "><i class="bi bi-people-fill me-2"></i>
+                            <a href="{{ route('mahasiswa.biodata') }}" class="nav-link "><i
+                                    class="bi bi-people-fill me-2"></i>
                                 Biodata</a>
                         </li>
 
                         <li class="mb-1 nav-item @php echo $title == "Sekolah" ? "active-nav" : ""; @endphp">
-                            <a href="{{ route('mahasiswa.sekolah') }}" class="nav-link "><i class="bi bi-people-fill me-2"></i>
+                            <a href="{{ route('mahasiswa.sekolah') }}" class="nav-link "><i
+                                    class="bi bi-mortarboard-fill me-2"></i>
                                 Sekolah</a>
                         </li>
 
                         <li class="mb-1 nav-item @php echo $title == "Domisili" ? "active-nav" : ""; @endphp">
-                            <a href="{{ route('mahasiswa.tempat') }}" class="nav-link "><i class="bi bi-people-fill me-2"></i>
+                            <a href="{{ route('mahasiswa.tempat') }}" class="nav-link "><i
+                                    class="bi bi-house-heart-fill me-2"></i>
                                 Domisili</a>
                         </li>
-
                     @else
                         <li class="mb-1 nav-item @php echo $title == "Dashboard" ? "active-nav" : ""; @endphp">
                             <a href="{{ route('admin.dashboard') }}" class="nav-link "><i class="bi bi-house-fill me-2"></i>
@@ -109,10 +112,12 @@
                             <a href="{{ route('admin.mahasiswa') }}" class="nav-link "><i
                                     class="bi bi-person-fill me-2"></i> Mahasiswa</a>
                         </li>
+
+                        <li class="mb-1 nav-item @php echo $title == "Sekolah" ? "active-nav" : ""; @endphp">
+                            <a href="{{ route('admin.sekolah') }}" class="nav-link "><i
+                                    class="bi bi-mortarboard-fill me-2"></i> Sekolah</a>
+                        </li>
                     @endif
-                    <li class="nav-item">
-                        <a href="" class="nav-link ">Settings</a>
-                    </li>
                 </ul>
             </div>
 
@@ -137,7 +142,8 @@
                             </button>
 
                             <!-- Brand/Logo -->
-                            <a class="navbar-brand text-dark" href="#">{{ auth()->user()->name }}</a>
+                            <a class="navbar-brand fw-bold" href="#"
+                                style="background: linear-gradient(135deg, #6a11cb, #2575fc); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">{{ auth()->user()->name }}</a>
 
                             <!-- Tombol Logout -->
                             <div>

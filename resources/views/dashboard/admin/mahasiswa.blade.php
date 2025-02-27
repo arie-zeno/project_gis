@@ -8,11 +8,11 @@
                     <div id="toolbar">
                         <button class=" btn btn-sm  btn-outline-primary" type="button" data-bs-toggle="modal"
                             data-bs-target="#addModal"> <i class="bi bi-person-plus-fill"></i>
-                            Add</button>
+                            Tambah Mahasiswa</button>
                         </h4>
                         <button class=" btn btn-sm  btn-outline-success" type="button" data-bs-toggle="modal"
                             data-bs-target="#importModal"> <i class="bi bi-file-earmark-excel-fill"></i>
-                            Import</button></h4>
+                            Import Mahasiswa</button></h4>
 
                     </div>
 
@@ -37,10 +37,44 @@
                                     <td class="text-center"><i
                                             class="bi {{ $item->sekolah ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger' }} "></i>
                                     </td>
-                                    <td class="text-center"><a href="{{$item->nim}}" class="btn btn-sm btn-outline-danger">Hapus</a>
-                                        <button class="btn btn-sm btn-outline-info">Ganti Password</button>
+                                    <td class="text-center"><a href="{{ route('hapus.mahasiswa', $item->nim) }}"
+                                            data-confirm-delete="true"
+                                            class="btn btn-sm btn-outline-danger btn-hapus">Hapus</a>
+                                        <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal"
+                                            data-bs-target="#passwordModal">Ganti Password</button>
                                     </td>
 
+                                    <!-- Modal ganti password -->
+                                    <div class="modal fade" id="passwordModal" tabindex="-1"
+                                        aria-labelledby="passwordModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="passwordModalLabel">Ganti Password</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="{{ route('ganti.password', $item->nim) }}" method="POST">
+                                                        @csrf
+                                                        <div class="input-group mb-3">
+                                                            <label class="input-group-text"
+                                                                for="pw">Password</label>
+                                                            <input type="password" class="form-control"
+                                                                id="pw" name="password">
+                                                        </div>
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                                                        data-bs-dismiss="modal">Tutup</button>
+                                                    <button type="submit"
+                                                        class="btn btn-sm btn-outline-primary">Submit</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -66,7 +100,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="POST">
+                    <form action="{{ route('store.mahasiswa') }}" method="POST">
                         @csrf
                         <div class="mb-3">
                             <label for="nim" class="form-label">NIM</label>
@@ -81,7 +115,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Tutup</button>
-                    <button type="button" class="btn btn-sm btn-outline-primary">Tambah</button>
+                    <button type="submit" class="btn btn-sm btn-outline-primary">Tambah</button>
                     </form>
 
                 </div>
@@ -107,7 +141,8 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                        data-bs-dismiss="modal">Tutup</button>
                     <button type="submit" class="btn btn-sm btn-outline-primary">Import</button>
                     </form>
                 </div>

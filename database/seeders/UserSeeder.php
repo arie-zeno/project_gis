@@ -15,30 +15,41 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // Admin User
-        User::create([
-            'nim' => '1',
-            'name' => 'Admin GIS',
-            'email' => 'admin@example.com',
-            'password' => Hash::make('password'),
-            'role' => 'admin',
-        ]);
+        User::updateOrCreate(
+            [
+                'nim' => '1'
+            ],
+            [
+                'name' => 'Admin GIS',
+                'email' => 'admin@example.com',
+                'password' => Hash::make('password'),
+                'role' => 'admin',
+            ]
+        );
 
         // Mahasiswa User
-        User::create([
-            'nim' => '2110131310002',
-            'name' => 'Mahasiswa GIS',
-            'email' => 'mahasiswa@example.com',
-            'password' => Hash::make('password'),
-            'role' => 'mahasiswa',
-        ]);
+        User::updateOrCreate(
+            [
+                'nim' => '2110131310001',
+            ],
+            [
+                'name' => 'Ari Yono',
+                'email' => '2110131310001@@mhs.ulm.ac.id',
+                'password' => Hash::make('123'),
+                'role' => 'mahasiswa',
+            ]
+        );
 
-        User::create([
-            'nim' => '2110131220016',
-            'name' => 'Alfika Nurfadia',
-            'email' => '2110131220016@mhs.ulm.ac.id',
-            'password' => Hash::make('123'),
-            'role' => 'mahasiswa',
-        ]);
-
+        User::updateOrCreate(
+            [
+                'nim' => '2110131220016',
+            ],
+            [
+                'name' => 'Alfika Nurfadia',
+                'email' => '2110131220016@mhs.ulm.ac.id',
+                'password' => Hash::make('123'),
+                'role' => 'mahasiswa',
+            ]
+        );
     }
 }
