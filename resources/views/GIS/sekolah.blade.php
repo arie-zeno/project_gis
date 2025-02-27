@@ -31,18 +31,18 @@
         });
 
         var manIcon = L.icon({
-            iconUrl: "/img/icon_man.png",
+            iconUrl: "/img/iconmarker.png",
             iconSize: [50, 50],
         });
 
         var ceweIcon = L.icon({
-            iconUrl: "/img/icon_cewe.png",
-            iconSize: [70, 70],
+            iconUrl: "/img/iconmarker.png",
+            iconSize: [50, 50],
         });
 
         var cowoIcon = L.icon({
-            iconUrl: "/img/icon_cowo.png",
-            iconSize: [70, 70],
+            iconUrl: "/img/iconmarker.png",
+            iconSize: [50, 50],
         });
 
 
@@ -86,9 +86,7 @@
                 .addTo(map)
 
                 .bindPopup(
-                    `Nama : {{ $data['nama'] }} <br>
-                    NIM : {{ $data['nim'] }} <br><br>
-                    <img src="{{ asset('storage/' . $data->foto) }}" class="img-thumbnail" alt="{{ $data['nama'] }}"><br><br>
+                    `{{ $data['nama_sekolah'] }}
                     `);
         @endforeach
 

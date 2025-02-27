@@ -6,8 +6,11 @@
     }
 
     .kabupaten-label {
-    font-size: 14px; /* Ukuran lebih kecil */
+        font-size: 14px;
+        /* Ukuran lebih kecil */
     }
+
+
 </style>
 @section('content')
     <h3>Persebaran Daerah Asal Mahasiswa</h3>
@@ -46,17 +49,6 @@
         });
 
 
-        var customIcon = L.divIcon({
-            className: 'custom-marker',
-            html: `<div class="marker-container">
-                        <div class="marker-pin"></div>
-                        <img src="{{ $biodata->biodata->foto ? asset('storage/' . $biodata->biodata->foto) : asset('img/il_1.svg') }}">
-                </div>`,
-            iconSize: [50, 50], // Sesuaikan ukuran ikon
-            iconAnchor: [25, 50] // Posisi anchor agar pas di peta
-        });
-
-
         //     L.tileLayer('http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',{
         // maxZoom: 20,
         // subdomains:['mt0','mt1','mt2','mt3']
@@ -78,25 +70,27 @@
         marker.bindPopup('FKIP ULM');
 
         @foreach ($biodata as $data)
+            var fotoIcon = L.divIcon({
+                className: 'custom-marker',
+                html: '<div style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; border: 3px solid white; box-shadow: 0 0 5px rgba(0,0,0,0.5); background: url({{ asset('storage/' . $data->foto) }}) center/cover;"></div>',
+                iconSize: [50, 50], // Ukuran ikon (lebar, tinggi)
+                iconAnchor: [25, 50], // Titik jangkar (agar bagian bawah ikon berada di titik koordinat)
+                popupAnchor: [0, -50] // Posisi popup relatif terhadap ikon
+            });
             @php
                 $koordinats = explode(',', $data['koordinat']);
             @endphp
             var latitude = {{ $koordinats[0] }},
                 longitude = {{ $koordinats[1] }}
-            @if ($data['jenis_kelamin'] == 'laki-laki')
-                icon = customIcon
-            @else
-                icon = customIcon
-            @endif
+
             L.marker([latitude, longitude], {
-                    icon: icon
+                    icon: fotoIcon
                 })
+
                 .addTo(map)
 
                 .bindPopup(
-                    `Nama : {{ $data['nama'] }} <br>
-                    NIM : {{ $data['nim'] }} <br><br>
-                    <img src="{{ asset('storage/' . $data->foto) }}" class="img-thumbnail" alt="{{ $data['nama'] }}"><br><br>
+                    `Nama : {{ $data->nama }} <br>
                     `);
         @endforeach
 

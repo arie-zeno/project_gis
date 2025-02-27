@@ -9,6 +9,8 @@
         font-size: 14px;
         /* Ukuran lebih kecil */
     }
+
+
 </style>
 @section('content')
     <h3>Persebaran Domisili Mahasiswa</h3>
@@ -48,8 +50,6 @@
 
 
 
-
-
         //     L.tileLayer('http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',{
         // maxZoom: 20,
         // subdomains:['mt0','mt1','mt2','mt3']
@@ -70,10 +70,15 @@
         }).addTo(map);
         marker.bindPopup('FKIP ULM');
 
+
         @foreach ($biodata as $data)
-            var fotoIcon = L.icon({
-                iconUrl: "{{ asset('storage/' . $data->biodata->foto) }}",
-                iconSize: [70, 70],
+            var fotoIcon = L.divIcon({
+                className: 'custom-marker',
+                html: '<div style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; border: 3px solid white; box-shadow: 0 0 5px rgba(0,0,0,0.5); background: url({{ asset('storage/' . $data->biodata->foto) }}) center/cover;"></div>',
+                iconSize: [50, 50], // Ukuran ikon (lebar, tinggi)
+                iconAnchor: [25, 50], // Titik jangkar (agar bagian bawah ikon berada di titik koordinat)
+                popupAnchor: [0, -50] // Posisi popup relatif terhadap ikon
+            
             });
             @php
                 $koordinats = explode(',', $data['koordinat']);
