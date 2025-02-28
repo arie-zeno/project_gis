@@ -38,6 +38,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/mahasiswa', [dashboardAdminController::class, 'mahasiswa'])->name('admin.mahasiswa');
     Route::post('/mahasiswa', [dashboardAdminController::class, 'store'])->name('store.mahasiswa');
     Route::delete('/mahasiswa/hapus/{nim}', [dashboardAdminController::class, 'hapusMahasiswa'])->name('hapus.mahasiswa');
+    Route::get('/mahasiswa/lihat/{nim}', [dashboardAdminController::class, 'lihatMahasiswa'])->name('lihat.mahasiswa');
     
     Route::post('/mahasiswa/ganti/{nim}', [dashboardAdminController::class, 'gantiPassword'])->name('ganti.password');
     
@@ -45,6 +46,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/sekolah/tambah', [dashboardAdminController::class, 'tambahSekolah'])->name('tambah.sekolah');
     Route::post('/sekolah', [dashboardAdminController::class, 'storeSekolah'])->name('admin.store.sekolah');
     Route::delete('/sekolah/hapus/{id}', [dashboardAdminController::class, 'hapusSekolah'])->name('hapus.sekolah');
+    Route::get('/sekolah/edit/{id}', [dashboardAdminController::class, 'editSekolah'])->name('edit.sekolah');
+    Route::post('/sekolah/edit', [dashboardAdminController::class, 'updateSekolah'])->name('update.sekolah');
 
 });
 // Dashboard Mahasiswa

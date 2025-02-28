@@ -61,6 +61,18 @@ class dashboardAdminController extends Controller
         ]);
     }
 
+    public function editSekolah($id)
+    {
+        $provinces = Province::all();
+        $user = User::with("biodata")->where("role", "!=", "admin")->get();
+        $sekolah = Sekolah::with("province")->find($id);
+        return view("dashboard.admin.editSekolah", [
+            'title' => 'Sekolah',
+            'provinces' => $provinces,
+            'sekolah' => $sekolah,
+        ]);
+    }
+
     public function store(Request $request)
     {
         // Validasi Input
@@ -127,7 +139,7 @@ class dashboardAdminController extends Controller
         ]);
 
 
-       Sekolah::create([
+        Sekolah::create([
             'id' => $request->id,
             'nama_sekolah' => $request->nama_sekolah,
             'jenis' => $request->jenis,
@@ -147,6 +159,34 @@ class dashboardAdminController extends Controller
         return redirect()->route('admin.sekolah');
     }
 
+    public function updateSekolah(Request $request)
+    {
+        // Validasi Input
+        $request->validate([
+            'id' => 'required',
+            'nama_sekolah' => 'required',
+            'jenis' => 'required',
+            'status' => 'required',
+        ]);
+
+        $sekolah = Sekolah::find($request->id);
+        $sekolah->nama_sekolah = $request->nama_sekolah;
+        $sekolah->jenis = $request->jenis;
+        $sekolah->status = $request->status;
+        $sekolah->provinsi = $request->provinsi;
+        $sekolah->kabupaten = $request->kabupaten;
+        $sekolah->kecamatan = $request->kecamatan;
+        $sekolah->kelurahan = $request->kelurahan;
+        $sekolah->koordinat = $request->koordinat;
+        $sekolah->save();
+
+
+
+        // Redirect dengan pesan sukses
+        alert("Berhasil", "Sekolah berhasil diperbarui");
+        return redirect()->route('admin.sekolah');
+    }
+
     public function gantiPassword(Request $request)
     {
         $user = User::find($request->nim);
@@ -155,5 +195,17 @@ class dashboardAdminController extends Controller
 
         alert()->success("Berhasil", "Password telah diganti!",);
         return redirect()->back();
+    }
+
+    public function lihatMahasiswa($nim)
+    {
+        $biodata = Biodata::with(['user', 'sekolah', 'tempat_tinggal', 'province', 'regency', 'district', 'village'])->where('nim', $nim)->first();
+        return view(
+            'dashboard.admin.lihatMahasiswa',
+            [
+                'title' => 'Mahasiswa',
+                'biodata' => $biodata
+            ]
+        );
     }
 }

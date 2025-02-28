@@ -11,7 +11,8 @@
             <div class="card border-0 shadow" style="background: #fff;">
                 <div class="card-body">
                     <div id="toolbar">
-                        <a href="{{route('tambah.sekolah')}}" class=" btn btn-sm  btn-outline-primary"> <i class="bi bi-person-plus-fill"></i>
+                        <a href="{{ route('tambah.sekolah') }}" class=" btn btn-sm  btn-outline-primary"> <i
+                                class="bi bi-person-plus-fill"></i>
                             Tambah Sekolah</a>
                         {{-- </h4>
                         <button class=" btn btn-sm  btn-outline-success" type="button" data-bs-toggle="modal"
@@ -35,9 +36,12 @@
                                     <td>{{ $item->nama_sekolah }}</td>
                                     <td class="text-center">{{ $item->jenis }}</td>
                                     <td class="text-center">{{ $item->status }}</td>
-                                    <td class="text-center"><a href="{{ route('hapus.sekolah', $item->id) }}"
-                                            data-confirm-delete="true"
+                                    <td class="text-center">
+                                        <a href="{{ route('hapus.sekolah', $item->id) }}" data-confirm-delete="true"
                                             class="btn btn-sm btn-outline-danger btn-hapus">Hapus</a>
+
+                                        <a href="{{ route('edit.sekolah', $item->id) }}"
+                                            class="btn btn-sm btn-outline-info">Edit</a>
 
                                     </td>
 
@@ -76,8 +80,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-outline-secondary"
-                        data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Tutup</button>
                     <button type="submit" class="btn btn-sm btn-outline-primary">Import</button>
                     </form>
                 </div>

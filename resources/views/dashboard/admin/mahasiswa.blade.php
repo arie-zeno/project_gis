@@ -37,11 +37,15 @@
                                     <td class="text-center"><i
                                             class="bi {{ $item->sekolah ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger' }} "></i>
                                     </td>
-                                    <td class="text-center"><a href="{{ route('hapus.mahasiswa', $item->nim) }}"
-                                            data-confirm-delete="true"
-                                            class="btn btn-sm btn-outline-danger btn-hapus">Hapus</a>
+                                    <td class="text-center">
+                                        <a href="{{ route('lihat.mahasiswa', $item->nim) }}"
+                                            class="btn btn-sm btn-outline-primary">Lihat</a>
+
                                         <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal"
                                             data-bs-target="#passwordModal">Ganti Password</button>
+
+                                        <a href="{{ route('hapus.mahasiswa', $item->nim) }}" data-confirm-delete="true"
+                                            class="btn btn-sm btn-outline-danger btn-hapus">Hapus</a>
                                     </td>
 
                                     <!-- Modal ganti password -->
@@ -58,10 +62,9 @@
                                                     <form action="{{ route('ganti.password', $item->nim) }}" method="POST">
                                                         @csrf
                                                         <div class="input-group mb-3">
-                                                            <label class="input-group-text"
-                                                                for="pw">Password</label>
-                                                            <input type="password" class="form-control"
-                                                                id="pw" name="password">
+                                                            <label class="input-group-text" for="pw">Password</label>
+                                                            <input type="password" class="form-control" id="pw"
+                                                                name="password">
                                                         </div>
 
                                                 </div>
