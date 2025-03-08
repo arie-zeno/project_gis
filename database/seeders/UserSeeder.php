@@ -21,35 +21,35 @@ class UserSeeder extends Seeder
             ],
             [
                 'name' => 'Admin GIS',
-                'email' => 'admin@example.com',
+                'email' => 'admin@gis.com',
                 'password' => Hash::make('password'),
                 'role' => 'admin',
             ]
         );
 
-        // Mahasiswa User
-        User::updateOrCreate(
-            [
-                'nim' => '2110131310001',
-            ],
-            [
-                'name' => 'Ari Yono',
-                'email' => '2110131310001@@mhs.ulm.ac.id',
-                'password' => Hash::make('123'),
-                'role' => 'mahasiswa',
-            ]
-        );
+        // // Mahasiswa User
+        // User::updateOrCreate(
+        //     [
+        //         'nim' => '2110131310001',
+        //     ],
+        //     [
+        //         'name' => 'Ari Yono',
+        //         'email' => '2110131310001@@mhs.ulm.ac.id',
+        //         'password' => Hash::make('123'),
+        //         'role' => 'mahasiswa',
+        //     ]
+        // );
 
-        User::updateOrCreate(
-            [
-                'nim' => '2110131220016',
-            ],
-            [
-                'name' => 'Alfika Nurfadia',
-                'email' => '2110131220016@mhs.ulm.ac.id',
-                'password' => Hash::make('123'),
-                'role' => 'mahasiswa',
-            ]
-        );
+        // // User::updateOrCreate(
+        // //     [
+        // //         'nim' => '2110131220016',
+        // //     ],
+        // //     [
+        // //         'name' => 'Alfika Nurfadia',
+        // //         'email' => '2110131220016@mhs.ulm.ac.id',
+        // //         'password' => Hash::make('123'),
+        // //         'role' => 'mahasiswa',
+        // //     ]
+        // // );
     }
 }

@@ -1,5 +1,8 @@
 <?php
 
+use App\Exports\BiodataExport;
+use App\Exports\UsersBiodataExport;
+use App\Exports\UsersExport;
 use App\Http\Controllers\dashboardAdminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GisController;
@@ -7,6 +10,7 @@ use App\Http\Controllers\ImportUserController;
 use App\Http\Controllers\IndoRegionController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Facades\Excel;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,3 +91,13 @@ Route::post('/getKelurahan', [IndoRegionController::class, "getKelurahan"])->nam
 
 // Import
 Route::post('/admin/import-users', [ImportUserController::class, 'import'])->name('import.users');
+Route::post('/admin/import-biodata', [ImportUserController::class, 'importBiodata'])->name('import.biodata');
+
+// Export
+Route::get('/export-users', function () {
+    return Excel::download(new UsersExport, 'users.xlsx');
+})->name('export.users');
+
+Route::get('/export-biodata', function () {
+    return Excel::download(new BiodataExport, 'biodata.xlsx');
+})->name('export.biodata');

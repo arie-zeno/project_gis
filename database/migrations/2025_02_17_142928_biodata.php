@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string("angkatan");
             $table->string("jenis_kelamin");
             $table->string("agama");
-            $table->string("foto");
+            $table->string("foto")->nullable();
             $table->string("tempat_lahir");
             $table->string("provinsi");
             $table->string("kabupaten");

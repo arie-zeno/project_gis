@@ -169,8 +169,9 @@ class DashboardController extends Controller
             ]);
         } else {
             // Jika memilih sekolah yang sudah ada, cukup update id_sekolah
+
             $biodata->update([
-                'id_sekolah' => $request->id,
+                'id_sekolah' => $request->id_sekolah,
             ]);
         }
 
