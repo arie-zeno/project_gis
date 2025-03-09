@@ -30,31 +30,40 @@
 
 
                         <div class="mb-2">
-                            <label for="provinsi" class="form-label">Provinsi</label>
+                            <label for="provinsi" class="form-label">provinsi</label>
                             <select class="form-select" id="provinsi" name="provinsi">
-                                <option selected>--Pilih Provinsi--</option>
+                                <option value="{{$biodata->tempat_tinggal->province->id}}" selected>{{$biodata->tempat_tinggal->province->name}} </option>
                                 @foreach ($provinces as $provinsi)
                                     <option value="{{ $provinsi->id }}">{{ $provinsi->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="mb-2">
-                            <label for="kabupaten" class="form-label">Kabupaten</label>
-                            <select class="form-select" id="kabupaten" name="kabupaten"></select>
+                            <label for="kabupaten" class="form-label">kabupaten</label>
+                            <select class="form-select" id="kabupaten" name="kabupaten">
+                                <option value="{{$biodata->tempat_tinggal->regency->id}}" selected>{{$biodata->tempat_tinggal->regency->name}} </option>
+
+                            </select>
                         </div>
                         <div class="mb-2">
-                            <label for="kecamatan" class="form-label">Kecamatan</label>
-                            <select class="form-select" id="kecamatan" name="kecamatan"></select>
+                            <label for="kecamatan" class="form-label">kecamatan</label>
+                            <select class="form-select" id="kecamatan" name="kecamatan">
+                                <option value="{{$biodata->tempat_tinggal->district->id}}" selected>{{$biodata->tempat_tinggal->district->name}} </option>
+
+                            </select>
                         </div>
                         <div class="mb-2">
-                            <label for="kelurahan" class="form-label">Kelurahan</label>
-                            <select class="form-select" id="kelurahan" name="kelurahan"></select>
+                            <label for="kelurahan" class="form-label">kelurahan</label>
+                            <select class="form-select" id="kelurahan" name="kelurahan">
+                                <option value="{{$biodata->tempat_tinggal->village->id}}" selected>{{$biodata->tempat_tinggal->village->name}} </option>
+
+                            </select>
                         </div>
 
                         <div class="mb-2">
-                            <label for="koordinat" class="form-label">Koordinat</label>
+                            <label for="koordinat" class="form-label">koordinat</label>
                             <input type="text" class="form-control mb-2" id="koordinat" name="koordinat"
-                                placeholder="latitude, longitude" value="{{ old('koordinat') }}">
+                                placeholder="latitude, longitude" value="{{ $biodata->tempat_tinggal->koordinat }}">
                             <div id="map2"></div>
                         </div>
 
@@ -81,7 +90,7 @@
 
 @section('js')
     <script>
-        var map = L.map('map2').setView([-3.298618801108944, 114.58542404981114], 16.86);
+        var map = L.map('map2').setView([{{$biodata->tempat_tinggal->koordinat}}], 16.86);
         var baseLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
         })
@@ -89,7 +98,7 @@
 
         // get location
         var inputKoordinat = document.querySelector("#koordinat"),
-            curLocation = [-3.298618801108944, 114.58542404981114]
+            curLocation = [{{$biodata->tempat_tinggal->koordinat}}]
 
         map.attributionControl.setPrefix(false)
 

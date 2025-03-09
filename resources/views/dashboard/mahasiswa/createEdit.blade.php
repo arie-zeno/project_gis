@@ -30,7 +30,7 @@
 
 
                         <div class="mb-2">
-                            <label for="provinsi" class="form-label">Provinsi</label>
+                            <label for="provinsi" class="form-label">provinsi</label>
                             <select class="form-select" id="provinsi" name="provinsi">
                                 <option selected>--Pilih Provinsi--</option>
                                 @foreach ($provinces as $provinsi)
@@ -39,20 +39,20 @@
                             </select>
                         </div>
                         <div class="mb-2">
-                            <label for="kabupaten" class="form-label">Kabupaten</label>
+                            <label for="kabupaten" class="form-label">kabupaten</label>
                             <select class="form-select" id="kabupaten" name="kabupaten"></select>
                         </div>
                         <div class="mb-2">
-                            <label for="kecamatan" class="form-label">Kecamatan</label>
+                            <label for="kecamatan" class="form-label">kecamatan</label>
                             <select class="form-select" id="kecamatan" name="kecamatan"></select>
                         </div>
                         <div class="mb-2">
-                            <label for="kelurahan" class="form-label">Kelurahan</label>
+                            <label for="kelurahan" class="form-label">kelurahan</label>
                             <select class="form-select" id="kelurahan" name="kelurahan"></select>
                         </div>
 
                         <div class="mb-2">
-                            <label for="koordinat" class="form-label">Koordinat</label>
+                            <label for="koordinat" class="form-label">koordinat</label>
                             <input type="text" class="form-control mb-2" id="koordinat" name="koordinat"
                                 placeholder="latitude, longitude" value="{{ old('koordinat') }}">
                             <div id="map2"></div>

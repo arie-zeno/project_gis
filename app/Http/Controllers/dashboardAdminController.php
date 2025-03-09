@@ -25,7 +25,7 @@ class dashboardAdminController extends Controller
 
     public function mahasiswa()
     {
-        $user = User::with("biodata")->where("role", "!=", "admin")->orderByRaw("LEFT(nim, 2) ASC")->orderBy("name", "asc")->paginate(10);
+        $user = User::with("biodata")->where("role", "!=", "admin")->orderByRaw("LEFT(nim, 2) ASC")->orderBy("name", "asc")->get();
 
         confirmDelete("Hapus Data", "Apakah anda yakin akan menghapus data ini?");
         // $biodata = Biodata::with("user")->get();
@@ -75,25 +75,29 @@ class dashboardAdminController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi Input
         $request->validate([
-            'nim' => 'required|string',
+            'nim' => 'required|string', // Pastikan NIM unik
             'nama' => 'required|string',
-
         ]);
 
+        // Cek apakah data sudah ada
+        $user = User::firstOrCreate(
+            ['nim' => $request->nim], // Cek berdasarkan NIM
+            [
+                'name' => $request->nama,
+                'role' => "mahasiswa",
+                'email' => $request->nim . "@mhs.ulm.ac.id",
+                'password' => Hash::make($request->nim),
+            ]
+        );
 
-        // Simpan Data
-        User::create([
-            'nim' => $request->nim,
-            'name' => $request->nama,
-            'role' => "mahasiswa",
-            'email' => $request->nim . "@mhs.ulm.ac.id",
-            'password' => Hash::make($request->nim),
-        ]);
+        // Redirect dengan pesan sukses atau info
+        if ($user->wasRecentlyCreated) {
+            alert()->success('Berhasil', $request->nama . " berhasil ditambahkan");
+        } else {
+            alert()->info('Gagal', $request->nama . " sudah ada dalam database");
+        }
 
-        // Redirect dengan pesan sukses
-        alert("Success", $request->nama . " berhasil ditambahkan");
         return redirect()->back();
     }
 

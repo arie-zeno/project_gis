@@ -32,6 +32,66 @@ class DashboardController extends Controller
         ]);
     }
 
+    public function edit($nim)
+    {
+        $biodata = Biodata::with(['user', 'sekolah', 'tempat_tinggal', 'province', 'regency', 'district', 'village'])->where('nim', $nim)->first();
+        $provinces = Province::all();
+        return view('dashboard.mahasiswa.edit', [
+            'title' => 'Biodata',
+            'biodata' => $biodata,
+            'provinces' => $provinces,
+        ]);
+    }
+
+    public function editSekolah($nim)
+    {
+        $biodata = Biodata::with(['user', 'sekolah', 'tempat_tinggal', 'province', 'regency', 'district', 'village'])->where('nim', $nim)->first();
+        $provinces = Province::all();
+        $sekolah = Sekolah::all();
+        return view('dashboard.mahasiswa.editSekolah', [
+            'title' => 'Biodata',
+            'biodata' => $biodata,
+            'provinces' => $provinces,
+            'sekolah' => $sekolah,
+        ]);
+    }
+
+    public function update(Request $request)
+    {
+        $biodata = Biodata::findOrFail(auth()->user()->nim);
+
+        // Jika ada file foto yang diupload
+        if ($request->hasFile('foto')) {
+            // Simpan file ke folder storage/app/public/foto
+            $path = $request->file('foto')->store('foto_mahasiswa', 'public');
+        } else {
+            $path = null;
+        }
+
+
+        $biodata->update([
+            'id_biodata' => auth()->user()->nim,
+            'nim' => auth()->user()->nim,
+            'nama' => auth()->user()->name,
+            'telepon' => $request->telepon,
+            'angkatan' => $request->angkatan,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'agama' => $request->agama,
+            'foto' => $path,
+            'tempat_lahir' => $request->tempat_lahir,
+            'provinsi' => $request->provinsi,
+            'kabupaten' => $request->kabupaten,
+            'kecamatan' => $request->kecamatan,
+            'kelurahan' => $request->kelurahan,
+            'koordinat' => $request->koordinat,
+            'penghasilan' => $request->penghasilan,
+            'tanggal_lahir' => $request->tanggal_lahir
+        ]);
+
+        alert()->success("Berhasil", "Biodata berhasil diperbarui");
+        return redirect()->route('mahasiswa.biodata');
+    }
+
     public function sekolah()
     {
         $biodata = Biodata::with(['user', 'sekolah', 'tempat_tinggal', 'province', 'regency', 'district', 'village'])->where('nim', auth()->user()->nim)->first();
@@ -125,6 +185,39 @@ class DashboardController extends Controller
         ]);
     }
 
+    public function updateSekolah(Request $request)
+    {
+        $biodata = Biodata::findOrFail(auth()->user()->nim);
+
+        if ($request->id_sekolah === "tambah") {
+            // Buat sekolah baru
+            $sekolah = Sekolah::create([
+                'id' => $request->id,
+                'nama_sekolah' => $request->nama_sekolah,
+                'jenis' => $request->jenis,
+                'status' => $request->status,
+                'provinsi' => $request->provinsi,
+                'kabupaten' => $request->kabupaten,
+                'kecamatan' => $request->kecamatan,
+                'kelurahan' => $request->kelurahan,
+                'koordinat' => $request->koordinat,
+            ]);
+
+            // Update biodata dengan id_sekolah yang baru
+            $biodata->update([
+                'id_sekolah' => $sekolah->id,
+            ]);
+        } else {
+
+
+            $biodata->update([
+                'id_sekolah' => $request->id_sekolah,
+            ]);
+        }
+        alert()->success("Berhasil", "Riwayat Pendidikan berhasil diperbarui");
+        return redirect()->route('mahasiswa.sekolah');
+    }
+
     public function createTempat()
     {
         $tempat = TempatTinggal::all();
@@ -136,6 +229,37 @@ class DashboardController extends Controller
             'tempat' => $tempat,
         ]);
     }
+
+    public function updateTempat(Request $request)
+    {
+        $biodata = TempatTinggal::findOrFail(auth()->user()->nim);
+
+        $biodata->update([
+            'id' => $request->id,
+            'provinsi' => $request->provinsi,
+            'kabupaten' => $request->kabupaten,
+            'kecamatan' => $request->kecamatan,
+            'kelurahan' => $request->kelurahan,
+            'koordinat' => $request->koordinat,
+        ]);
+
+        alert()->success("Berhasil", "DOmisi berhasil diperbarui");
+        return redirect()->route('mahasiswa.tempat');
+    }
+    public function editTempat($nim)
+    {
+        $biodata = Biodata::with(['tempat_tinggal'])->where('nim', $nim)->first();
+        $tempat = TempatTinggal::all();
+        $provinces = Province::all();
+        // $biodata = Biodata::with(['user', 'sekolah', 'tempat_tinggal'])->where('nim',auth()->user()->nim)->first();
+        return view('dashboard.mahasiswa.editTempat', [
+            'title' => 'Biodata',
+            'biodata' => $biodata,
+            'provinces' => $provinces,
+            'tempat' => $tempat,
+        ]);
+    }
+
 
     public function storeSekolah(Request $request)
     {
@@ -169,8 +293,9 @@ class DashboardController extends Controller
             ]);
         } else {
             // Jika memilih sekolah yang sudah ada, cukup update id_sekolah
+
             $biodata->update([
-                'id_sekolah' => $request->id,
+                'id_sekolah' => $request->id_sekolah,
             ]);
         }
 
@@ -189,20 +314,20 @@ class DashboardController extends Controller
 
         $biodata = Biodata::findOrFail(auth()->user()->nim);
         // Jika user memilih "Tambah Sekolah"
-      $tempat = TempatTinggal::create([
-                'id' => $request->id,
-                'provinsi' => $request->provinsi,
-                'kabupaten' => $request->kabupaten,
-                'kecamatan' => $request->kecamatan,
-                'kelurahan' => $request->kelurahan,
-                'koordinat' => $request->koordinat,
-            ]);
+        $tempat = TempatTinggal::create([
+            'id' => $request->id,
+            'provinsi' => $request->provinsi,
+            'kabupaten' => $request->kabupaten,
+            'kecamatan' => $request->kecamatan,
+            'kelurahan' => $request->kelurahan,
+            'koordinat' => $request->koordinat,
+        ]);
 
-            // Update biodata dengan id_sekolah yang baru
-            $biodata->update([
-                'id_tempat_tinggal' => $tempat->id,
-            ]);
-        
+        // Update biodata dengan id_sekolah yang baru
+        $biodata->update([
+            'id_tempat_tinggal' => $tempat->id,
+        ]);
+
 
 
         // Redirect dengan pesan sukses

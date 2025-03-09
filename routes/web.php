@@ -1,5 +1,8 @@
 <?php
 
+use App\Exports\BiodataExport;
+use App\Exports\UsersBiodataExport;
+use App\Exports\UsersExport;
 use App\Http\Controllers\dashboardAdminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GisController;
@@ -7,6 +10,7 @@ use App\Http\Controllers\ImportUserController;
 use App\Http\Controllers\IndoRegionController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Facades\Excel;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,10 +59,18 @@ Route::middleware(['auth', 'role:mahasiswa'])->prefix('mahasiswa')->group(functi
     Route::get('/', [DashboardController::class, 'home'])->name('mahasiswa.home');
     Route::get('/dashboard', [DashboardController::class, 'home'])->name('mahasiswa.home');
     Route::get('/biodata', [DashboardController::class, 'biodata'])->name('mahasiswa.biodata');
+    Route::get('/biodata/edit/{nim}', [DashboardController::class, 'edit'])->name('mahasiswa.edit');
     Route::get('/sekolah', [DashboardController::class, 'sekolah'])->name('mahasiswa.sekolah');
     Route::get('/tempat', [DashboardController::class, 'tempat'])->name('mahasiswa.tempat');
     Route::get('/biodata/isi', [DashboardController::class, 'create'])->name('isi.biodata');
     Route::post('/biodata', [DashboardController::class, 'store'])->name('store.biodata');
+    Route::post('/biodata/update', [DashboardController::class, 'update'])->name('update.biodata');
+    Route::post('/biodata/update/sekolah', [DashboardController::class, 'updateSekolah'])->name('update.biodata.sekolah');
+    Route::post('/biodata/update/domisili', [DashboardController::class, 'updateTempat'])->name('update.biodata.domisili');
+
+    Route::get('/biodata/edit/sekolah/{nim}', [DashboardController::class, 'editSekolah'])->name('mahasiswa.edit.sekolah');
+    Route::get('/biodata/edit/domisili/{nim}', [DashboardController::class, 'editTempat'])->name('mahasiswa.edit.domisili');
+
 
     Route::get('/biodata/sekolah', [DashboardController::class, 'createSekolah'])->name('isi.sekolah');
     Route::post('/sekolah', [DashboardController::class, 'storeSekolah'])->name('store.sekolah');
@@ -87,3 +99,14 @@ Route::post('/getKelurahan', [IndoRegionController::class, "getKelurahan"])->nam
 
 // Import
 Route::post('/admin/import-users', [ImportUserController::class, 'import'])->name('import.users');
+Route::post('/admin/import-biodata', [ImportUserController::class, 'importBiodata'])->name('import.biodata');
+Route::post('/admin/import-sekolah', [ImportUserController::class, 'importSekolah'])->name('import.sekolah');
+
+// Export
+Route::get('/export-users', function () {
+    return Excel::download(new UsersExport, 'users.xlsx');
+})->name('export.users');
+
+Route::get('/export-biodata', function () {
+    return Excel::download(new BiodataExport, 'biodata.xlsx');
+})->name('export.biodata');

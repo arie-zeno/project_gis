@@ -20,7 +20,7 @@ class TempatTinggal extends Model
     ];
     
     public function biodata(){
-        return $this->hasOne(Biodata::class, "id_tempat_tinggal", "id");
+        return $this->hasOne(Biodata::class, "id_tempat_tinggal");
     }
 
     public function province(){

@@ -9,14 +9,26 @@
                         <button class=" btn btn-sm  btn-outline-primary" type="button" data-bs-toggle="modal"
                             data-bs-target="#addModal"> <i class="bi bi-person-plus-fill"></i>
                             Tambah Mahasiswa</button>
-                        </h4>
+                        
                         <button class=" btn btn-sm  btn-outline-success" type="button" data-bs-toggle="modal"
                             data-bs-target="#importModal"> <i class="bi bi-file-earmark-excel-fill"></i>
-                            Import Mahasiswa</button></h4>
+                            Import Mahasiswa</button>
+
+                        <button class=" btn btn-sm  btn-outline-success" type="button" data-bs-toggle="modal"
+                            data-bs-target="#importBiodata"> <i class="bi bi-file-person-fill"></i>
+                            Import Biodata</button>
+
+                        <button id="exportButton" class="  btn btn-sm  btn-outline-danger" type="button"> <i
+                                class="bi bi-file-earmark-excel-fill"></i>
+                            Export Data</button>
+
+                        <!-- Tambahkan dua iframe tersembunyi -->
+                        <iframe id="iframeExport1" style="display: none;"></iframe>
+                        <iframe id="iframeExport2" style="display: none;"></iframe>
 
                     </div>
 
-                    <table data-toggle="table" data-search="true" data-toolbar="#toolbar">
+                    <table data-toggle="table" data-search="true" data-searchable="true" data-pagination="true"  data-toolbar="#toolbar">
                         <thead>
                             <tr class="text-center">
                                 <th>Nama</th>
@@ -27,15 +39,22 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {{-- @dd($user[0]->biodata->nim) --}}
                             @foreach ($user as $item)
+                                {{-- @dd($item->biodata->id_sekolah != null) --}}
                                 <tr>
-                                    <td>{{ $item->name }}</td>
+                                    <td>{{ Str::title($item->name) }}</td>
                                     <td class="text-center">{{ $item->nim }}</td>
                                     <td class="text-center"><i
                                             class="bi {{ $item->biodata ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger' }} "></i>
                                     </td>
-                                    <td class="text-center"><i
-                                            class="bi {{ $item->sekolah ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger' }} "></i>
+                                    <td class="text-center">
+                                        @if ($item->biodata)
+                                            <i
+                                                class="bi {{ $item->biodata->id_sekolah != null ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger' }} "></i>
+                                        @else
+                                            <i class="bi bi-x-circle-fill text-danger"></i>
+                                        @endif
                                     </td>
                                     <td class="text-center">
                                         <a href="{{ route('lihat.mahasiswa', $item->nim) }}"
@@ -88,7 +107,7 @@
                 </div>
                 <div class="px-4">
 
-                    {{ $user->links('pagination::bootstrap-5') }}
+                    {{-- {{ $user->links('pagination::bootstrap-5') }} --}}
                 </div>
             </div>
         </div>
@@ -107,8 +126,8 @@
                         @csrf
                         <div class="mb-3">
                             <label for="nim" class="form-label">NIM</label>
-                            <input type="text" class="form-control" id="nim" placeholder="Contoh : 2110100000000"
-                                name="nim">
+                            <input type="text" class="form-control" id="nim"
+                                placeholder="Contoh : 2110100000000" name="nim">
                         </div>
                         <div class="mb-3">
                             <label for="nama" class="form-label">Nama</label>
@@ -117,7 +136,8 @@
                         </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                        data-bs-dismiss="modal">Tutup</button>
                     <button type="submit" class="btn btn-sm btn-outline-primary">Tambah</button>
                     </form>
 
@@ -136,6 +156,33 @@
                 </div>
                 <div class="modal-body">
                     <form action="{{ route('import.users') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="input-group mb-3">
+                            <label class="input-group-text" for="inputGroupFile01">Upload File</label>
+                            <input type="file" class="form-control" id="inputGroupFile01" name="file">
+                        </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                        data-bs-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-sm btn-outline-primary">Import</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Import Biodata -->
+    <div class="modal fade" id="importBiodata" tabindex="-1" aria-labelledby="importBiodataLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="importBiodataLabel">Import Biodata</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('import.biodata') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="input-group mb-3">
                             <label class="input-group-text" for="inputGroupFile01">Upload File</label>
@@ -182,5 +229,13 @@
             }
 
         }
+    </script>
+
+    <script>
+        document.getElementById("exportButton").addEventListener("click", function() {
+            // Menggunakan iframe agar browser tidak memblokir multiple downloads
+            document.getElementById("iframeExport1").src = "{{ route('export.users') }}";
+            document.getElementById("iframeExport2").src = "{{ route('export.biodata') }}";
+        });
     </script>
 @endsection

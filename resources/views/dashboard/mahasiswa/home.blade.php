@@ -10,9 +10,12 @@
     <div class="card border-0 shadow" style="background: #fff;">
         <div class="card-body">
             @if ($biodata != null)
-                <div class="row">
+                <div class="row ">
+                    <div class="mb-2 d-flex justify-content-end">
+                        <a href="{{route('mahasiswa.edit', $biodata->nim)}}" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil-square"></i> Edit Biodata</a>
+                    </div>
                     <div class="col-sm-2">
-                        <img src="{{ $biodata->foto ? asset('storage/' . $biodata->foto) : asset('img/il_1.svg') }}"
+                        <img src="{{ $biodata->foto ? asset('storage/' . $biodata->foto) : asset('img/noImage.png') }}"
                             class="img-fluid rounded shadow" alt="..." style="max-height: 300px">
                     </div>
                     <div class="col-sm-4 d-flex flex-column justify-content-center">
