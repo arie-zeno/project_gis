@@ -33,9 +33,9 @@
                         <div class="mb-2">
                             <?php
                                 $angkatan = str_split(auth()->user()->nim, 2);
-                                $angkatan = $angkatan[0];
+                                $angkatan = "20".$angkatan[0];
                             ?>
-                            <label for="angkatan" class="form-label">angkatan</label>
+                            <label for="angkatan" class="form-label">Angkatan</label>
                             <input  type="text" class="form-control" id="angkatan" name="angkatan" value="{{ $angkatan }}" >
                         </div>
 
@@ -49,7 +49,7 @@
                         </div>
 
                         <div class="mb-2">
-                            <label for="agama" class="form-label">agama</label>
+                            <label for="agama" class="form-label">Agama</label>
                             <select name="agama" class="form-select" >
                                 <option selected>-- Pilih Agama --</option>
                                 <option value="Islam">Islam</option>
@@ -62,19 +62,19 @@
                         </div>
 
                         <div class="mb-2">
-                            <label for="tempat-lahir" class="form-label">tempat-lahir</label>
+                            <label for="tempat-lahir" class="form-label">Tempat Lahir</label>
                             <input type="text" class="form-control" id="tempat-lahir" name="tempat_lahir" placeholder=""
                                 value="{{ old('tempat_lahir') }}">
                         </div>
 
                         <div class="mb-2">
-                            <label for="tanggal-lahir" class="form-label">tanggal-lahir</label>
+                            <label for="tanggal-lahir" class="form-label">Tanggal Lahir</label>
                             <input type="date" class="form-control" id="tanggal-lahir" name="tanggal_lahir"
                                 placeholder="" value="{{ old('tanggal_lahir') }}">
                         </div>
 
                         <div class="mb-2">
-                            <label for="provinsi" class="form-label">provinsi</label>
+                            <label for="provinsi" class="form-label">Provinsi</label>
                             <select class="form-select" id="provinsi" name="provinsi">
                                 <option selected>--Pilih Provinsi--</option>
                                 @foreach ($provinces as $provinsi)
@@ -83,15 +83,15 @@
                             </select>
                         </div>
                         <div class="mb-2">
-                            <label for="kabupaten" class="form-label">kabupaten</label>
+                            <label for="kabupaten" class="form-label">Kota/Kabupaten</label>
                             <select class="form-select" id="kabupaten" name="kabupaten"></select>
                         </div>
                         <div class="mb-2">
-                            <label for="kecamatan" class="form-label">kecamatan</label>
+                            <label for="kecamatan" class="form-label">Kecamatan</label>
                             <select class="form-select" id="kecamatan" name="kecamatan"></select>
                         </div>
                         <div class="mb-2">
-                            <label for="kelurahan" class="form-label">kelurahan</label>
+                            <label for="kelurahan" class="form-label">Kelurahan</label>
                             <select class="form-select" id="kelurahan" name="kelurahan"></select>
                         </div>
                     </div>
@@ -104,14 +104,14 @@
                         </div>
 
                         <div class="mb-2">
-                            <label for="koordinat" class="form-label">koordinat</label>
+                            <label for="koordinat" class="form-label">Koordinat</label>
                             <input type="text" class="form-control mb-2" id="koordinat" name="koordinat"
                                 placeholder="latitude, longitude" value="{{ old('koordinat') }}">
                             <div id="map2"></div>
                         </div>
 
                         <div class="mb-2">
-                            <label for="penghasilan" class="form-label">penghasilan</label>
+                            <label for="penghasilan" class="form-label">Rata-Rata Penghasilan Orang Tua</label>
                             <input type="text" class="form-control" id="penghasilan" name="penghasilan"
                                 placeholder="" value="{{ old('penghasilan') }}">
                         </div>

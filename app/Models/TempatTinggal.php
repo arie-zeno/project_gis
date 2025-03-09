@@ -18,6 +18,7 @@ class TempatTinggal extends Model
         'kecamatan',
         'kelurahan',
     ];
+    
     public function biodata(){
         return $this->hasOne(Biodata::class, "id_tempat_tinggal", "id");
     }

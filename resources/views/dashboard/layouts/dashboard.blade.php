@@ -1,7 +1,7 @@
 @extends('dashboard.layouts.app')
 <style>
     .nav-item:hover {
-        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        background: linear-gradient(135deg, #415884, #6a11cb);
         border-radius: 10px;
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         border: 1px solid rgba(255, 255, 255, 0.3);
@@ -25,7 +25,7 @@
     }
 
     .active-nav {
-        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        background: linear-gradient(135deg, #415884, #6a11cb);
         border-radius: 10px;
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         border: 1px solid rgba(255, 255, 255, 0.3);
@@ -50,7 +50,7 @@
     }
 
     a.link-tambah {
-        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        background: linear-gradient(135deg, #415884, #6a11cb);
         padding: 5px 10px;
         border-radius: 10px;
         text-decoration: none;
@@ -71,7 +71,7 @@
             <div id="sidebar" class=" text-dark vh-100 "
                 style="width: 250px; transition: transform 0.3s; z-index: 999;background: #fff">
                 <div class="d-flex justify-content-between align-items-center mb-2 p-3"
-                    style="background: linear-gradient(135deg, #6a11cb, #2575fc)">
+                    style="background: linear-gradient(135deg, #415884, #6a11cb)">
                     <h4 class="text-light">WebGIS PILKOM</h4>
                     <!-- Tombol Toggle Sidebar (Selalu ditampilkan) -->
                     <button id="toggleSidebar" class="btn btn-link  p-0">
@@ -143,13 +143,13 @@
 
                             <!-- Brand/Logo -->
                             <a class="navbar-brand fw-bold" href="#"
-                                style="background: linear-gradient(135deg, #6a11cb, #2575fc); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">{{ auth()->user()->name }}</a>
+                                style="background: linear-gradient(135deg, #415884, #6a11cb); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">{{ auth()->user()->name }}</a>
 
                             <!-- Tombol Logout -->
                             <div>
                                 <form id="logout" action="{{ route('logout') }}" method="POST"
                                     class="d-flex flex-column mb-0 rounded justify-content-center align-items-center"
-                                    style="background: linear-gradient(135deg, #6a11cb, #2575fc); color:#fff">
+                                    style="background: linear-gradient(135deg, #415884, #6a11cb); color:#fff">
                                     @csrf
                                     <button type="submit" class="btn text-light" placeholder="logout">Logout</button>
                                 </form>

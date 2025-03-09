@@ -58,7 +58,7 @@
 
     <style>
         .navbar {
-          background-color: #415884;
+          background-color: #415884; 
           position: fixed; /* Make navbar fixed */
           top: 0; /* Pin it to the top */
           width: 100%; /* Ensure it spans the full width */
@@ -103,10 +103,7 @@
         .collapse {
           background-color: #415884;
         }
-      
-        .navbar {
-          background-color: #415884; 
-        }
+
       
       
         .brand-text {

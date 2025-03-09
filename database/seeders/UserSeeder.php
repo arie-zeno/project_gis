@@ -21,8 +21,8 @@ class UserSeeder extends Seeder
             ],
             [
                 'name' => 'Admin GIS',
-                'email' => 'admin@example.com',
-                'password' => Hash::make('password'),
+                'email' => 'admin@gmail.com',
+                'password' => Hash::make('admin'),
                 'role' => 'admin',
             ]
         );
@@ -30,11 +30,11 @@ class UserSeeder extends Seeder
         // Mahasiswa User
         User::updateOrCreate(
             [
-                'nim' => '2110131310001',
+                'nim' => '2110131220016',
             ],
             [
-                'name' => 'Ari Yono',
-                'email' => '2110131310001@@mhs.ulm.ac.id',
+                'name' => 'Alfika Nurfadia',
+                'email' => '2110131220016@mhs.ulm.ac.id',
                 'password' => Hash::make('123'),
                 'role' => 'mahasiswa',
             ]
@@ -42,11 +42,36 @@ class UserSeeder extends Seeder
 
         User::updateOrCreate(
             [
-                'nim' => '2110131220016',
+                'nim' => '2110131120005',
             ],
             [
-                'name' => 'Alfika Nurfadia',
-                'email' => '2110131220016@mhs.ulm.ac.id',
+                'name' => 'Julita Hasanah',
+                'email' => '2110131120005@mhs.ulm.ac.id',
+                'password' => Hash::make('123'),
+                'role' => 'mahasiswa',
+            ]
+        );
+
+        User::updateOrCreate(
+            [
+                'nim' => '2110131120006',
+            ],
+            [
+                'name' => 'Maysarah',
+                'email' => '2110131120006@mhs.ulm.ac.id',
+                'password' => Hash::make('123'),
+                'role' => 'mahasiswa',
+            ]
+        );
+
+        
+        User::updateOrCreate(
+            [
+                'nim' => '2110131310001',
+            ],
+            [
+                'name' => 'Ari Yono',
+                'email' => '2110131310001@@mhs.ulm.ac.id',
                 'password' => Hash::make('123'),
                 'role' => 'mahasiswa',
             ]

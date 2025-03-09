@@ -68,7 +68,7 @@
                             </div>
 
                             <div class="mb-2">
-                                <label for="provinsi" class="form-label">provinsi</label>
+                                <label for="provinsi" class="form-label">Provinsi</label>
                                 <select class="form-select" id="provinsi" name="provinsi">
                                     <option selected>--Pilih Provinsi--</option>
                                     @foreach ($provinces as $provinsi)
@@ -77,20 +77,20 @@
                                 </select>
                             </div>
                             <div class="mb-2">
-                                <label for="kabupaten" class="form-label">kabupaten</label>
+                                <label for="kabupaten" class="form-label">Kabupaten</label>
                                 <select class="form-select" id="kabupaten" name="kabupaten"></select>
                             </div>
                             <div class="mb-2">
-                                <label for="kecamatan" class="form-label">kecamatan</label>
+                                <label for="kecamatan" class="form-label">Kecamatan</label>
                                 <select class="form-select" id="kecamatan" name="kecamatan"></select>
                             </div>
                             <div class="mb-2">
-                                <label for="kelurahan" class="form-label">kelurahan</label>
+                                <label for="kelurahan" class="form-label">Kelurahan</label>
                                 <select class="form-select" id="kelurahan" name="kelurahan"></select>
                             </div>
 
                             <div class="mb-2">
-                                <label for="koordinat" class="form-label">koordinat</label>
+                                <label for="koordinat" class="form-label">Koordinat</label>
                                 <input type="text" class="form-control mb-2" id="koordinat" name="koordinat"
                                     placeholder="latitude, longitude" value="{{ old('koordinat') }}">
                                 <div id="map2"></div>
@@ -102,13 +102,9 @@
 
 
                         <div class="mb-2">
-                            <button type="submit" class="btn btn-sm btn-primary">
-                                Simpan
-                            </button>
+                            <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
 
                         </div>
-
-
                     </div>
             </form>
 

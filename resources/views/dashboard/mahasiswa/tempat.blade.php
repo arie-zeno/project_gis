@@ -47,7 +47,7 @@
                 @else
                     <div class="card border-0 shadow" style="background: #fff;">
                         <div class="card-body">
-                            <h2>Anda belum mengisi asal daerah, <a href="{{ route('isi.tempat') }}">isi asal daerah</a></h2>
+                            <h2>Anda belum mengisi tempat tinggal domisili, <a href="{{ route('isi.tempat') }}">isi domisili</a></h2>
                         </div>
                     </div>
                 @endif

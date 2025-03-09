@@ -104,13 +104,13 @@
                                 <div class="col-sm-6">
                                     <h4 class=""
                                         style="background: linear-gradient(135deg, #6a11cb, #2575fc); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
-                                        <i class="me-2 bi bi-mortarboard-fill"></i> Asal Daerah
+                                        <i class="me-2 bi bi-mortarboard-fill"></i> Domisili
                                     </h4>
-                                    <p>Anda belum mengisi Tempat Tinggal (Asal Daerah).</p>
+                                    <p>Anda belum mengisi Tempat Tinggal Domisili.</p>
 
                                 </div>
                                 <div class="col-sm-6 d-flex justify-content-end">
-                                    <a href="{{ route('isi.tempat') }}" class="link-tambah">Isi Asal Daerah</a>
+                                    <a href="{{ route('isi.tempat') }}" class="link-tambah">Isi Domisili</a>
 
                                 </div>
 
