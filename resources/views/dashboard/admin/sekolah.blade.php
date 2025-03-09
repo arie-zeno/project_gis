@@ -14,10 +14,10 @@
                         <a href="{{ route('tambah.sekolah') }}" class=" btn btn-sm  btn-outline-primary"> <i
                                 class="bi bi-person-plus-fill"></i>
                             Tambah Sekolah</a>
-                        {{-- </h4>
+
                         <button class=" btn btn-sm  btn-outline-success" type="button" data-bs-toggle="modal"
-                            data-bs-target="#importModal"> <i class="bi bi-file-earmark-excel-fill"></i>
-                            Import</button></h4> --}}
+                            data-bs-target="#importSekolah"> <i class="bi bi-file-excel-fill"></i>
+                            Import Sekolah</button>
 
                     </div>
 
@@ -62,16 +62,16 @@
     </div>
 
 
-    <!-- Modal Import User -->
-    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+    <!-- Modal Import Sekolah -->
+    <div class="modal fade" id="importSekolah" tabindex="-1" aria-labelledby="importSekolahLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="importModalLabel">Import User</h1>
+                    <h1 class="modal-title fs-5" id="importSekolahLabel">Import Sekolah</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('import.users') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('import.sekolah') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="input-group mb-3">
                             <label class="input-group-text" for="inputGroupFile01">Upload File</label>

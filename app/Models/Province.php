@@ -38,4 +38,6 @@ class Province extends Model
     public function mahasiswa(){
         return $this->hasMany(Biodata::class,'provinsi', 'id');
     }
+
+    
 }

@@ -44,7 +44,7 @@ class Biodata extends Model
 
     public function tempat_tinggal()
     {
-        return $this->belongsTo(TempatTinggal::class, "id_tempat_tinggal", "id");
+        return $this->belongsTo(TempatTinggal::class, "id_tempat_tinggal");
     }
 
     public function province(){

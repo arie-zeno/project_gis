@@ -9,18 +9,18 @@
                         <button class=" btn btn-sm  btn-outline-primary" type="button" data-bs-toggle="modal"
                             data-bs-target="#addModal"> <i class="bi bi-person-plus-fill"></i>
                             Tambah Mahasiswa</button>
-                        </h4>
+                        
                         <button class=" btn btn-sm  btn-outline-success" type="button" data-bs-toggle="modal"
                             data-bs-target="#importModal"> <i class="bi bi-file-earmark-excel-fill"></i>
-                            Import Mahasiswa</button></h4>
+                            Import Mahasiswa</button>
 
                         <button class=" btn btn-sm  btn-outline-success" type="button" data-bs-toggle="modal"
                             data-bs-target="#importBiodata"> <i class="bi bi-file-person-fill"></i>
-                            Import Biodata</button></h4>
+                            Import Biodata</button>
 
                         <button id="exportButton" class="  btn btn-sm  btn-outline-danger" type="button"> <i
                                 class="bi bi-file-earmark-excel-fill"></i>
-                            Export Data</button></h4>
+                            Export Data</button>
 
                         <!-- Tambahkan dua iframe tersembunyi -->
                         <iframe id="iframeExport1" style="display: none;"></iframe>

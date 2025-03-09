@@ -11,6 +11,9 @@
             @if ($biodata != null)
                 @if ($biodata->tempat_tinggal != null)
                     <div class="row">
+                        <div class="mb-2 d-flex justify-content-end">
+                            <a href="{{route('mahasiswa.edit.domisili', $biodata->nim)}}" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil-square"></i> Edit</a>
+                        </div>
                         <div class="col-sm-2">
                             <img src="{{ $biodata->foto ? asset('storage/' . $biodata->foto) : asset('img/il_1.svg') }}"
                                 class="img-fluid rounded shadow" alt="..." style="max-height: 300px">
