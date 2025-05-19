@@ -94,7 +94,7 @@
     </div>
   </nav>
 
-  {{-- <header class="hero">
+  <header class="hero">
     <div class="hero-overlay">
       <h1>GIS Persebaran<br>Mahasiswa PILKOM</h1>
       <p>
@@ -102,7 +102,7 @@
         with super-efficient land administration
       </p>
     </div>
-  </header> --}}
+  </header>
 
   <div class="content">
     <h2>Scroll Down</h2>
