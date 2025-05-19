@@ -11,6 +11,8 @@ use App\Http\Controllers\IndoRegionController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Jobs\UpdateKoordinatBiodataJob;
+use App\Jobs\GeocodeBiodata;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,7 +69,6 @@ Route::middleware(['auth', 'role:mahasiswa'])->prefix('mahasiswa')->group(functi
     Route::post('/biodata/update', [DashboardController::class, 'update'])->name('update.biodata');
     Route::post('/biodata/update/sekolah', [DashboardController::class, 'updateSekolah'])->name('update.biodata.sekolah');
     Route::post('/biodata/update/domisili', [DashboardController::class, 'updateTempat'])->name('update.biodata.domisili');
-
     Route::get('/biodata/edit/sekolah/{nim}', [DashboardController::class, 'editSekolah'])->name('mahasiswa.edit.sekolah');
     Route::get('/biodata/edit/domisili/{nim}', [DashboardController::class, 'editTempat'])->name('mahasiswa.edit.domisili');
 
@@ -90,9 +91,10 @@ Route::get('/home', [GisController::class, 'home'])->name('gis.home');
 Route::get('/gis-mahasiswa', [GisController::class, 'tempatTinggal'])->name('gis.mahasiswa');
 Route::get('/gis-sekolah', [GisController::class, 'sekolah'])->name('gis.sekolah');
 Route::get('/gis-domisili', [GisController::class, 'domisili'])->name('gis.domisili');
+Route::get('/statistik', [GisController::class, 'statistik'])->name('gis.statistik');
+Route::get('/nominatim', [GisController::class, 'nominatim'])->name('gis.nominatim');
 
 // Indoregion
-
 Route::post('/getKabupaten', [IndoRegionController::class, "getKabupaten"])->name('getKabupaten')->middleware("auth");
 Route::post('/getKecamatan', [IndoRegionController::class, "getKecamatan"])->name('getKecamatan')->middleware("auth");
 Route::post('/getKelurahan', [IndoRegionController::class, "getKelurahan"])->name('getKelurahan')->middleware("auth");

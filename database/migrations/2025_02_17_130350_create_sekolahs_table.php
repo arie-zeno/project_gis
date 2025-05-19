@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('sekolah', function (Blueprint $table) {
-            $table->id();
+            $table->string("id")->primary();
             $table->string("nama_sekolah");
             $table->string("jenis");
             $table->string("status");
-            $table->string("provinsi");
-            $table->string("kabupaten");
-            $table->string("kecamatan");
-            $table->string("kelurahan");
-            $table->string("koordinat");
+            $table->string("provinsi")->nullable();
+            $table->string("kabupaten")->nullable();
+            $table->string("kecamatan")->nullable();
+            $table->string("kelurahan")->nullable();
+            $table->string("koordinat")->nullable();
             $table->timestamps();
         });
     }

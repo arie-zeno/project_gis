@@ -21,69 +21,49 @@ class UserSeeder extends Seeder
             ],
             [
                 'name' => 'Admin GIS',
-<<<<<<< HEAD
                 'email' => 'admin@gmail.com',
                 'password' => Hash::make('admin'),
-=======
-                'email' => 'admin@gis.com',
-                'password' => Hash::make('password'),
->>>>>>> cdd551cefa36b922aa5db6f25e2ce1c8d5093060
                 'role' => 'admin',
             ]
         );
-
-<<<<<<< HEAD
         // Mahasiswa User
-        User::updateOrCreate(
-            [
-                'nim' => '2110131220016',
-            ],
-            [
-                'name' => 'Alfika Nurfadia',
-                'email' => '2110131220016@mhs.ulm.ac.id',
-                'password' => Hash::make('123'),
-                'role' => 'mahasiswa',
-            ]
-        );
+        // User::updateOrCreate(
+        //     [
+        //         'nim' => '2110131220016',
+        //     ],
+        //     [
+        //         'name' => 'Alfika Nurfadia',
+        //         'email' => '2110131220016@mhs.ulm.ac.id',
+        //         'password' => Hash::make('123'),
+        //         'role' => 'mahasiswa',
+        //     ]
+        // );
 
-        User::updateOrCreate(
-            [
-                'nim' => '2110131120005',
-            ],
-            [
-                'name' => 'Julita Hasanah',
-                'email' => '2110131120005@mhs.ulm.ac.id',
-                'password' => Hash::make('123'),
-                'role' => 'mahasiswa',
-            ]
-        );
+        // User::updateOrCreate(
+        //     [
+        //         'nim' => '2110131120005',
+        //     ],
+        //     [
+        //         'name' => 'Julita Hasanah',
+        //         'email' => '2110131120005@mhs.ulm.ac.id',
+        //         'password' => Hash::make('123'),
+        //         'role' => 'mahasiswa',
+        //     ]
+        // );
 
-        User::updateOrCreate(
-            [
-                'nim' => '2110131120006',
-            ],
-            [
-                'name' => 'Maysarah',
-                'email' => '2110131120006@mhs.ulm.ac.id',
-                'password' => Hash::make('123'),
-                'role' => 'mahasiswa',
-            ]
-        );
+        // User::updateOrCreate(
+        //     [
+        //         'nim' => '2110131120006',
+        //     ],
+        //     [
+        //         'name' => 'Maysarah',
+        //         'email' => '2110131120006@mhs.ulm.ac.id',
+        //         'password' => Hash::make('123'),
+        //         'role' => 'mahasiswa',
+        //     ]
+        // );
 
         
-        User::updateOrCreate(
-            [
-                'nim' => '2110131310001',
-            ],
-            [
-                'name' => 'Ari Yono',
-                'email' => '2110131310001@@mhs.ulm.ac.id',
-                'password' => Hash::make('123'),
-                'role' => 'mahasiswa',
-            ]
-        );
-=======
-        // // Mahasiswa User
         // User::updateOrCreate(
         //     [
         //         'nim' => '2110131310001',
@@ -96,17 +76,29 @@ class UserSeeder extends Seeder
         //     ]
         // );
 
-        // // User::updateOrCreate(
-        // //     [
-        // //         'nim' => '2110131220016',
-        // //     ],
-        // //     [
-        // //         'name' => 'Alfika Nurfadia',
-        // //         'email' => '2110131220016@mhs.ulm.ac.id',
-        // //         'password' => Hash::make('123'),
-        // //         'role' => 'mahasiswa',
-        // //     ]
-        // // );
->>>>>>> cdd551cefa36b922aa5db6f25e2ce1c8d5093060
+        // Mahasiswa User
+        // User::updateOrCreate(
+        //     [
+        //         'nim' => '2110131310001',
+        //     ],
+        //     [
+        //         'name' => 'Ari Yono',
+        //         'email' => '2110131310001@@mhs.ulm.ac.id',
+        //         'password' => Hash::make('123'),
+        //         'role' => 'mahasiswa',
+        //     ]
+        // );
+
+        // User::updateOrCreate(
+        //     [
+        //         'nim' => '2110131220016',
+        //     ],
+        //     [
+        //         'name' => 'Alfika Nurfadia',
+        //         'email' => '2110131220016@mhs.ulm.ac.id',
+        //         'password' => Hash::make('123'),
+        //         'role' => 'mahasiswa',
+        //     ]
+        // );
     }
 }

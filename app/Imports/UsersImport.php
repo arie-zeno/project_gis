@@ -16,6 +16,7 @@ class UsersImport implements ToModel, WithHeadingRow
      */
     public function model(array $row)
     {
+        ini_set('max_execution_time', 240);
         $existingUser = User::where('nim', $row['nim'])->first();
         if ($existingUser) {
             return null;

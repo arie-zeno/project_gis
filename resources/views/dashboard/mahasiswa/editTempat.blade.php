@@ -9,7 +9,7 @@
     </style>
     <div class="card border-0 shadow" style="background: #fff;">
         <div class="card-body">
-            <h1>form</h1>
+            <h1>Domisili</h1>
             <form action="{{ route('update.biodata.domisili') }}" method="POST" enctype="multipart/form-data">
                 <div class="row">
                     @csrf

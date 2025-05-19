@@ -6,28 +6,70 @@
     }
 
     .kabupaten-label {
-        font-size: 14px;
+        font: 14px Arial, Helvetica, sans-serif;
         /* Ukuran lebih kecil */
     }
+
+    .legend {
+        padding: 6px 8px;
+        font: 14px Arial, Helvetica, sans-serif;
+        background: white;
+        background: rgba(255, 255, 255, 0.8);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        width: 200px;
+        border-radius: 5px;
+        line-height: 24px;
+        color: #555;
+        }
+        
+        .legend h4 {
+        text-align: center;
+        font-size: 16px;
+        margin: 2px 12px 8px;
+        color: #777;
+        }
+
+        .legend div {
+            display: flex;
+            align-items: center
+        }
+        .legend span {
+        position: relative;
+        bottom: 3px;
+        color: black
+        }
+
+        .legend i {
+        width: 18px;
+        height: 18px;
+        float: left;
+        margin: 0 8px 0 0;
+        opacity: 0.7;
+        }
+
+        .legend i.icon {
+        background-size: 18px;
+        background-color: rgba(255, 255, 255, 1);
+        }
 
 
 </style>
 @section('content')
-    <h3>Persebaran Daerah Asal Mahasiswa</h3>
+    <h3 style="text-align: center">Persebaran Daerah Asal Mahasiswa</h3>
     <div id="map"></div>
 @endsection
 
 @section('js')
     <script>
         // basemap
-        var map = L.map('map').setView([-3.298618801108944, 114.58542404981114], 13.46);
+        var map = L.map('map').setView([-2.90,115.50], 8.49);
         // map.on('contextmenu', () => {
         //     map.off();
         //   })
         // icon marker
         var ulmIcon = L.icon({
             iconUrl: "/img/Logo_ULM.png",
-            iconSize: [50, 50], // size of the icon
+            iconSize: [35, 35], // size of the icon
             // iconAnchor:   [24, 24], // point of the icon which will correspond to marker's location
             // shadowAnchor: [4, 62],  // the same for the shadow
             // popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
@@ -39,13 +81,13 @@
         });
 
         var ceweIcon = L.icon({
-            iconUrl: "/img/icon_cewe.png",
-            iconSize: [70, 70],
+            iconUrl: "/img/Mahasiswa.png",
+            iconSize: [35, 35],
         });
 
         var cowoIcon = L.icon({
-            iconUrl: "/img/icon_cowo.png",
-            iconSize: [70, 70],
+            iconUrl: "/img/Alumni.png",
+            iconSize: [35, 35],
         });
 
 
@@ -70,28 +112,27 @@
         marker.bindPopup('FKIP ULM');
 
         @foreach ($biodata as $data)
-            var fotoIcon = L.divIcon({
-                className: 'custom-marker',
-                html: '<div style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; border: 3px solid white; box-shadow: 0 0 5px rgba(0,0,0,0.5); background: url({{ asset('storage/' . $data->foto) }}) center/cover;"></div>',
-                iconSize: [50, 50], // Ukuran ikon (lebar, tinggi)
-                iconAnchor: [25, 50], // Titik jangkar (agar bagian bawah ikon berada di titik koordinat)
-                popupAnchor: [0, -50] // Posisi popup relatif terhadap ikon
-            });
             @php
                 $koordinats = explode(',', $data['koordinat']);
             @endphp
-            var latitude = {{ $koordinats[0] }},
-                longitude = {{ $koordinats[1] }}
+            @if (count($koordinats) >= 2)
+                var latitude = {{ $koordinats[0] }},
+                    longitude = {{ $koordinats[1] }}
+                @if ($data['status'] == 'Lulus')
+                    icon = cowoIcon
+                @else
+                    icon = ceweIcon
+                @endif
+                L.marker([latitude, longitude], {
+                        icon: icon
+                    })
+                    .addTo(map)
 
-            L.marker([latitude, longitude], {
-                    icon: fotoIcon
-                })
 
-                .addTo(map)
-
-                .bindPopup(
-                    `Nama : {{ $data->nama }} <br>
-                    `);
+                    .bindPopup(
+                        `Nama : {{ $data->nama }} <br>
+                        `);
+            @endif
         @endforeach
 
     // GeoJSON
@@ -124,11 +165,17 @@
         position: "topleft",
     }).addTo(map);
 
-    var legend = L.control({
-        position: "bottomright",
-    });
-
-    legend.addTo(map);
+    var legend = L.control({position: "bottomright",});
+        
+        legend.onAdd = function(map) {
+            var div = L.DomUtil.create("div", "legend")
+            div.innerHTML += "<h6>Keterangan : </h6>";
+                            div.innerHTML += '<div><img src="/img/Logo_ULM.png" width="25"><span> : FKIP ULM</span></div>';
+                            div.innerHTML += '<div><img src="/img/alumni.png" width="30"><span> : Alumni</span></div>';
+                            div.innerHTML += '<div><img src="/img/mahasiswa.png" width="30"><span> : Mahasiswa Aktif</span></div>';
+                            return div;
+                        };
+        legend.addTo(map);
 
     // Fungsi untuk menampilkan atau menyembunyikan kabupaten dengan checkbox
     function showKabupaten(v, i) {

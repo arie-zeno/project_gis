@@ -15,12 +15,16 @@ class Biodata extends Model
         'id_biodata',
         'nim',
         'nama',
+        'kode_mhs',
         'telepon',
         'angkatan',
+        'status',
         'jenis_kelamin',
         'agama',
         'foto',
         'tempat_lahir',
+        'tanggal_lahir',
+        'alamat',
         'provinsi',
         'kabupaten',
         'kecamatan',
@@ -29,7 +33,6 @@ class Biodata extends Model
         'penghasilan',
         'id_sekolah',
         'id_tempat_tinggal',
-        'tanggal_lahir',
     ];
 
     public function user()

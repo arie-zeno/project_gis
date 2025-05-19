@@ -3,47 +3,38 @@
 namespace App\Imports;
 
 use App\Models\Sekolah;
+use App\Jobs\AmbilKoordinatSekolahJob;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class SekolahImport implements ToModel, WithHeadingRow
 {
-    /**
-     * @param array $row
-     *
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
     public function model(array $row)
     {
+        // ini_set('max_execution_time', 300);
+        
+        set_time_limit(0); // Tidak dibatasi waktu eksekusi
+
         $existingSekolah = Sekolah::where('id', $row['id'])->first();
         if ($existingSekolah) {
             return null;
         }
-        return new Sekolah([
-            'id' => $row['id'], 
-            'nama_sekolah' => $row['nama_sekolah'], 
-            'jenis' => $row['jenis'], 
-            'status' => $row['status'], 
-            'provinsi' => $row['provinsi'], 
-            'kabupaten' => $row['kabupaten'], 
-            'kecamatan' => $row['kecamatan'], 
-            'kelurahan' => $row['kelurahan'], 
-            'koordinat' => $row['koordinat'], 
-        ]);
-    }
 
-    // public function model(array $row)
-    // {
-    //     $existingUser = User::where('nim', $row['nim'])->first();
-    //     if ($existingUser) {
-    //         return null;
-    //     }
-    //     return new User([
-    //         'nim' => $row['nim'], 
-    //         'name' => $row['name'], 
-    //         'email' => $row['nim'] . '@mhs.ulm.ac.id',
-    //         'password' => Hash::make($row['nim']), 
-    //         'role' => 'mahasiswa', 
-    //     ]);
-    // }
+        $sekolah = Sekolah::create([
+            'id' => $row['nama_sekolah'],
+            'nama_sekolah' => $row['nama_sekolah'],
+            'jenis' => $row['jenis'],
+            'status' => $row['status'],
+            'provinsi' => null,
+            'kabupaten' => null,
+            'kecamatan' => null,
+            'kelurahan' => null,
+            'koordinat' => null,
+        ]);
+
+        // Dispatch Job untuk ambil koordinat dan alamat
+        AmbilKoordinatSekolahJob::dispatch($sekolah);
+
+        return $sekolah;
+    }
 }

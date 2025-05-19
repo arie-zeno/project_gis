@@ -29,19 +29,19 @@
                                 </tr>
                                 <tr>
                                     <td class="fw-bold" style="width: 200px">Provinsi</td>
-                                    <td style="width: 300px">{{ Str::title($biodata->sekolah->province->name) }}</td>
+                                    <td style="width: 300px">{{ Str::title($biodata->sekolah->provinsi) }}</td>
                                 </tr>
                                 <tr>
                                     <td class="fw-bold" style="width: 200px">Kota/Kabupaten</td>
-                                    <td style="width: 300px">{{ Str::title($biodata->sekolah->regency->name) }}</td>
+                                    <td style="width: 300px">{{ Str::title($biodata->sekolah->kabupaten) }}</td>
                                 </tr>
                                 <tr>
                                     <td class="fw-bold" style="width: 200px">Kecamatan</td>
-                                    <td style="width: 300px">{{ Str::title($biodata->sekolah->district->name) }}</td>
+                                    <td style="width: 300px">{{ Str::title($biodata->sekolah->kecamatan) }}</td>
                                 </tr>
                                 <tr>
                                     <td class="fw-bold" style="width: 200px">Kelurahan</td>
-                                    <td style="width: 300px">{{ Str::title($biodata->sekolah->village->name) }}</td>
+                                    <td style="width: 300px">{{ Str::title($biodata->sekolah->kelurahan) }}</td>
                                 </tr>
 
                             </table>

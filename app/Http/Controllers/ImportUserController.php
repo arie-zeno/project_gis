@@ -8,6 +8,11 @@ use App\Imports\UsersImport;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Jobs\UpdateKoordinatBiodataJob;
+use App\Command\UpdateKoordinatBiodata;
+use App\Command\UpdateDataSekolah;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 
 class ImportUserController extends Controller
 {
@@ -26,11 +31,19 @@ class ImportUserController extends Controller
 
     public function importBiodata(Request $request)
     {
+        set_time_limit(0);
         $request->validate([
             'file' => 'required|mimes:xlsx,xls,csv',
         ]);
 
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
         Excel::import(new BiodataImport, $request->file('file'));
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+            
+        // Langsung panggil command generate koordinat
+        Artisan::call('biodata:update-koordinat');
 
         toast('Data biodata berhasil diimport!', 'success')->position('center');
         return redirect()->back();
@@ -43,6 +56,9 @@ class ImportUserController extends Controller
         ]);
 
         Excel::import(new SekolahImport, $request->file('file'));
+
+        // Langsung panggil command generate koordinat
+        Artisan::call('sekolah:update-data');
 
         toast('Data sekolah berhasil diimport!', 'success')->position('center');
         return redirect()->back();

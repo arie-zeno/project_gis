@@ -28,9 +28,9 @@
                             </tr>
                             <tr>
                                 <td class="fw-bold" style="width: 200px">Provinsi</td>
-                                <td style="width: 300px">{{ Str::title($biodata->province->name) }}</td>
+                                <td style="width: 300px">{{ Str::title($biodata->provinsi) }}</td>
                             </tr>
-                            <tr>
+                            {{-- <tr>
                                 <td class="fw-bold" style="width: 200px">Kota/Kabupaten</td>
                                 <td style="width: 300px">{{ Str::title($biodata->regency->name) }}</td>
                             </tr>
@@ -41,7 +41,7 @@
                             <tr>
                                 <td class="fw-bold" style="width: 200px">Kelurahan</td>
                                 <td style="width: 300px">{{ Str::title($biodata->village->name) }}</td>
-                            </tr>
+                            </tr> --}}
 
                         </table>
                     </div>
@@ -56,7 +56,7 @@
                     </div>
                     <div class="col-sm-4 d-flex flex-column justify-content-center align-items-center">
                         <h2
-                            style="background: linear-gradient(135deg, #6a11cb, #2575fc);
+                            style="background: linear-gradient(135deg, #415884, #6a11cb);
                         -webkit-background-clip: text;
                         background-clip: text;
                         -webkit-text-fill-color: transparent;">
@@ -81,7 +81,7 @@
                             <div class="row align-items-center justify-content-between">
                                 <div class="col-sm-6">
                                     <h4 class=""
-                                        style="background: linear-gradient(135deg, #6a11cb, #2575fc); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+                                        style="background: linear-gradient(135deg, #415884, #6a11cb); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
                                         <i class="me-2 bi bi-mortarboard-fill"></i> Riwayat Pendidikan
                                     </h4>
                                     <p>Anda belum mengisi Riwayat Pendidikan.</p>
@@ -106,7 +106,7 @@
                             <div class="row align-items-center justify-content-between">
                                 <div class="col-sm-6">
                                     <h4 class=""
-                                        style="background: linear-gradient(135deg, #6a11cb, #2575fc); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+                                        style="background: linear-gradient(135deg, #415884, #6a11cb); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
                                         <i class="me-2 bi bi-mortarboard-fill"></i> Domisili
                                     </h4>
                                     <p>Anda belum mengisi Tempat Tinggal Domisili.</p>
