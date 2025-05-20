@@ -12,7 +12,7 @@
 </style>
 
 @section('content')
-    <h3>Persebaran Asal Sekolah Mahasiswa</h3>
+    <h3>Persebaran Sekolah Asal Mahasiswa</h3>
     <div id="map"></div>
 @endsection
 

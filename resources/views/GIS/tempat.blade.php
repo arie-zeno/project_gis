@@ -148,17 +148,18 @@
     function getShape(namaFile, kab, index) {
         $.getJSON('/geoJSON/' + namaFile + '.geojson', (json) => {
             html += `
+                <div style="margin-bottom: 7px;">
                 <input type="checkbox" id="chk-${index}" onclick="showKabupaten(this, ${index})">
                 <label for="chk-${index}" class="kabupaten-label" style="cursor:pointer;">
                     <b>${kab}</b>
                 </label>
-                <br>
+                </div>
             `;
 
             let geoLayer = L.geoJSON(json, {
                 style: {
-                    fillOpacity: 0.8,
-                    weight: 2,
+                    fillOpacity: 0.5,
+                    weight: 1,
                     color: 'black',
                     fillColor: colors[index % colors.length]
                 }
@@ -210,7 +211,6 @@
         div.innerHTML += '<div><img src="/img/alumni.png" width="30"><span> : Alumni</span></div>';
         div.innerHTML += '<div><img src="/img/mahasiswa.png" width="30"><span> : Mahasiswa Aktif</span></div>';
     
-        
         return div;
     };
     legend.addTo(map);
