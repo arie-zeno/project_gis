@@ -23,7 +23,7 @@ class Sekolah extends Model
     ];
     public function biodata()
     {
-        return $this->hasMany(Biodata::class, "id_sekolah");
+        return $this->hasMany(Biodata::class, "id_sekolah", "id");
     }
 
     public function province(){

@@ -42,7 +42,7 @@ class Biodata extends Model
 
     public function sekolah()
     {
-        return $this->belongsTo(Sekolah::class, "id_sekolah");
+        return $this->belongsTo(Sekolah::class, "id_sekolah", "id");
     }
 
     public function tempat_tinggal()
