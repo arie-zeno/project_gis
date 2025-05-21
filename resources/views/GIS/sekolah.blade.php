@@ -1,4 +1,5 @@
-{{-- @dd($provinsi); --}}
+
+        {{-- @dd($provinsi); --}}
 @extends("GIS.layouts.app")
 
 <style>
@@ -25,20 +26,11 @@
         iconSize: [50, 50],
     });
 
-    var manIcon = L.icon({
-        iconUrl: "/img/school_icon.png",
-        iconSize: [50, 50],
-    });
-
-    var ceweIcon = L.icon({
+    var sekolah = L.icon({
         iconUrl: "/img/sekolah.png",
         iconSize: [35, 35],
     });
 
-    var cowoIcon = L.icon({
-        iconUrl: "/img/sekolah.png",
-        iconSize: [35, 35],
-    });
 
     var baseLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
@@ -48,26 +40,29 @@
     var marker = L.marker([-3.298618801108944, 114.58542404981114], {
         icon: ulmIcon
     }).addTo(map);
-    marker.bindPopup('FKIP ULM');
+    marker.bindPopup('FKIP ULM'); 
 
-    @foreach ($biodata as $data)
+    @foreach ($sekolah as $data)
         @php
-            $koordinats = explode(',', $data['koordinat']);
+            $koordinats = explode(',', $data->koordinat);
         @endphp
+        
         @if (count($koordinats) === 2 && is_numeric($koordinats[0]) && is_numeric($koordinats[1]))
             var latitude = {{ $koordinats[0] }},
                 longitude = {{ $koordinats[1] }};
-            @if ($data['jenis_kelamin'] == 'laki-laki')
-                var icon = cowoIcon;
-            @else
-                var icon = ceweIcon;
-            @endif
+            var popupContent = `<b>{{ $data->nama_sekolah }}</b><br>Mahasiswa:<ul>`;
+
+            @foreach ($data->biodata as $mhs)
+                popupContent += `<li>{{ $mhs->nama }}</li>`;
+            @endforeach
+
+            popupContent += `</ul>`;
 
             L.marker([latitude, longitude], {
-                    icon: icon
-                })
-                .addTo(map)
-                .bindPopup(`{{ $data['nama_sekolah'] }}`);
+                icon: sekolah
+            })
+            .addTo(map)
+            .bindPopup(popupContent);
         @endif
     @endforeach
 
@@ -78,19 +73,19 @@
     var kabupaten = [];
     var html = ``;
 
-    getShape("kabBanjarbaru", "Kota Banjarbaru");
-    getShape("kabBanjarmasin", "Kota Banjarmasin");
+    getShape("kabBanjarbaru", "Banjarbaru");
+    getShape("kabBanjarmasin", "Banjarmasin");
     getShape("kabBalangan", "Kabupaten Balangan");
-    getShape("kabBanjar", "Kabupaten Banjar");
-    getShape("kabBaritoKuala", "Kabupaten Barito Kuala");
-    getShape("kabHuluSungaiSelatan", "Kabupaten Hulu Sungai Selatan");
-    getShape("kabHuluSungaiTengah", "Kabupaten Hulu Sungai Tengah");
-    getShape("kabHuluSungaiUtara", "Kabupaten Hulu Sungai Utara");
-    getShape("kabKotabaru", "Kabupaten Kotabaru");
-    getShape("kabTabalong", "Kabupaten Tabalong");
-    getShape("kabTanahBumbu", "Kabupaten Tanah Bumbu");
-    getShape("kabTanahLaut", "Kabupaten Tanah Laut");
-    getShape("kabTapin", "Kabupaten Tapin");
+    getShape("kabBanjar", "Banjar");
+    getShape("kabBaritoKuala", "Barito Kuala");
+    getShape("kabHuluSungaiSelatan", "Hulu Sungai Selatan");
+    getShape("kabHuluSungaiTengah", "Hulu Sungai Tengah");
+    getShape("kabHuluSungaiUtara", "Hulu Sungai Utara");
+    getShape("kabKotabaru", "Kotabaru");
+    getShape("kabTabalong", "Tabalong");
+    getShape("kabTanahBumbu", "Tanah Bumbu");
+    getShape("kabTanahLaut", "Tanah Laut");
+    getShape("kabTapin", "Tapin");
 
     var control2 = L.control.slideMenu("", {
         position: "topleft",

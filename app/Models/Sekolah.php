@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Sekolah extends Model
 {
     use HasFactory;
-
+    protected $primaryKey = "id";
     protected $table = "sekolah";
+    public $incrementing = false; // <- penting karena id bukan angka
+    protected $keyType = 'string';
     protected $fillable = [
         "id",
         "nama_sekolah",
@@ -21,9 +23,18 @@ class Sekolah extends Model
         'kecamatan',
         'kelurahan',
     ];
+    // public function biodata()
+    // {
+    //     return $this->hasMany(Biodata::class, "id_sekolah");
+    // }
+    // public function biodata()
+    // {
+    //     return $this->hasMany(Biodata::class, 'id_sekolah', 'id');
+    // }
+    
     public function biodata()
     {
-        return $this->hasMany(Biodata::class, "id_sekolah", "id");
+        return $this->hasMany(Biodata::class, 'id_sekolah', 'id');
     }
 
     public function province(){

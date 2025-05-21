@@ -11,6 +11,11 @@ class Biodata extends Model
     protected $primaryKey = "id_biodata";
     protected $table = "Biodata";
 
+    // Di model Biodata
+    protected $casts = [
+        'id_sekolah' => 'string',
+    ];
+
     protected $fillable = [
         'id_biodata',
         'nim',
@@ -40,9 +45,17 @@ class Biodata extends Model
         return $this->belongsTo(User::class, "nim");
     }
 
+    // public function sekolah()
+    // {
+    //     return $this->belongsTo(Sekolah::class, "id_sekolah");
+    // }
+    // public function sekolah()
+    // {
+    //     return $this->belongsTo(Sekolah::class, 'id_sekolah', 'id');
+    // }
     public function sekolah()
     {
-        return $this->belongsTo(Sekolah::class, "id_sekolah", "id");
+        return $this->belongsTo(Sekolah::class, 'id_sekolah', 'id');
     }
 
     public function tempat_tinggal()

@@ -26,6 +26,7 @@ class GisController extends Controller
     {
         $provinsi = Province::with("mahasiswa")->where("name", "KALIMANTAN SELATAN")->get();
         $biodata = Biodata::all();
+
         return view(
             "GIS.tempat",
             [
@@ -36,19 +37,35 @@ class GisController extends Controller
         );
     }
 
+    // public function sekolah()
+    // {
+    //     $provinsi = Province::with("mahasiswa")->where("name", "KALIMANTAN SELATAN")->get();
+    //     $biodata = Sekolah::with("biodata")->get();
+    //     // @dd($biodata[0]);
+    //     return view(
+    //         "GIS.sekolah",
+    //         [
+    //             "provinsi" => $provinsi,
+    //             "biodata" => $biodata,
+    //             "title" => "GIS | Sekolah"
+    //         ]
+    //     );
+    // }
     public function sekolah()
     {
-        $provinsi = Province::with("mahasiswa")->where("name", "KALIMANTAN SELATAN")->get();
-        $biodata = Sekolah::all();
-        return view(
-            "GIS.sekolah",
-            [
-                "provinsi" => $provinsi,
-                "biodata" => $biodata,
-                "title" => "GIS | Sekolah"
-            ]
-        );
+        $provinsi = Province::with("mahasiswa")
+            ->where("name", "KALIMANTAN SELATAN")
+            ->get();
+
+        $sekolah = Sekolah::with('biodata')->get(); // ini sudah benar
+
+        return view("GIS.sekolah", [
+            "provinsi" => $provinsi,
+            "sekolah" => $sekolah, // <- GANTI DARI "biodata" KE "sekolah"
+            "title" => "GIS | Sekolah"
+        ]);
     }
+
 
     public function domisili()
     {
