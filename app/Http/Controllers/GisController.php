@@ -14,10 +14,12 @@ class GisController extends Controller
 {
     public function home()
     {
+        $biodata = Biodata::all();
         return view(
             "GIS.home",
             [
-                "title" => "GIS | Home"
+                "title" => "GIS | Home",
+                "biodata" => $biodata,
             ]
         );
     }
@@ -84,6 +86,7 @@ class GisController extends Controller
     public function statistik()
     {
         $biodata = Biodata::all();
+
         $biodata_kab = [
             "Kab. Balangan" => 0,
             "Kab. Banjar" => 0,
@@ -190,6 +193,88 @@ class GisController extends Controller
             }
         } 
 
+        $jk_mhs = [
+            "Laki-laki" => 0,
+            "Perempuan" => 0,
+        ];
+        foreach($biodata as $data){
+            if($data["jenis_kelamin"] == "Laki-laki"){
+                $jk_mhs["Laki-laki"]+=1;
+            } else if($data["jenis_kelamin"] == "Perempuan"){
+                $jk_mhs["Perempuan"]+=1;
+            }
+        } 
+
+        $mhs_sekolah = Biodata::with('sekolah')->get();
+
+        $jmlh_jenissekolah = [
+            "SMA" => 0,
+            "SMK" => 0,
+            "MA" => 0,
+            "Lainnya" => 1,
+        ];
+
+        foreach($mhs_sekolah as $item){
+            $jenis = ($item->sekolah->jenis ?? '');
+            if($jenis == "SMA"){
+                $jmlh_jenissekolah["SMA"]+=1;
+            } else if($jenis == "SMK"){
+                $jmlh_jenissekolah["SMK"]+=1;
+            } else if($jenis == "MA"){
+                $jmlh_jenissekolah["MA"]+=1;
+            } else if($jenis == "Lainnya"){
+                $jmlh_jenissekolah["Lainnya"]+=1;
+            }
+        }
+
+        $jmlh_kabsekolah = [
+            "Banjarbaru" => 0,
+            "Banjarmasin" => 0,
+            "Balangan" => 0,
+            "Banjar" => 0,
+            "Barito Kuala" => 0,
+            "Hulu Sungai Selatan" => 0,
+            "Hulu Sungai Tengah" => 0,
+            "Hulu Sungai Utara" => 0,
+            "Kotabaru" => 0,
+            "Tabalong" => 0,
+            "Tanah Bumbu" => 0,
+            "Tanah Laut" => 0,
+            "Tapin" => 0
+        ];
+
+        
+        foreach($mhs_sekolah as $item){
+            $kab_sekolah = ($item->sekolah->kabupaten ?? '');
+            if($kab_sekolah == "Banjarbaru"){
+                $jmlh_kabsekolah["Banjarbaru"]+=1;
+            } else if($kab_sekolah == "Banjarmasin"){
+                $jmlh_kabsekolah["Banjarmasin"]+=1;
+            } else if($kab_sekolah == "Balangan"){
+                $jmlh_kabsekolah["Balangan"]+=1;
+            } else if($kab_sekolah == "Banjar"){
+                $jmlh_kabsekolah["Banjar"]+=1;
+            } else if($kab_sekolah == "Barito Kuala"){
+                $jmlh_kabsekolah["Barito Kuala"]+=1;
+            } else if($kab_sekolah == "Hulu Sungai Selatan"){
+                $jmlh_kabsekolah["Hulu Sungai Selatan"]+=1;
+            } else if($kab_sekolah == "Hulu Sungai Tengah"){
+                $jmlh_kabsekolah["Hulu Sungai Tengah"]+=1;
+            } else if($kab_sekolah == "Hulu Sungai Utara"){
+                $jmlh_kabsekolah["Hulu Sungai Utara"]+=1;
+            } else if($kab_sekolah == "Kotabaru"){
+                $jmlh_kabsekolah["Kotabaru"]+=1;
+            } else if($kab_sekolah == "Tabalong"){
+                $jmlh_kabsekolah["Tabalong"]+=1;
+            } else if($kab_sekolah == "Tanah Bumbu"){
+                $jmlh_kabsekolah["Tanah Bumbu"]+=1;
+            } else if($kab_sekolah == "Tanah Laut"){
+                $jmlh_kabsekolah["Tanah Laut"]+=1;
+            } else if($kab_sekolah == "Tapin"){
+                $jmlh_kabsekolah["Tapin"]+=1;
+            }
+        }
+
         return view(
             "GIS.statistik",
             [
@@ -197,6 +282,9 @@ class GisController extends Controller
                 "mhs_akt" => $mhs_akt,
                 "biodata_kab" => $biodata_kab,
                 "status_mhs" => $status_mhs,
+                "jk_mhs" => $jk_mhs,
+                "jmlh_jenissekolah" => $jmlh_jenissekolah,
+                "jmlh_kabsekolah" => $jmlh_kabsekolah
             ]
             );
     }

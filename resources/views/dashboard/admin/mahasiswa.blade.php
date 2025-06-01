@@ -33,18 +33,22 @@
                             <tr class="text-center">
                                 <th>Nama</th>
                                 <th>NIM</th>
+                                <th>Status</th>
                                 <th>Biodata</th>
                                 <th>Riwayat Pendidikan</th>
                                 <th>Operasi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- @dd($user[0]->biodata->nim) --}}
                             @foreach ($user as $item)
-                                {{-- @dd($item->biodata->id_sekolah != null) --}}
                                 <tr>
                                     <td>{{ Str::title($item->name) }}</td>
                                     <td class="text-center">{{ $item->nim }}</td>
+                                    @if ($item->biodata)
+                                    <td class="text-center">{{ $item->biodata["status"] }}</td>
+                                    @else
+                                    <td class="text-center"> <i class="bi bi-x-circle-fill text-danger"></i>
+                                    @endif
                                     <td class="text-center"><i
                                             class="bi {{ $item->biodata ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger' }} "></i>
                                     </td>
@@ -61,37 +65,36 @@
                                             class="btn btn-sm btn-outline-primary">Lihat</a>
 
                                         <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal"
-                                            data-bs-target="#passwordModal">Ganti Password</button>
+                                            data-bs-target="#statusModal">Ubah Status</button>
 
                                         <a href="{{ route('hapus.mahasiswa', $item->nim) }}" data-confirm-delete="true"
                                             class="btn btn-sm btn-outline-danger btn-hapus">Hapus</a>
                                     </td>
 
                                     <!-- Modal ganti password -->
-                                    <div class="modal fade" id="passwordModal" tabindex="-1"
-                                        aria-labelledby="passwordModalLabel" aria-hidden="true">
+                                    <div class="modal fade" id="statusModal" tabindex="-1"
+                                        aria-labelledby="statusModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="passwordModalLabel">Ganti Password</h1>
+                                                    <h1 class="modal-title fs-5" id="statusModalLabel">Ganti status</h1>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form action="{{ route('ganti.password', $item->nim) }}" method="POST">
+                                                    <form action="{{ route('ganti.status', $item->nim) }}" method="POST">
                                                         @csrf
-                                                        <div class="input-group mb-3">
-                                                            <label class="input-group-text" for="pw">Password</label>
-                                                            <input type="password" class="form-control" id="pw"
-                                                                name="password">
-                                                        </div>
+                                                        <select name="status" class="form-select" aria-label="Default select example">
+                                                            <option value="Aktif">Aktif</option>
+                                                            <option value="Lulus">Lulus</option>
+                                                        </select>
 
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-sm btn-outline-secondary"
                                                         data-bs-dismiss="modal">Tutup</button>
                                                     <button type="submit"
-                                                        class="btn btn-sm btn-outline-primary">Submit</button>
+                                                        class="btn btn-sm btn-outline-primary">Simpan</button>
                                                     </form>
                                                 </div>
                                             </div>

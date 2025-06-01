@@ -1,8 +1,13 @@
 @extends ("GIS.layouts.app")
+<!-- CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet-compass/dist/leaflet-compass.css" />
+
+<!-- JS -->
+<script src="https://unpkg.com/leaflet-compass/dist/leaflet-compass.min.js"></script>
 
 <style>
     #map {
-        height: 85vh;
+        height: 88vh;
     }
 
     .kabupaten-label {
@@ -53,7 +58,7 @@
 
     .label-kabupaten {
         font-family: 'Segoe UI', Verdana, sans-serif;
-        font-size: 13px;
+        font-size: 10px;
         color: black; /* atau ubah sesuai keinginan agar kontras */
         background-color: transparent;
         padding: 0;
@@ -64,7 +69,7 @@
         border: none !important;
         box-shadow: none !important;
         color: black; /* Atau sesuaikan warna teks */
-        font-weight: bold;
+        /* font-weight: bold; */
         padding: 0 !important;
         
     }
@@ -72,9 +77,9 @@
     .checkbox-item {
         display: flex;
         align-items: center;
-        gap: 6px;
-        margin: 2px 0;
-        padding: 4px 6px;
+        gap: 4px;
+        margin: 0px 0;
+        padding: 1px 3px;
         border-radius: 4px;
         transition: background-color 0.2s ease;
     }
@@ -84,7 +89,7 @@
     }
 
     .checkbox-item input[type="checkbox"] {
-        transform: scale(1.1);
+        transform: scale(0.8);
         cursor: pointer;
     }
 
@@ -108,8 +113,10 @@
 </style>
 
 @section('content')
-<h3 style="text-align: center">Persebaran Daerah Asal Mahasiswa</h3>
+{{-- <h3 style="text-align: center">Persebaran Daerah Asal Mahasiswa</h3> --}}
+{{-- <div style="padding: 28px"></div> --}}
 <div id="map"></div>
+
 @endsection
 
 @php
@@ -119,9 +126,20 @@
 @endphp
 @section('js')
 <script>
-    var map = L.map('map').setView([-2.90, 115.20], 8.499);
+    var map = L.map('map', {
+                zoomControl: false
+            }).setView([-2.90, 115.20], 8.499);
+
+    var baseLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors',
+                }).addTo(map);
+
+    L.control.zoom({ position: 'topright' }).addTo(map);
+
     let mahasiswaMarkers = {}; // marker mahasiswa per kabupaten
-    let batasKabupaten = [], labelLayers = [], html = "";
+    let batasKabupaten = [], 
+        labelLayers = [], 
+        html = "";
 
     const kabupatenList = [
         { namaFile: 'kabBanjarbaru', label: 'BANJARBARU' },
@@ -140,24 +158,22 @@
     ];
 
     const labelKabupaten = {
-        "BANJARBARU": [-3.442, 114.844],
-        "BANJARMASIN": [-3.319, 114.590],
+        "BANJARBARU": [-3.442550645603833, 114.82225595579565],
+        "BANJARMASIN": [-3.316018932804326, 114.61100239854602],
         "BALANGAN": [-2.336, 115.615],
-        "BANJAR": [-3.477, 115.003],
-        "BARITO KUALA": [-2.988, 114.732],
-        "HULU SUNGAI SELATAN": [-2.779, 115.215],
+        "BANJAR": [-3.315442484485597, 114.99219527972218],
+        "BARITO KUALA": [-3.0018864239898657, 114.6566109247254],
+        "HULU SUNGAI SELATAN": [-2.729010211793276, 115.38616453159104],
         "HULU SUNGAI TENGAH": [-2.583, 115.519],
-        "HULU SUNGAI UTARA": [-2.435, 115.003],
-        "KOTABARU": [-3.298, 116.225],
+        "HULU SUNGAI UTARA": [-2.4452933297534734, 115.4151448009108],
+        "KOTABARU": [-2.819250451679656, 115.8658752391884],
         "TABALONG": [-2.129, 115.375],
         "TANAH BUMBU": [-3.460, 115.564],
         "TANAH LAUT": [-3.809, 114.846],
         "TAPIN": [-2.956, 115.020]
     };
 
-    var baseLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors',
-    }).addTo(map);
+
 
     var ulmIcon = L.icon({ iconUrl: "/img/Logo_ULM.png", iconSize: [35, 35] });
     var mahasiswa = L.icon({ iconUrl: "/img/mahasiswa.png", iconSize: [35, 35] });
@@ -213,7 +229,11 @@
     });
 
     // Kontrol checkbox kabupaten
-    var control2 = L.control.slideMenu("", { position: "topleft" }).addTo(map);
+    var control2 = L.control.slideMenu("", { 
+        position: "topleft" ,
+        menubar: true,  
+        visible: true      // Atau gunakan toggle() di bawah ini
+    }).addTo(map);
 
     let colors = ["#32b8a6", "#f5cb11", "#eb7200", "#c461eb", "#6c7000", "#bf2e2e", "#46e39c", "#9fd40c", "#ad00f2",
         "#fffb00", "#7ff2fa", "#e8a784"
@@ -239,7 +259,6 @@
                 </div>
             `;
 
-
             let geoLayer = L.geoJSON(json, {
                 style: {
                     fillOpacity: 0.5,
@@ -260,20 +279,39 @@
             batasKabupaten[index] = geoLayer;
             labelLayers[index] = label;
 
+
             control2.setContents(`
-                <div style="width: 230px;">
-                    ${htmlHeader}
-                    <div style="max-height: 250px; overflow-y: auto;">
-                        ${html}
+                <div style="width: 250px;">
+                    <div style="margin-bottom: 4px; background: #fff; border: 1px solid #ccc; padding: 6px; border-radius: 3px;">
+                        <label><b>Filter Status:</b></label><br>
+                        <div class="checkbox-item">
+                            <input type="radio" name="statusFilter" value="semua" checked onchange="filterByStatus()">
+                            <label>Semua</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" name="statusFilter" value="alumni" onchange="filterByStatus()">
+                            <label>Alumni</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" name="statusFilter" value="mahasiswa" onchange="filterByStatus()">
+                            <label>Mahasiswa Aktif</label>
+                        </div>
                     </div>
-                    <div id="info-kabupaten" style="margin-top:10px; font-size:12px; padding:5px; background:#f9f9f9; border:1px solid #ccc; border-radius:4px;">
-                        <b>Info Kabupaten:</b><br><span>Pilih salah satu kabupaten/kota</span>
+                    <div style="border: 1px solid #ccc; padding: 10px; border-radius: 6px; background: #fff;">
+                        ${htmlHeader}
+                        <div style="max-height: 250px; overflow-y: auto;">
+                            ${html}
+                        </div>
+                        <div id="info-kabupaten" style="margin-top:10px; font-size:12px; padding:5px; background:#f9f9f9; border:1px solid #ccc; border-radius:4px;">
+                            <b>Info Kabupaten:</b><br><span>Pilih salah satu kabupaten/kota</span>
+                        </div>
                     </div>
                 </div>
             `);
         });
     }
     
+
 
     function showKabupaten(v, i) {
         if (v.checked) {
@@ -306,11 +344,8 @@
         // Update status checkbox "Semua Kota/Kabupaten"
         document.getElementById("chk-all").checked = semuaChecked;
 
-        if (!adaYangDicek) {
-            tampilkanSemuaMahasiswa();
-        }
+        filterByStatus();
         updateInfoKabupaten();
-
     }
 
     function toggleAllKabupaten(checkbox) {
@@ -321,6 +356,7 @@
             kabCheckbox.checked = isChecked;
             showKabupaten(kabCheckbox, index);
         });
+        filterByStatus();
         updateInfoKabupaten();
     }
 
@@ -358,6 +394,49 @@
         }
     }
 
+    function filterByStatus() {
+        const status = document.querySelector('input[name="statusFilter"]:checked').value;
+
+        // Sembunyikan semua dulu
+        sembunyikanSemuaMahasiswa();
+
+        let adaYangDicek = false;
+
+        kabupatenList.forEach((item, idx) => {
+            const checkbox = document.getElementById(`chk-${idx}`);
+            if (checkbox.checked) {
+                adaYangDicek = true;
+                if (mahasiswaMarkers[item.label]) {
+                    mahasiswaMarkers[item.label].forEach(marker => {
+                        const iconUrl = marker.options.icon.options.iconUrl;
+                        if (status === 'semua' ||
+                            (status === 'alumni' && iconUrl.includes("alumni")) ||
+                            (status === 'mahasiswa' && iconUrl.includes("mahasiswa"))) {
+                            marker.addTo(map);
+                        }
+                    });
+                }
+            }
+        });
+
+        // Jika tidak ada kabupaten yang dicentang
+        if (!adaYangDicek) {
+            Object.keys(mahasiswaMarkers).forEach(kab => {
+                mahasiswaMarkers[kab].forEach(marker => {
+                    const iconUrl = marker.options.icon.options.iconUrl;
+                    if (status === 'semua' ||
+                        (status === 'alumni' && iconUrl.includes("alumni")) ||
+                        (status === 'mahasiswa' && iconUrl.includes("mahasiswa"))) {
+                        marker.addTo(map);
+                    }
+                });
+            });
+        }
+
+        updateInfoKabupaten();
+    }
+
+
 
 
     // Legenda
@@ -376,5 +455,6 @@
         return div;
     };
     legend.addTo(map);
+
 </script>
 @endsection

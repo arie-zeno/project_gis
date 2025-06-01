@@ -28,7 +28,7 @@ class LoginController extends Controller
         }
 
         Alert::error('Gagal', 'Email atau password salah.');
-        return back();
+        return back()->withInput();
     }
 
     public function logout(Request $request)
