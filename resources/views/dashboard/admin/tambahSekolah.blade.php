@@ -31,8 +31,7 @@
                                     <option value="SMK">SMK</option>
                                     <option value="SMA">SMA</option>
                                     <option value="MA">MA</option>
-                                    <option value="Paket C">Paket C</option>
-                                    <option value="lainnya">lainnya</option>
+                                    <option value="Lainnya">Lainnya</option>
                                 </select>
                             </div>
 

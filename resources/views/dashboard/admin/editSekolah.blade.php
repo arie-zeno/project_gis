@@ -9,7 +9,7 @@
     </style>
     <div class="card border-0 shadow" style="background: #fff;">
         <div class="card-body">
-            <h1>form</h1>
+            <h3>Edit Sekolah</h3>
             <form action="{{ route('update.sekolah') }}" method="POST">
                 <div class="row">
                     @csrf
@@ -42,34 +42,6 @@
                                     <option selected value="{{$sekolah->status}}">{{$sekolah->status}}</option>
                                     <option value="Negeri">Negeri</option>
                                     <option value="Swasta">Swasta</option>
-                                </select>
-                            </div>
-
-                            <div class="mb-2">
-                                <label for="provinsi" class="form-label">provinsi</label>
-                                <select class="form-select" id="provinsi" name="provinsi">
-                                    <option selected value="{{$sekolah->provinsi}}">{{$sekolah->province->name}}</option>
-                                    @foreach ($provinces as $provinsi)
-                                        <option value="{{ $provinsi->id }}" >{{ $provinsi->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="mb-2">
-                                <label for="kabupaten" class="form-label">kabupaten</label>
-                                <select class="form-select" id="kabupaten" name="kabupaten">
-                                    <option selected value="{{$sekolah->kabupaten}}">{{$sekolah->regency->name}}</option>
-                                </select>
-                            </div>
-                            <div class="mb-2">
-                                <label for="kecamatan" class="form-label">kecamatan</label>
-                                <select class="form-select" id="kecamatan" name="kecamatan">
-                                    <option selected value="{{$sekolah->kecamatan}}">{{$sekolah->district->name}}</option>
-                                </select>
-                            </div>
-                            <div class="mb-2">
-                                <label for="kelurahan" class="form-label">kelurahan</label>
-                                <select class="form-select" id="kelurahan" name="kelurahan">
-                                    <option selected value="{{$sekolah->kelurahan}}">{{$sekolah->village->name}}</option>
                                 </select>
                             </div>
 

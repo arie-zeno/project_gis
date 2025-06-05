@@ -9,7 +9,7 @@ class Biodata extends Model
 {
     use HasFactory;
     protected $primaryKey = "id_biodata";
-    protected $table = "Biodata";
+    protected $table = "biodata";
 
     // Di model Biodata
     protected $casts = [

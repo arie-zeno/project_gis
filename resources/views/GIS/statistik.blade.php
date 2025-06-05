@@ -8,34 +8,49 @@
     margin: 2rem;
     }
 
-    .chart-box {
-    width: 500px;
-    }
-
-    .chart-row {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    flex-wrap: wrap;
-    margin: 2rem;
-  }
-
   .chart-box {
     width: 500px;
-    padding: 20px;
+    padding: 15px;
     border: 1px solid #ddd;
     border-radius: 12px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     background-color: #fff;
     transition: 0.5s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
+
+    .sort-toggle {
+      top: 0;
+      right: 0;
+      padding: 6px 12px;
+      background: rgba(255, 255, 255, 0.8);
+      font-size: 13px;
+      z-index: 10;
+      border-radius: 0 0 0 8px;
+      box-shadow: 0 0 3px rgba(0,0,0,0.1);
+    }
 
   .chart-box:hover {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
 
   canvas {
-    width: 100% !important;
+    width: auto !important;
+    height: 300px !important;
+    max-width: 100%;
+  }
+
+  .canvas-pie {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .pie-chart {
+    aspect-ratio: 1 / 1;
+    width: 300px !important;
     height: 300px !important;
   }
 
@@ -146,20 +161,47 @@
     </div>
   
     <div class="chart-box">
-      <h5 style="text-align: center">Asal Mahasiswa</h5>
+      <h5 style="text-align: center">Persebaran Mahasiswa</h5>
+      <div class="sort-toggle">
+        <label>
+          <input type="checkbox" id="sortCheckbox"> Urutkan berdasarkan terbanyak
+        </label>
+      </div>
       <canvas id="ChartMHS_Kab"></canvas>
+      <p class="text-secondary" style="text-align: center">Jumlah Mahasiswa</p>
+    </div>
+
+      <div class="chart-box">
+      <h5 style="text-align: center">Persebaran Mahasiswa Aktif</h5>
+      <div class="sort-toggle">
+        <label>
+          <input type="checkbox" id="sortCheckbox"> Urutkan berdasarkan terbanyak
+        </label>
+      </div>
+      <canvas id="ChartAktif_Kab"></canvas>
+      <p class="text-secondary" style="text-align: center">Jumlah Mahasiswa</p>
+    </div>
+
+    <div class="chart-box">
+      <h5 style="text-align: center">Persebaran Alumni</h5>
+      <div class="sort-toggle">
+        <label>
+          <input type="checkbox" id="sortCheckbox"> Urutkan berdasarkan terbanyak
+        </label>
+      </div>
+      <canvas id="ChartLulus_Kab"></canvas>
       <p class="text-secondary" style="text-align: center">Jumlah Mahasiswa</p>
     </div>
 
     <div class="chart-box">
       <h5 style="text-align: center">Status Mahasiswa</h5>
-      <canvas id="ChartMHS_Status"></canvas>
+      <canvas id="ChartMHS_Status" class="pie-chart canvas-pie"></canvas>
       <p class="text-secondary" style="text-align: center">Status</p>
     </div>
 
     <div class="chart-box">
-      <h5 style="text-align: center">Data Mahasiswa Berdasarkan Jenis Kelamin</h5>
-      <canvas id="ChartMHS_JK"></canvas>
+      <h5 style="text-align: center">Jumlah Mahasiswa Berdasarkan Jenis Kelamin</h5>
+      <canvas id="ChartMHS_JK" class="pie-chart canvas-pie"></canvas>
       <p class="text-secondary" style="text-align: center">Jenis Kelamin</p>
     </div>
 
@@ -240,13 +282,122 @@
   });
 
   // 2. Mahasiswa per Kabupaten
-  new Chart(document.getElementById('ChartMHS_Kab'), {
+  const originalData = [
+    { label: 'Balangan', value: {{$biodata_kab['Kab. Balangan']}} },
+    { label: 'Banjar', value: {{$biodata_kab['Kab. Banjar']}} },
+    { label: 'Barito Kuala', value: {{$biodata_kab['Kab. Barito Kuala']}} },
+    { label: 'HSS', value: {{$biodata_kab['Kab. Hulu Sungai Selatan']}} },
+    { label: 'HST', value: {{$biodata_kab['Kab. Hulu Sungai Tengah']}} },
+    { label: 'HSU', value: {{$biodata_kab['Kab. Hulu Sungai Utara']}} },
+    { label: 'Kotabaru', value: {{$biodata_kab['Kab. Kotabaru']}} },
+    { label: 'Tabalong', value: {{$biodata_kab['Kab. Tabalong']}} },
+    { label: 'Tanah Bumbu', value: {{$biodata_kab['Kab. Tanah Bumbu']}} },
+    { label: 'Tanah Laut', value: {{$biodata_kab['Kab. Tanah Laut']}} },
+    { label: 'Tapin', value: {{$biodata_kab['Kab. Tapin']}} },
+    { label: 'Banjarbaru', value: {{$biodata_kab['Kota Banjarbaru']}} },
+    { label: 'Banjarmasin', value: {{$biodata_kab['Kota Banjarmasin']}} },
+    { label: 'Lainnya', value: {{$biodata_kab['Lainnya']}} }
+  ];
+
+  const ctx = document.getElementById('ChartMHS_Kab').getContext('2d');
+
+  const chartMHS = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: originalData.map(d => d.label),
+      datasets: [{
+        label: 'Jumlah Mahasiswa',
+        data: originalData.map(d => d.value),
+        backgroundColor: chartColors,
+        borderRadius: 4
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#fff',
+          titleColor: '#000',
+          bodyColor: '#333',
+          borderColor: '#ccc',
+          borderWidth: 1
+        },
+        datalabels: {
+          color: '#111',
+          anchor: 'center',
+          align: 'right',
+          font: { weight: 'bold' }
+        }
+      },
+      scales: {
+        x: {
+          beginAtZero: true
+        },
+        y: {
+          ticks: {
+            font: {
+              size: 9
+            }
+          }
+        }
+      }
+    },
+    plugins: [ChartDataLabels]
+  });
+
+  // Checkbox toggle event
+  document.getElementById('sortCheckbox').addEventListener('change', function () {
+    const useSorted = this.checked;
+    const dataToUse = useSorted
+      ? [...originalData].sort((a, b) => b.value - a.value)
+      : originalData;
+
+    chartMHS.data.labels = dataToUse.map(item => item.label);
+    chartMHS.data.datasets[0].data = dataToUse.map(item => item.value);
+    chartMHS.update();
+  });
+
+  // Status Mahasiswa
+  new Chart(document.getElementById('ChartMHS_Status'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Aktif', 'Lulus'],
+      datasets: [{
+        label: 'Jumlah Mahasiswa',
+        data: [{{$status_mhs['Aktif']}}, {{$status_mhs['Lulus']}}],
+        backgroundColor: ['#1cc88a', '#e74a3b'],
+        hoverOffset: 10,
+        borderWidth: 2,
+        borderColor: '#fff',
+      }]
+    },
+    options: {
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { color: '#333', padding: 20 }
+        },
+        tooltip: {
+          backgroundColor: '#f9f9f9',
+          titleColor: '#000',
+          bodyColor: '#555',
+          borderColor: '#ccc',
+          borderWidth: 1
+        },
+      }
+    }
+  });
+
+ // Mahasiswa Aktif per Kabupaten
+ new Chart(document.getElementById('ChartAktif_Kab'), {
     type: 'bar',
     data: {
       labels: ['Balangan', 'Banjar', 'Barito Kuala', 'HSS', 'HST', 'HSU', 'Kotabaru', 'Tabalong', 'Tanah Bumbu', 'Tanah Laut', 'Tapin', 'Banjarbaru', 'Banjarmasin'],
       datasets: [{
         label: 'Jumlah Mahasiswa',
-        data: [{{$biodata_kab['Kab. Balangan']}},{{$biodata_kab['Kab. Banjar']}},{{$biodata_kab['Kab. Barito Kuala']}},{{$biodata_kab['Kab. Hulu Sungai Selatan']}},{{$biodata_kab['Kab. Hulu Sungai Tengah']}},{{$biodata_kab['Kab. Hulu Sungai Utara']}},{{$biodata_kab['Kab. Kotabaru']}},{{$biodata_kab['Kab. Tabalong']}},{{$biodata_kab['Kab. Tanah Bumbu']}},{{$biodata_kab['Kab. Tanah Laut']}},{{$biodata_kab['Kab. Tapin']}},{{$biodata_kab['Kota Banjarbaru']}},{{$biodata_kab['Kota Banjarmasin']}}],
+        data: [{{$aktif_kab['Kab. Balangan']}},{{$aktif_kab['Kab. Banjar']}},{{$aktif_kab['Kab. Barito Kuala']}},{{$aktif_kab['Kab. Hulu Sungai Selatan']}},{{$aktif_kab['Kab. Hulu Sungai Tengah']}},{{$aktif_kab['Kab. Hulu Sungai Utara']}},{{$aktif_kab['Kab. Kotabaru']}},{{$aktif_kab['Kab. Tabalong']}},{{$aktif_kab['Kab. Tanah Bumbu']}},{{$aktif_kab['Kab. Tanah Laut']}},{{$aktif_kab['Kab. Tapin']}},{{$aktif_kab['Kota Banjarbaru']}},{{$aktif_kab['Kota Banjarmasin']}},{{$aktif_kab['Lainnya']}}],
         backgroundColor: chartColors,
         borderRadius: 4,
       }]
@@ -286,39 +437,54 @@
     plugins: [ChartDataLabels]
   });
 
-  // 3. Status Mahasiswa
-  new Chart(document.getElementById('ChartMHS_Status'), {
-    type: 'doughnut',
+   // Mahasiswa Lulus per Kabupaten
+ new Chart(document.getElementById('ChartLulus_Kab'), {
+    type: 'bar',
     data: {
-      labels: ['Aktif', 'Lulus'],
+      labels: ['Balangan', 'Banjar', 'Barito Kuala', 'HSS', 'HST', 'HSU', 'Kotabaru', 'Tabalong', 'Tanah Bumbu', 'Tanah Laut', 'Tapin', 'Banjarbaru', 'Banjarmasin', 'Lainnya'],
       datasets: [{
         label: 'Jumlah Mahasiswa',
-        data: [{{$status_mhs['Aktif']}}, {{$status_mhs['Lulus']}}],
-        backgroundColor: ['#1cc88a', '#e74a3b'],
-        hoverOffset: 10,
-        borderWidth: 2,
-        borderColor: '#fff',
+        data: [{{$lulus_kab['Kab. Balangan']}},{{$lulus_kab['Kab. Banjar']}},{{$lulus_kab['Kab. Barito Kuala']}},{{$lulus_kab['Kab. Hulu Sungai Selatan']}},{{$lulus_kab['Kab. Hulu Sungai Tengah']}},{{$lulus_kab['Kab. Hulu Sungai Utara']}},{{$lulus_kab['Kab. Kotabaru']}},{{$lulus_kab['Kab. Tabalong']}},{{$lulus_kab['Kab. Tanah Bumbu']}},{{$lulus_kab['Kab. Tanah Laut']}},{{$lulus_kab['Kab. Tapin']}},{{$lulus_kab['Kota Banjarbaru']}},{{$lulus_kab['Kota Banjarmasin']}},{{$lulus_kab['Lainnya']}}],
+        backgroundColor: chartColors,
+        borderRadius: 4,
       }]
     },
     options: {
+      indexAxis: 'y',
       responsive: true,
       plugins: {
-        legend: {
-          position: 'bottom',
-          labels: { color: '#333', padding: 20 }
-        },
+        legend: { display: false },
         tooltip: {
-          backgroundColor: '#f9f9f9',
+          backgroundColor: '#fff',
           titleColor: '#000',
-          bodyColor: '#555',
+          bodyColor: '#333',
           borderColor: '#ccc',
           borderWidth: 1
         },
+        datalabels: {
+          color: '#111',
+          anchor: 'center',
+          align: 'right',
+          font: { weight: 'bold' }
+        }
+      },
+      scales: {
+        x: {
+          beginAtZero: true
+        },
+        y: {
+          ticks: {
+            font: {
+              size: 9 // kecilkan agar muat semua label
+            }
+          }
+        }
       }
-    }
+    },
+    plugins: [ChartDataLabels]
   });
 
-  // 4. Jenis Kelamin Mahasiswa
+  // Jenis Kelamin Mahasiswa
     new Chart(document.getElementById('ChartMHS_JK'), {
     type: 'doughnut',
     data: {
@@ -351,7 +517,7 @@
   });
 
 
-    // 5. Jumlah Mahasiswa per-Jenis Sekolah
+    // Jumlah Mahasiswa per-Jenis Sekolah
     new Chart(document.getElementById('ChartMHS_JS'), {
     type: 'bar',
     data: {
@@ -393,7 +559,7 @@
     plugins: [ChartDataLabels]
   });
 
- // 6. Mahasiswa per Kabupaten
+ // Mahasiswa per Kabupaten
  new Chart(document.getElementById('ChartMHS_KS'), {
     type: 'bar',
     data: {

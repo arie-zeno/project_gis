@@ -157,6 +157,9 @@
         { namaFile: 'kabTapin', label: 'TAPIN' },
     ];
 
+    // Urutkan berdasarkan label (nama kabupaten)
+    kabupatenList.sort((a, b) => a.label.localeCompare(b.label));
+
     const labelKabupaten = {
         "BANJARBARU": [-3.442550645603833, 114.82225595579565],
         "BANJARMASIN": [-3.316018932804326, 114.61100239854602],
@@ -249,7 +252,7 @@
     kabupatenList.forEach((item, index) => {
         getShape(item.namaFile, item.label, index);
     });
-
+    
     function getShape(namaFile, kab, index) {
         $.getJSON('/geoJSON/' + namaFile + '.geojson', (json) => {
             html += `
@@ -258,7 +261,6 @@
                     <label for="chk-${index}"><b>${kab}</b></label>
                 </div>
             `;
-
             let geoLayer = L.geoJSON(json, {
                 style: {
                     fillOpacity: 0.5,
@@ -458,3 +460,6 @@
 
 </script>
 @endsection
+
+
+

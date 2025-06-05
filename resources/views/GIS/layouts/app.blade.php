@@ -82,7 +82,12 @@
       padding-top: 55px;
     }
       
-
+    .navbar.scrolled {
+      background-color: #ffffff !important; /* atau sesuaikan warna navbar */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* bayangan halus */
+      transition: background-color 0.3s, box-shadow 0.3s;
+      backdrop-filter: blur(10px);
+    }
 
   </style>
 
@@ -145,7 +150,7 @@
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const navbar = document.querySelector(".navbar");
-  
+
       window.addEventListener("scroll", function () {
         if (window.scrollY > 10) {
           navbar.classList.add("scrolled");

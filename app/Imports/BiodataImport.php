@@ -25,8 +25,7 @@ class BiodataImport implements ToModel,WithHeadingRow
         } else if ($existingBiodata) {
             return null;
         }
-
-
+// dd($row);
         return new Biodata([
             'id_biodata' => $row['nim'],
             'nim' => $row['nim'],
@@ -52,12 +51,13 @@ class BiodataImport implements ToModel,WithHeadingRow
 
         
         // Simpan terlebih dahulu ke database
-        $biodata->save();
+        // $biodata->save();
+        // dd($biodata);
         
       
         // Kirim job geocoding (delay 1 detik untuk hindari rate limit)
         GeocodeBiodata::dispatch($biodata->id_biodata)->delay(now()->addSeconds(1));
  
-        return $biodata;
+        // return $biodata;
     }
 }

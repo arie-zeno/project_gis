@@ -8,125 +8,71 @@
 
 @section('dashboard-content')
 <a class="text-decoration-none btn link-tambah mb-2 " href="{{URL::previous()}}" style=" background: linear-gradient(135deg, #6a11cb, #2575fc); color:#fff"><i class="bi bi-chevron-double-left"></i> Kembali</a>
-    <div class=" card border-0 shadow" style="background: #fff;">
+    <div class="card border-0 shadow" style="background: #fff;">
         <div class="card-body">
-            @if ($biodata != null)
-                <div class="row">
-                    <div class="col-sm-2">
-                        <img src="{{ $biodata->foto ? asset('storage/' . $biodata->foto) : asset('img/il_1.svg') }}"
-                            class="img-fluid rounded shadow" alt="..." style="max-height: 300px">
-                    </div>
-                    <div class="col-sm-4 d-flex flex-column justify-content-center">
-                        <h2 class="fw-light">{{ $biodata->nama }}</h2>
-                        <h5 class="fw-light mb-4">{{ $biodata->nim }} </h5>
-                        <table>
-                            <tr>
-                                <td class="fw-bold" style="width: 200px">Angkatan</td>
-                                <td style="width: 300px">{{ $biodata->angkatan }}</td>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold" style="width: 200px">Provinsi</td>
-                                <td style="width: 300px">{{ Str::title($biodata->provinsi) }}</td>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold" style="width: 200px">Kota/Kabupaten</td>
-                                <td style="width: 300px">{{ Str::title($biodata->kabupaten) }}</td>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold" style="width: 200px">Kecamatan</td>
-                                <td style="width: 300px">{{ Str::title($biodata->kecamatan) }}</td>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold" style="width: 200px">Kelurahan</td>
-                                <td style="width: 300px">{{ Str::title($biodata->kelurahan) }}</td>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold" style="width: 200px">Alamat</td>
-                                <td style="width: 300px">{{ Str::title($biodata->kelurahan) }}</td>
-                            </tr>
+            <div class="row">
 
-                        </table>
-                    </div>
-                    <div class="col-sm-6">
+                <div class="col-sm-6">
+                    <h4 class="fw-bold">{{ $biodata->nama }}</h4>
+                    <table class="table table-borderless">
+                        <tr>
+                            <th>NIM</th>
+                            <td>: {{ $biodata->nim }}</td>
+                        </tr>
+                        <tr>
+                            <th>Status</th>
+                            <td>: {{ $biodata->status }}</td>
+                        </tr>
+                        <tr>
+                            <th>Telepon</th>
+                            <td>: {{ $biodata->telepon }}</td>
+                        </tr>
+                        <tr>
+                            <th>Angkatan</th>
+                            <td>: {{ $biodata->angkatan }}</td>
+                        </tr>
+                        <tr>
+                            <th>Jenis Kelamin</th>
+                            <td>: {{ $biodata->jenis_kelamin }}</td>
+                        </tr>
+                        <tr>
+                            <th>Agama</th>
+                            <td>: {{ $biodata->agama }}</td>
+                        </tr>
+                        <tr>
+                            <th>Tempat Lahir</th>
+                            <td>: {{ $biodata->tempat_lahir }}</td>
+                        </tr>
+                        <tr>
+                            <th>Tanggal Lahir</th>
+                            <td>: {{ \Carbon\Carbon::parse($biodata->tanggal_lahir)->translatedFormat('d F Y') }}</td>
+                        </tr>
+                        <tr>
+                            <th>Penghasilan</th>
+                            <td>: {{ $biodata->penghasilan }}</td>
+                        </tr>
+                        <tr>
+                            <th>Sekolah Asal</th>
+                            <td>: {{ optional($biodata->sekolah)->nama_sekolah ?? '-' }}</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="col-sm-5">
+                    <h5 class="fw-bold mt-2">Alamat Lengkap</h5>
+                    <p>
+                        Kelurahan {{ Str::title($biodata->kelurahan ?? '-') }}<br> 
+                        Kecamatan {{ Str::title($biodata->kecamatan ?? '-') }}<br>
+                        Kab/Kota {{ Str::title($biodata->kabupaten) }}<br>
+                        Provinsi {{ Str::title($biodata->provinsi) }}
+                    </p>
+
+                    @if($biodata->koordinat)
                         <div id="map2" class="rounded"></div>
-                    </div>
+                    @endif
                 </div>
-            @else
-                <div class="row">
-                    <div class="col-sm-4">
-                        <img height="300" class="" src="/img/il_1.svg" alt="">
-                    </div>
-                    <div class="col-sm-4 d-flex flex-column justify-content-center align-items-center">
-                        <h2
-                            style="background: linear-gradient(135deg, #6a11cb, #2575fc);
-                        -webkit-background-clip: text;
-                        background-clip: text;
-                        -webkit-text-fill-color: transparent;">
-                            Mahasiswa belum mengisi biodata.</h2>
-
-                        
-                    </div>
-                </div>
-            @endif
+            </div>
         </div>
-    </div>
-
-
-    <div class="row mt-3">
-
-        @if ($biodata != null)
-            @if ($biodata->sekolah == null)
-                <div class="col-sm-6">
-                    <div class="card border-0 shadow" style="background: #fff;">
-
-                        <div class="card-body">
-                            <div class="row align-items-center justify-content-between">
-                                <div class="col-sm-6">
-                                    <h4 class=""
-                                        style="background: linear-gradient(135deg, #6a11cb, #2575fc); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
-                                        <i class="me-2 bi bi-mortarboard-fill"></i> Riwayat Pendidikan
-                                    </h4>
-                                    <p>Mahasiswa belum mengisi Riwayat Pendidikan.</p>
-
-                                </div>
-                                <div class="col-sm-6 d-flex justify-content-end">
-                                    {{-- <a href="{{ route('isi.sekolah') }}" class="link-tambah">Isi Riwayat Pendidikan</a> --}}
-
-                                </div>
-
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            @endif
-            @if ($biodata->tempat_tinggal == null)
-                <div class="col-sm-6">
-                    <div class="card border-0 shadow" style="background: #fff;">
-
-                        <div class="card-body">
-                            <div class="row align-items-center justify-content-between">
-                                <div class="col-sm-6">
-                                    <h4 class=""
-                                        style="background: linear-gradient(135deg, #6a11cb, #2575fc); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
-                                        <i class="me-2 bi bi-mortarboard-fill"></i> Asal Daerah
-                                    </h4>
-                                    <p>Anda belum mengisi Tempat Tinggal (Asal Daerah).</p>
-
-                                </div>
-                                <div class="col-sm-6 d-flex justify-content-end">
-                                    {{-- <a href="{{ route('isi.tempat') }}" class="link-tambah">Isi Asal Daerah</a> --}}
-
-                                </div>
-
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            @endif
-        @endif
-    </div>
     </div>
 @endsection
 @if ($biodata != null)

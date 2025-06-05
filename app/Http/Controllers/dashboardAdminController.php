@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Biodata;
 use App\Models\Province;
+use App\Models\District;
+use App\Models\Regency;
+use App\Models\Village;
 use App\Models\Sekolah;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Str;
 
 class dashboardAdminController extends Controller
 {
@@ -411,16 +415,19 @@ class dashboardAdminController extends Controller
             'status' => 'required',
         ]);
 
-
+        $provinsi = Province::where('id', $request->provinsi)->first();
+        $kabupaten = Regency::where('id', $request->kabupaten)->first();
+        $kecamatan = District::where('id', $request->kecamatan)->first(); 
+        $kelurahan = Village::where('id', $request->kelurahan)->first();    
         Sekolah::create([
-            'id' => $request->id,
+            'id' => $request->nama_sekolah,
             'nama_sekolah' => $request->nama_sekolah,
             'jenis' => $request->jenis,
             'status' => $request->status,
-            'provinsi' => $request->provinsi,
-            'kabupaten' => $request->kabupaten,
-            'kecamatan' => $request->kecamatan,
-            'kelurahan' => $request->kelurahan,
+            'provinsi'  => Str::title(Str::lower($provinsi->name)),
+            'kabupaten' => Str::title(Str::replaceFirst('kabupaten ', '', Str::replaceFirst('kota ', '', Str::lower($kabupaten->name)))),
+            'kecamatan' => Str::title(Str::lower($kecamatan->name)),
+            'kelurahan' => Str::title(Str::lower($kelurahan->name)),
             'koordinat' => $request->koordinat,
         ]);
 

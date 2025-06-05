@@ -7,7 +7,8 @@
         border: 1px solid rgba(255, 255, 255, 0.3);
         backdrop-filter: blur(3.7px);
         -webkit-backdrop-filter: blur(3.7px);
-        transform: scale(1.01) translate(10px);
+        transform: scale(1.01);
+        margin-left: 10px;
         font-size: 1.2em;
         color: #fff
     }
@@ -31,7 +32,8 @@
         border: 1px solid rgba(255, 255, 255, 0.3);
         backdrop-filter: blur(3.7px);
         -webkit-backdrop-filter: blur(3.7px);
-        transform: scale(1.01) translate(10px);
+        transform: scale(1.01);
+        margin-left: 10px;
         font-size: 1.2em;
         color: #fff
     }
@@ -88,7 +90,7 @@
                         <li class="mb-1 nav-item @php echo $title == "Biodata" ? "active-nav" : ""; @endphp">
                             <a href="{{ route('mahasiswa.biodata') }}" class="nav-link "><i
                                     class="bi bi-people-fill me-2"></i>
-                                Biodata</a>
+                                Biodata</a>s
                         </li>
 
                         <li class="mb-1 nav-item @php echo $title == "Sekolah" ? "active-nav" : ""; @endphp">
