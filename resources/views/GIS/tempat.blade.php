@@ -15,11 +15,11 @@
     }
 
     .legend {
-        padding: 6px px;
+        padding: 6px;
         font: 14px Arial, Helvetica, sans-serif;
         background: rgba(255, 255, 255, 0.8);
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-        width: 250px;
+        width: 280px;
         border-radius: 5px;
         line-height: 24px;
         color: #555;
@@ -127,7 +127,10 @@
 @section('js')
 <script>
     var map = L.map('map', {
-                zoomControl: false
+                minZoom: 4,
+                maxZoom: 18,
+                zoomControl: false,
+                attributionControl: false
             }).setView([-2.90, 115.20], 8.499);
 
     var baseLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -135,6 +138,20 @@
                 }).addTo(map);
 
     L.control.zoom({ position: 'topright' }).addTo(map);
+
+    // Tetapkan batas Indonesia (koordinat barat daya dan timur laut)
+    var indonesiaBounds = L.latLngBounds(
+        L.latLng(-11.0, 94.0),  // barat daya
+        L.latLng(6.1, 141.0)    // timur laut
+    );
+
+    // Set batas maksimum peta
+    map.setMaxBounds(indonesiaBounds);
+
+    // Opsional: jika pengguna mencoba menggeser keluar batas, dia akan dibounce balik
+    map.on('drag', function() {
+        map.panInsideBounds(indonesiaBounds, { animate: false });
+    });
 
     let mahasiswaMarkers = {}; // marker mahasiswa per kabupaten
     let batasKabupaten = [], 
@@ -460,6 +477,7 @@
 
 </script>
 @endsection
+
 
 
 

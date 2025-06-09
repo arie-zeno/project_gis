@@ -346,7 +346,8 @@ class GisController extends Controller
             "Tabalong" => 0,
             "Tanah Bumbu" => 0,
             "Tanah Laut" => 0,
-            "Tapin" => 0
+            "Tapin" => 0,
+            "Lainnya" => 0
         ];
 
         
@@ -378,6 +379,8 @@ class GisController extends Controller
                 $jmlh_kabsekolah["Tanah Laut"]+=1;
             } else if($kab_sekolah == "Tapin"){
                 $jmlh_kabsekolah["Tapin"]+=1;
+            } else {
+                $jmlh_kabsekolah["Lainnya"] += 1;
             }
         }
 

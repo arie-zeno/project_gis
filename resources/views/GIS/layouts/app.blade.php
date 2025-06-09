@@ -41,8 +41,17 @@
   <link rel="stylesheet" href="/css/L.Control.SlideMenu.css">
   <script src="/js/L.Control.SlideMenu.js"></script>
 
+  <!-- Particles.js -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
+      <style>
+        canvas{ display: block; vertical-align: bottom; } /* ---- particles.js container ---- */ 
+        #particles-js{ position:absolute; width: 100%; height: 100%; background-color: #ffffff; background-image: url(""); background-repeat: no-repeat; background-size: cover; background-position: 50% 50%; z-index: 0;} /* ---- stats.js ---- */ 
+        .count-particles{ background: #000022; position: absolute; top: 48px; left: 0; width: 80px; color: #13E8E9; text-align: left; text-indent: 4px; line-height: 14px; padding-bottom: 2px; font-family: Helvetica, Arial, sans-serif; font-weight: bold; } 
+        .js-count-particles{ font-size: 1.1em; } #stats, .count-particles{ -webkit-user-select: none; margin-top: 5px; margin-left: 5px; } #stats{ border-radius: 3px 3px 0 0; overflow: hidden; } .count-particles{ border-radius: 0 0 3px 3px; }
+    </style>
   <style>
+
     .t-nav {
              color: #222e64;
              transition: 0.2s;
@@ -78,9 +87,22 @@
         margin-right: 20px;
       }
 
+      .navbar {
+        background-color: transparent;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
       body {
-      padding-top: 55px;
-    }
+        padding-top: 55px;
+      }
+
+      /* Saat layar kecil (<= 768px), paksa background putih */
+      @media (max-width: 768px) {
+        .navbar {
+          background-color: #ffffff !important;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+      }
       
     .navbar.scrolled {
       background-color: #ffffff !important; /* atau sesuaikan warna navbar */
@@ -89,18 +111,17 @@
       backdrop-filter: blur(10px);
     }
 
+    #particles-js {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+
   </style>
 
-  <style>
-    canvas{ display: block; vertical-align: bottom; } /* ---- particles.js container ---- */ 
-    #particles-js{ position:absolute; width: 100%; height: 100%; background-color: #ffffff; background-image: url(""); background-repeat: no-repeat; background-size: cover; background-position: 50% 50%; } /* ---- stats.js ---- */ 
-    .count-particles{ background: #000022; position: absolute; top: 48px; left: 0; width: 80px; color: #13E8E9; text-align: left; text-indent: 4px; line-height: 14px; padding-bottom: 2px; font-family: Helvetica, Arial, sans-serif; font-weight: bold; } 
-    .js-count-particles{ font-size: 1.1em; } #stats, .count-particles{ -webkit-user-select: none; margin-top: 5px; margin-left: 5px; } #stats{ border-radius: 3px 3px 0 0; overflow: hidden; } .count-particles{ border-radius: 0 0 3px 3px; }
-  </style>
 </head>
 <body>
- <!-- particles.js container --> <div id="particles-js"></div> <!-- stats - count particles --><!-- particles.js lib - https://github.com/VincentGarreau/particles.js --> <script src="http://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script> <!-- stats.js lib --> <script src="http://threejs.org/examples/js/libs/stats.min.js"></script> 
-
   <nav class="navbar navbar-expand-lg fixed-top">
     <div class="container ">
       <a class="navbar-brand t-nav" href="/" >PILKOM GIS</a>
@@ -135,12 +156,24 @@
   </nav>
 
 
-  <div class="content">
-    <main>
-      @include('sweetalert::alert') <!-- Tambahkan ini -->
-      @yield('content')
-    </main>
+<div class="content" style="position: relative;">
+  <!-- Particles.js container -->
+  <div id="particles-js" style="position: absolute; width: 100%; height: 100%; z-index: 0;"></div>
+
+  <main style="position: relative; z-index: 1;">
+    @include('sweetalert::alert')
+    @yield('content')
+  </main>
+</div>
+
+<footer class="main-footer bg-light py-3 mt-5">
+  <div class="container d-flex flex-column align-items-center text-center">
+    <div small text-muted>
+        Copyright &copy; 2025 
+        <a style="color: #000;" href="https://www.instagram.com/alfika_nf" target="_blank">Alfika Nurfadia</a>.
+    </div>
   </div>
+</footer>
 
   
   {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
@@ -159,18 +192,22 @@
         }
       });
     });
-  </script>
-  <script>
+
+
+
+    
     particlesJS("particles-js", {"particles":{"number":{"value":80,"density":{"enable":true,"value_area":800}},"color":{"value":"#222e64"},"shape":{"type":"circle","stroke":{"width":0,"color":"#000000"},"polygon":{"nb_sides":5},"image":{"src":"img/github.svg","width":100,"height":100}},"opacity":{"value":0.5,"random":false,"anim":{"enable":false,"speed":1,"opacity_min":0.1,"sync":false}},"size":{"value":3,"random":true,"anim":{"enable":false,"speed":40,"size_min":0.1,"sync":false}},"line_linked":{"enable":true,"distance":150,"color":"#222e64","opacity":0.4,"width":1},"move":{"enable":true,"speed":6,"direction":"none","random":false,"straight":false,"out_mode":"out","bounce":false,"attract":{"enable":false,"rotateX":600,"rotateY":1200}}},"interactivity":{"detect_on":"canvas","events":{"onhover":{"enable":true,"mode":"repulse"},"onclick":{"enable":true,"mode":"push"},"resize":true},"modes":{"grab":{"distance":400,"line_linked":{"opacity":1}},"bubble":{"distance":400,"size":40,"duration":2,"opacity":8,"speed":3},"repulse":{"distance":200,"duration":0.4},"push":{"particles_nb":4},"remove":{"particles_nb":2}}},"retina_detect":true});var count_particles, stats, update; stats = new Stats; stats.setMode(0); stats.domElement.style.position = 'absolute'; stats.domElement.style.left = '0px'; stats.domElement.style.top = '0px'; document.body.appendChild(stats.domElement); count_particles = document.querySelector('.js-count-particles'); update = function() { stats.begin(); stats.end(); if (window.pJSDom[0].pJS.particles && window.pJSDom[0].pJS.particles.array) { count_particles.innerText = window.pJSDom[0].pJS.particles.array.length; } requestAnimationFrame(update); }; requestAnimationFrame(update);;
+
   </script>
-  <script>
+
+{{-- <script>
     if (!sessionStorage.getItem('hasVisited')) {
         sessionStorage.setItem('hasVisited', 'true');
         setTimeout(function() {
             window.location.href = "/gis-mahasiswa";
         }, 1000);
     }
-</script>
+</script> --}}
 </body>
 </html>
 

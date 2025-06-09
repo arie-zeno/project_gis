@@ -20,7 +20,7 @@
 
                         <button id="exportButton" class="  btn btn-sm  btn-outline-danger" type="button"> <i
                                 class="bi bi-file-earmark-excel-fill"></i>
-                            Export Data</button>
+                            Export Laporan</button>
 
                         <!-- Tambahkan dua iframe tersembunyi -->
                         <iframe id="iframeExport1" style="display: none;"></iframe>
@@ -237,8 +237,10 @@
     <script>
         document.getElementById("exportButton").addEventListener("click", function() {
             // Menggunakan iframe agar browser tidak memblokir multiple downloads
-            document.getElementById("iframeExport1").src = "{{ route('export.users') }}";
-            document.getElementById("iframeExport2").src = "{{ route('export.biodata') }}";
+            // document.getElementById("iframeExport1").src = "{{ route('export.users') }}";
+            // document.getElementById("iframeExport2").src = "{{ route('export.biodata') }}";
+            document.getElementById("iframeExport1").src = "{{ route('laporan.cetak') }}";
+            
         });
     </script>
 @endsection

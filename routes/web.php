@@ -9,6 +9,7 @@ use App\Http\Controllers\GisController;
 use App\Http\Controllers\ImportUserController;
 use App\Http\Controllers\IndoRegionController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\LaporanController;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Jobs\UpdateKoordinatBiodataJob;
@@ -114,6 +115,9 @@ Route::post('/admin/import-sekolah', [ImportUserController::class, 'importSekola
 Route::get('/export-users', function () {
     return Excel::download(new UsersExport, 'users.xlsx');
 })->name('export.users');
+
+Route::get('/laporan/cetak', [LaporanController::class, 'cetakLaporan'])->name('laporan.cetak');
+
 
 Route::get('/export-biodata', function () {
     return Excel::download(new BiodataExport, 'biodata.xlsx');

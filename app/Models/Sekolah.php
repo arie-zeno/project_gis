@@ -11,7 +11,7 @@ class Sekolah extends Model
     protected $primaryKey = "id";
     protected $table = "sekolah";
     public $incrementing = false; // <- penting karena id bukan angka
-    protected $keyType = 'string';
+    protected $keyType = 'string';      // Tipe ID-nya string
     protected $fillable = [
         "id",
         "nama_sekolah",
