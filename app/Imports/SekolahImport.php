@@ -15,7 +15,7 @@ class SekolahImport implements ToModel, WithHeadingRow
         
         set_time_limit(0); // Tidak dibatasi waktu eksekusi
 
-        $existingSekolah = Sekolah::where('id', $row['id'])->first();
+        $existingSekolah = Sekolah::where('id', $row['nama_sekolah'])->first();
         if ($existingSekolah) {
             return null;
         }
