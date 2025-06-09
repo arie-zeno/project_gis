@@ -3,28 +3,20 @@
 namespace App\Imports;
 
 use App\Models\Biodata;
-use App\Models\User;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use App\Jobs\GeocodeBiodata;
 
-class BiodataImport implements ToModel,WithHeadingRow
+class BioImport implements ToModel, WithHeadingRow
 {
     /**
-     * @param array $row
-     *
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
+    * @param array $row
+    *
+    * @return \Illuminate\Database\Eloquent\Model|null
+    */
     public function model(array $row)
     {
-        $existingBiodata = Biodata::where('id_biodata', $row['nim'])->first();
-        $existingUser = User::where('nim', $row['nim'])->first();
-        
-        if ($existingUser && $existingBiodata) {
-            return null;
-        } else if ($existingBiodata) {
-            return null;
-        }
+        // dd($row);
+
         return new Biodata([
             'id_biodata' =>  $row['nim'],
             'nim' =>  $row['nim'],
@@ -44,19 +36,5 @@ class BiodataImport implements ToModel,WithHeadingRow
             'penghasilan' =>  $row['penghasilan'],
             'id_sekolah' =>  $row['id_sekolah'],
         ]);
-
-        
-    // dd($bio);
-    // return $bio;
-
-        // Simpan terlebih dahulu ke database
-        // $biodata->save();
-        // dd($biodata);
-        
-      
-        // Kirim job geocoding (delay 1 detik untuk hindari rate limit)
-        // GeocodeBiodata::dispatch($biodata->id_biodata)->delay(now()->addSeconds(1));
- 
-        // return $biodata;
     }
 }

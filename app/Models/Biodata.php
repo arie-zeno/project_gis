@@ -12,9 +12,9 @@ class Biodata extends Model
     protected $table = "biodata";
 
     // Di model Biodata
-    protected $casts = [
-        'id_sekolah' => 'string',
-    ];
+    // protected $casts = [
+    //     'id_sekolah' => 'string',
+    // ];
 
     protected $fillable = [
         'id_biodata',

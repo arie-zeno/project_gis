@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('Biodata', function (Blueprint $table) {
-            $table->string("id_biodata");
+        Schema::create('biodata', function (Blueprint $table) {
+            $table->string("id_biodata")->primary();
             $table->string("nim");
-            $table->string("kode_mhs");
             $table->foreign("nim")->references('nim')->on('users')->onDelete('cascade'); # relasi user
+            $table->string("kode_mhs");
             $table->string("nama");
             $table->string("status");
             $table->string("telepon");
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string("agama");
             $table->string("foto")->nullable();
             $table->string("tempat_lahir");
-            $table->date("tanggal_lahir");
+            $table->date("tanggal_lahir")->nullable();
             $table->string("alamat");
             $table->string("provinsi");
             $table->string("kabupaten");

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\BiodataImport;
+use App\Imports\BioImport;
 use App\Imports\SekolahImport;
 use App\Imports\UsersImport;
 use Illuminate\Http\Request;
@@ -31,17 +32,18 @@ class ImportUserController extends Controller
 
     public function importBiodata(Request $request)
     {
-        set_time_limit(0);
         $request->validate([
             'file' => 'required|mimes:xlsx,xls,csv',
         ]);
 
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-        Excel::import(new BiodataImport, $request->file('file'));
+
+        Excel::import(new BioImport, $request->file('file'));
+
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-            
+
         // Langsung panggil command generate koordinat
         Artisan::call('biodata:update-koordinat');
 
@@ -58,7 +60,7 @@ class ImportUserController extends Controller
         Excel::import(new SekolahImport, $request->file('file'));
 
         // Langsung panggil command generate koordinat
-        Artisan::call('sekolah:update-data');
+        // Artisan::call('sekolah:update-data');
 
         toast('Data sekolah berhasil diimport!', 'success')->position('center');
         return redirect()->back();
