@@ -32,6 +32,7 @@ class ImportUserController extends Controller
 
     public function importBiodata(Request $request)
     {
+        set_time_limit(0);
         $request->validate([
             'file' => 'required|mimes:xlsx,xls,csv',
         ]);
@@ -53,6 +54,7 @@ class ImportUserController extends Controller
 
     public function importSekolah(Request $request)
     {
+        set_time_limit(0);
         $request->validate([
             'file' => 'required|mimes:xlsx,xls,csv',
         ]);
@@ -60,7 +62,7 @@ class ImportUserController extends Controller
         Excel::import(new SekolahImport, $request->file('file'));
 
         // Langsung panggil command generate koordinat
-        // Artisan::call('sekolah:update-data');
+        Artisan::call('sekolah:update-data');
 
         toast('Data sekolah berhasil diimport!', 'success')->position('center');
         return redirect()->back();
