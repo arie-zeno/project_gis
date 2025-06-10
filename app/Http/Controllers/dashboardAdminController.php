@@ -378,6 +378,7 @@ class dashboardAdminController extends Controller
     public function hapusMahasiswa($nim)
     {
         $user = User::where('nim', $nim)->first();
+        $biodata =Biodata::where('id_biodata', $nim)->first();
 
         if (!$user) {
             Alert::error('Gagal!', $nim . ' tidak ditemukan.');
@@ -385,6 +386,10 @@ class dashboardAdminController extends Controller
         }
 
         $user->delete();
+        
+        if ($biodata) {
+            $biodata->delete();
+        }
 
         Alert::success('Berhasil!', $nim . ' berhasil dihapus.');
         return redirect()->back();
