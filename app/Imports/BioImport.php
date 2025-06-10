@@ -35,6 +35,7 @@ class BioImport implements ToModel, WithHeadingRow
             'kelurahan' =>  $row['kelurahan'],
             'penghasilan' =>  $row['penghasilan'],
             'id_sekolah' =>  $row['id_sekolah'],
+            'tanggal_lahir' =>  $row['tanggal_lahir'],
         ]);
     }
 }
