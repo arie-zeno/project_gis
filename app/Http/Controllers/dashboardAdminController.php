@@ -238,7 +238,7 @@ class dashboardAdminController extends Controller
 
     public function sekolah()
     {
-        $sekolah = Sekolah::paginate(50);
+        $sekolah = Sekolah::paginate(200);
         $provinces = Province::all();
 
         confirmDelete("Hapus Data", "Apakah anda yakin akan menghapus data ini?");

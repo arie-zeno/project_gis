@@ -182,8 +182,7 @@
     {{-- 5. Analisis dan Rekomendasi --}}
     <h3>Analisis dan Rekomendasi</h3>
     <ul>
-        <li>Kabupaten Banjar memiliki jumlah mahasiswa terbanyak dan bisa menjadi fokus promosi lebih lanjut.</li>
-        <li>Kabupaten dengan jumlah rendah perlu dilakukan pendekatan ke sekolah-sekolah lokal.</li>
+        <li>Kabupaten yang memiliki jumlah mahasiswa masih sedikit menjadi fokus promosi lebih lanjut, <br> dengan dilakukan pendekatan ke sekolah-sekolah lokal..</li>
         <li>Mahasiswa dari luar Kalsel menunjukkan adanya potensi rekrutmen nasional.</li>
         <li>Pemetaan alumni bisa dikembangkan untuk tracer study dan penguatan jaringan kerja sama.</li>
     </ul>

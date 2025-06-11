@@ -27,6 +27,7 @@
                                 <th>Nama Sekolah</th>
                                 <th>Jenis Sekolah</th>
                                 <th>Status Sekolah</th>
+                                <th>Koordinat</th>
                                 <th>Operasi</th>
                             </tr>
                         </thead>
@@ -36,6 +37,14 @@
                                     <td>{{ $item->nama_sekolah }}</td>
                                     <td class="text-center">{{ $item->jenis }}</td>
                                     <td class="text-center">{{ $item->status }}</td>
+                                    <td class="text-center">
+                                         @if ($item->koordinat)
+                                            <i
+                                                class="bi {{ $item->koordinat != null ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger' }} "></i>
+                                        @else
+                                            <i class="bi bi-x-circle-fill text-danger"></i>
+                                        @endif
+                                    </td>
                                     <td class="text-center">
                                         <a href="{{ route('hapus.sekolah', $item->id) }}" data-confirm-delete="true"
                                             class="btn btn-sm btn-outline-danger btn-hapus">Hapus</a>
