@@ -1,9 +1,4 @@
 @extends ("GIS.layouts.app")
-<!-- CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet-compass/dist/leaflet-compass.css" />
-
-<!-- JS -->
-<script src="https://unpkg.com/leaflet-compass/dist/leaflet-compass.min.js"></script>
 
 <!-- Leaflet Search CSS & JS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet-search/dist/leaflet-search.min.css" />
