@@ -28,12 +28,14 @@ class GisController extends Controller
     {
         $provinsi = Province::with("mahasiswa")->where("name", "KALIMANTAN SELATAN")->get();
         $biodata = Biodata::all();
+        $angkatanList = collect($biodata)->pluck('angkatan')->unique()->sortDesc()->values();
 
         return view(
             "GIS.tempat",
             [
                 "provinsi" => $provinsi,
                 "biodata" => $biodata,
+                "angkatanList" => $angkatanList,
                 "title" => "GIS | Mahasiswa"
             ]
         );
@@ -409,4 +411,16 @@ class GisController extends Controller
             ]
         );
     }
+
+    public function getMahasiswaJson()
+    {
+        return Biodata::whereNotNull('koordinat')
+            ->get(['nama', 'koordinat'])
+            ->map(fn($b) => [
+                'title' => $b->nama,
+                'lat'   => floatval(explode(',', $b->koordinat)[0]),
+                'lng'   => floatval(explode(',', $b->koordinat)[1]),
+            ]);
+    }
+
 }

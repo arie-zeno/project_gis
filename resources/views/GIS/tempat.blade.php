@@ -5,6 +5,11 @@
 <!-- JS -->
 <script src="https://unpkg.com/leaflet-compass/dist/leaflet-compass.min.js"></script>
 
+<!-- Leaflet Search CSS & JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet-search/dist/leaflet-search.min.css" />
+<script src="https://unpkg.com/leaflet-search/dist/leaflet-search.min.js"></script>
+
+
 <style>
     #map {
         height: 88vh;
@@ -110,6 +115,20 @@
         z-index: 10;
     }
 
+    .radio-columns {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .radio-item {
+        width: calc(33.333% - 10px);
+        display: flex;
+        align-items: center;
+    }
+
+
+
+
 </style>
 
 @section('content')
@@ -138,6 +157,8 @@
                 }).addTo(map);
 
     L.control.zoom({ position: 'topright' }).addTo(map);
+
+                
 
     // Tetapkan batas Indonesia (koordinat barat daya dan timur laut)
     var indonesiaBounds = L.latLngBounds(
@@ -228,7 +249,9 @@
             if (!mahasiswaMarkers[kab]) mahasiswaMarkers[kab] = [];
 
             var marker = L.marker([lat, lng], {
-                icon: (icon === 'alumni') ? alumni : mahasiswa
+                icon: (icon === 'alumni') ? alumni : mahasiswa,
+                angkatan: '{{ $data->angkatan ?? 'unknown' }}',
+                status: '{{ strtolower($data->status) }}'
             }).bindPopup(`{{ $data->nama }}`);
 
             mahasiswaMarkers[kab].push(marker);
@@ -304,17 +327,32 @@
                     <div style="margin-bottom: 4px; background: #fff; border: 1px solid #ccc; padding: 6px; border-radius: 3px;">
                         <label><b>Filter Status:</b></label><br>
                         <div class="checkbox-item">
-                            <input type="radio" name="statusFilter" value="semua" checked onchange="filterByStatus()">
+                            <input type="radio" name="statusFilter" value="semua" checked onchange="filterData()">
                             <label>Semua</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="radio" name="statusFilter" value="alumni" onchange="filterByStatus()">
+                            <input type="radio" name="statusFilter" value="alumni" onchange="filterData()">
                             <label>Alumni</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="radio" name="statusFilter" value="mahasiswa" onchange="filterByStatus()">
+                            <input type="radio" name="statusFilter" value="mahasiswa" onchange="filterData()">
                             <label>Mahasiswa Aktif</label>
                         </div>
+                    </div>
+                    <div style="margin-bottom: 4px; background: #fff; border: 1px solid #ccc; padding: 6px; border-radius: 3px;">
+                        <label><b>Filter Angkatan:</b></label><br>
+                        <div class="checkbox-item">
+                            <input type="radio" name="angkatanFilter" value="semua" checked onchange="filterData()">
+                            <label>Semua Angkatan</label>
+                        </div>
+                            <div class="radio-columns">
+                                @for ($year = 2024; $year >= 2014; $year--)
+                                    <div class=" checkbox-item radio-item">
+                                        <input type="radio" name="angkatanFilter" value="{{ $year }}" onchange="filterData()">
+                                        <label>{{ $year }}</label>
+                                    </div>
+                                @endfor
+                            </div>
                     </div>
                     <div style="border: 1px solid #ccc; padding: 10px; border-radius: 6px; background: #fff;">
                         ${htmlHeader}
@@ -363,7 +401,7 @@
         // Update status checkbox "Semua Kota/Kabupaten"
         document.getElementById("chk-all").checked = semuaChecked;
 
-        filterByStatus();
+        filterData();
         updateInfoKabupaten();
     }
 
@@ -375,7 +413,7 @@
             kabCheckbox.checked = isChecked;
             showKabupaten(kabCheckbox, index);
         });
-        filterByStatus();
+        filterData();
         updateInfoKabupaten();
     }
 
@@ -413,47 +451,73 @@
         }
     }
 
-    function filterByStatus() {
-        const status = document.querySelector('input[name="statusFilter"]:checked').value;
+function filterData() {
+    const status = document.querySelector('input[name="statusFilter"]:checked').value;
+    const angkatan = document.querySelector('input[name="angkatanFilter"]:checked').value;
 
-        // Sembunyikan semua dulu
-        sembunyikanSemuaMahasiswa();
+    // Sembunyikan semua dulu
+    sembunyikanSemuaMahasiswa();
 
-        let adaYangDicek = false;
+    let adaYangDicek = false;
 
-        kabupatenList.forEach((item, idx) => {
-            const checkbox = document.getElementById(`chk-${idx}`);
-            if (checkbox.checked) {
-                adaYangDicek = true;
-                if (mahasiswaMarkers[item.label]) {
-                    mahasiswaMarkers[item.label].forEach(marker => {
-                        const iconUrl = marker.options.icon.options.iconUrl;
-                        if (status === 'semua' ||
-                            (status === 'alumni' && iconUrl.includes("alumni")) ||
-                            (status === 'mahasiswa' && iconUrl.includes("mahasiswa"))) {
-                            marker.addTo(map);
-                        }
-                    });
-                }
-            }
-        });
-
-        // Jika tidak ada kabupaten yang dicentang
-        if (!adaYangDicek) {
-            Object.keys(mahasiswaMarkers).forEach(kab => {
-                mahasiswaMarkers[kab].forEach(marker => {
+    kabupatenList.forEach((item, idx) => {
+        const checkbox = document.getElementById(`chk-${idx}`);
+        if (checkbox.checked) {
+            adaYangDicek = true;
+            if (mahasiswaMarkers[item.label]) {
+                mahasiswaMarkers[item.label].forEach(marker => {
                     const iconUrl = marker.options.icon.options.iconUrl;
-                    if (status === 'semua' ||
+                    const markerStatus = marker.options.status;
+                    const markerAngkatan = marker.options.angkatan;
+
+                    let statusMatch = (
+                        status === 'semua' ||
                         (status === 'alumni' && iconUrl.includes("alumni")) ||
-                        (status === 'mahasiswa' && iconUrl.includes("mahasiswa"))) {
+                        (status === 'mahasiswa' && iconUrl.includes("mahasiswa"))
+                    );
+
+                    let angkatanMatch = (
+                        angkatan === 'semua' ||
+                        angkatan === markerAngkatan
+                    );
+
+                    if (statusMatch && angkatanMatch) {
                         marker.addTo(map);
                     }
                 });
-            });
+            }
         }
+    });
 
-        updateInfoKabupaten();
+    // Jika tidak ada kabupaten yang dicentang
+    if (!adaYangDicek) {
+        Object.keys(mahasiswaMarkers).forEach(kab => {
+            mahasiswaMarkers[kab].forEach(marker => {
+                const iconUrl = marker.options.icon.options.iconUrl;
+                const markerStatus = marker.options.status;
+                const markerAngkatan = marker.options.angkatan;
+
+                let statusMatch = (
+                    status === 'semua' ||
+                    (status === 'alumni' && iconUrl.includes("alumni")) ||
+                    (status === 'mahasiswa' && iconUrl.includes("mahasiswa"))
+                );
+
+                let angkatanMatch = (
+                    angkatan === 'semua' ||
+                    angkatan === markerAngkatan
+                );
+
+                if (statusMatch && angkatanMatch) {
+                    marker.addTo(map);
+                }
+            });
+        });
     }
+
+    updateInfoKabupaten();
+}
+
 
 
 

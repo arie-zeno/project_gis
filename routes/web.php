@@ -100,6 +100,8 @@ Route::get('/gis-sekolah', [GisController::class, 'sekolah'])->name('gis.sekolah
 Route::get('/gis-domisili', [GisController::class, 'domisili'])->name('gis.domisili');
 Route::get('/statistik', [GisController::class, 'statistik'])->name('gis.statistik');
 Route::get('/nominatim', [GisController::class, 'nominatim'])->name('gis.nominatim');
+Route::get('/gis/mahasiswa-json', [GisController::class, 'getMahasiswaJson']);
+
 
 // Indoregion
 Route::post('/getKabupaten', [IndoRegionController::class, "getKabupaten"])->name('getKabupaten')->middleware("auth");
