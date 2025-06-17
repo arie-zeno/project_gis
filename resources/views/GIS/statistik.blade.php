@@ -212,7 +212,7 @@
     </div>
 
     <div class="chart-box">
-      <h5 style="text-align: center">Jumlah Mahasiswa Berdasarkan Kabupaten Sekolah</h5>
+      <h5 style="text-align: center">Jumlah Mahasiswa Berdasarkan Asal Sekolah</h5>
       <canvas id="ChartMHS_KS"></canvas>
       <p class="text-secondary" style="text-align: center">Jumlah Mahasiswa</p>
     </div>
