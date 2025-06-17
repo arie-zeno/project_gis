@@ -130,7 +130,6 @@
 {{-- <h3 style="text-align: center">Persebaran Daerah Asal Mahasiswa</h3> --}}
 {{-- <div style="padding: 28px"></div> --}}
 <div id="map"></div>
-
 @endsection
 
 @php
@@ -151,8 +150,54 @@
                     attribution: '© OpenStreetMap contributors',
                 }).addTo(map);
 
-    L.control.zoom({ position: 'topright' }).addTo(map);
+    // Tambahkan kontrol input pencarian
+    var searchControl = L.Control.extend({
+        options: {
+            position: 'topright' // bisa diubah ke 'topleft', 'bottomright', 'bottomleft'
+        },
 
+        onAdd: function (map) {
+            var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+
+        container.innerHTML = `
+        <style>
+            #searchInput {
+            padding: 8px 12px;
+            width: 200px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            }
+            #searchInput:hover {
+            border-color: #66afe9;
+            }
+            #searchInput:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0,123,255,0.5);
+            }
+        </style>
+
+        <input 
+            type="text" 
+            id="searchInput" 
+            placeholder=" Cari nama..." 
+        />
+        `;
+
+
+            // Mencegah map dari zoom/pan saat input difokuskan
+            L.DomEvent.disableClickPropagation(container);
+
+            return container;
+        }
+    });
+
+    map.addControl(new searchControl());
+
+    L.control.zoom({ position: 'topright' }).addTo(map);
                 
 
     // Tetapkan batas Indonesia (koordinat barat daya dan timur laut)
@@ -230,6 +275,9 @@
         });
     }
 
+    mahasiswaMarkers = {};
+    let allMarkers = [];
+
     @foreach ($biodata as $data)
         @php
             $koordinats = explode(',', $data['koordinat']);
@@ -246,14 +294,39 @@
             var marker = L.marker([lat, lng], {
                 icon: (icon === 'alumni') ? alumni : mahasiswa,
                 angkatan: '{{ $data->angkatan ?? 'unknown' }}',
-                status: '{{ strtolower($data->status) }}'
+                status: '{{ strtolower($data->status) }}',
+                title: "{{ $data->nama }}" // Ini penting untuk Leaflet Search
             }).bindPopup(`{{ $data->nama }}`);
 
             mahasiswaMarkers[kab].push(marker);
+            allMarkers.push(marker); // Tambahkan baris ini
+            marker.addTo(map); // Jangan lupa tambahkan ke peta
         @endif
     @endforeach
 
     tampilkanSemuaMahasiswa();
+
+    const searchInput = document.getElementById('searchInput');
+
+    searchInput.addEventListener('input', () => {
+        const q = searchInput.value.toLowerCase();
+
+        allMarkers.forEach(marker => {
+            const nama = marker.options.title.toLowerCase();
+            const isMatch = nama.includes(q);
+
+            if (isMatch) {
+                if (!map.hasLayer(marker)) {
+                    marker.addTo(map);
+                }
+            } else {
+                if (map.hasLayer(marker)) {
+                    map.removeLayer(marker);
+                }
+            }
+        });
+    });
+
 
     // Label permanen kabupaten
     Object.entries(labelKabupaten).forEach(([nama, koordinat]) => {

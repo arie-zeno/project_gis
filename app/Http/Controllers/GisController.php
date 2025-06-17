@@ -420,6 +420,8 @@ class GisController extends Controller
                 'title' => $b->nama,
                 'lat'   => floatval(explode(',', $b->koordinat)[0]),
                 'lng'   => floatval(explode(',', $b->koordinat)[1]),
+                'status' => strtolower($b->status),
+                'angkatan' => $b->angkatan ?? 'unknown',
             ]);
     }
 
