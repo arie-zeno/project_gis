@@ -484,11 +484,15 @@ class dashboardAdminController extends Controller
 
     public function gantiStatus(Request $request)
     {
+        $request->validate([
+            'status' => 'required|in:Aktif,Lulus',
+        ]);
         $user = Biodata::find($request->nim);
-        $user->status = ($request->status);
+        // dd($request->status);
+        $user->status = $request->status;
         $user->save();
 
-        alert()->success("Berhasil", "Status telah diganti!",);
+        alert()->success("Berhasil", "Status telah diubah!",);
         return redirect()->back();
     }
 
@@ -503,4 +507,26 @@ class dashboardAdminController extends Controller
             ]
         );
     }
+
+
+    // public function formUbahStatus($nim)
+    // {
+    //     $mahasiswa = Biodata::where('nim', $nim)->firstOrFail();
+
+    //     return view('mahasiswa.ubah_status', compact('mahasiswa'));
+    // }
+
+    public function prosesUbahStatus(Request $request, $nim)
+    {
+        $request->validate([
+            'status' => 'required|in:Aktif,Lulus',
+        ]);
+
+        $mahasiswa = Biodata::where('nim', $nim)->firstOrFail();
+        $mahasiswa->status = $request->status;
+        $mahasiswa->save();
+
+        return back()->with('success', 'Status berhasil diperbarui.');
+    }
+
 }

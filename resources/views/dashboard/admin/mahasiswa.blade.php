@@ -65,14 +65,14 @@
                                             class="btn btn-sm btn-outline-primary">Lihat</a>
 
                                         <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal"
-                                            data-bs-target="#statusModal">Ubah Status</button>
+                                            data-bs-target="#statusModal{{ $item->nim }}">Ubah Status</button>
 
                                         <a href="{{ route('hapus.mahasiswa', $item->nim) }}" data-confirm-delete="true"
                                             class="btn btn-sm btn-outline-danger btn-hapus">Hapus</a>
                                     </td>
 
                                     <!-- Modal ganti password -->
-                                    <div class="modal fade" id="statusModal" tabindex="-1"
+                                    <div class="modal fade" id="statusModal{{ $item->nim }}" tabindex="-1"
                                         aria-labelledby="statusModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
@@ -82,19 +82,20 @@
                                                         aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form action="{{ route('ganti.status', $item->nim) }}" method="POST">
+                                                    <form action="{{ route('status.proses', $item->nim) }}" method="POST">
                                                         @csrf
-                                                        <select name="status" class="form-select" aria-label="Default select example">
-                                                            <option value="Aktif">Aktif</option>
-                                                            <option value="Lulus">Lulus</option>
-                                                        </select>
 
+                                                        <div class="mb-3">
+                                                            <label for="statusSelect{{ $item->nim }}" class="form-label">Status Mahasiswa</label>
+                                                            <select name="status" id="statusSelect{{ $item->nim }}" class="form-select" aria-label="Pilih status">
+                                                                <option value="Lulus" {{ $item->status == 'Lulus' ? 'selected' : '' }}>Lulus</option>
+                                                                <option value="Aktif" {{ $item->status == 'Aktif' ? 'selected' : '' }}>Aktif</option>
+                                                            </select>
+                                                        </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-sm btn-outline-secondary"
-                                                        data-bs-dismiss="modal">Tutup</button>
-                                                    <button type="submit"
-                                                        class="btn btn-sm btn-outline-primary">Simpan</button>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Tutup</button>
+                                                    <button type="submit" class="btn btn-sm btn-outline-primary">Simpan</button>
                                                     </form>
                                                 </div>
                                             </div>

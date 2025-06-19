@@ -51,6 +51,43 @@
         background-size: 18px;
         background-color: rgba(255, 255, 255, 1);
     }
+
+    .checkbox-item {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        padding: 0px 2px;
+        border-radius: 3px;
+        transition: background-color 0.2s ease;
+    }
+
+    .checkbox-item:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .checkbox-item input[type="checkbox"] {
+        transform: scale(0.8);
+        cursor: pointer;
+        margin: 0;
+    }
+
+    .checkbox-item label {
+        font-size: 11px;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #333;
+        cursor: pointer;
+        user-select: none;
+        line-height: 1.2;
+        margin: 0;
+    }
+
+    .checkbox-item.all-kabupaten {
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 4px;
+        padding-bottom: 4px;
+        background-color: white;
+        z-index: 10;
+    }
 </style>
 
 @section('content')
@@ -80,10 +117,6 @@
     })->toArray();
 @endphp
 
-
-
-
-
 @section('js')
 <script>
 
@@ -100,6 +133,7 @@
     var SMA = L.icon({ iconUrl: "/img/SMA.png", iconSize: [35, 35] });
     var SMK = L.icon({ iconUrl: "/img/SMK.png", iconSize: [35, 35] });
     var MA = L.icon({ iconUrl: "/img/MA.png", iconSize: [35, 35] });
+    var Lainnya = L.icon({ iconUrl: "/img/sekolah.png", iconSize: [35, 35] });
 
     var baseLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
@@ -111,7 +145,7 @@
 
         @php
             $koordinats = explode(',', $data->koordinat);
-            $jenis = strtoupper($data->jenis);
+            $jenis = ($data->jenis);
         @endphp
 
         @if (count($koordinats) === 2 && is_numeric($koordinats[0]) && is_numeric($koordinats[1]))
@@ -128,7 +162,7 @@
             popupContent += `</ul>`;
 
             var selectedIcon;
-            switch ("{{ $jenis }}") {
+            switch ("{{ $jenis }}".toUpperCase()) {
                 case "SMA": selectedIcon = SMA; break;
                 case "SMK": selectedIcon = SMK; break;
                 case "MA": selectedIcon = MA; break;
@@ -140,7 +174,7 @@
                     markerGroups["{{ $data->kabupaten }}"] = L.layerGroup().addTo(map);
                 }
 
-                L.marker([latitude, longitude], { icon: selectedIcon })
+                L.marker([latitude, longitude], { icon: selectedIcon, jenis: "{{ $jenis }}" })
                     .bindPopup(popupContent)
                     .addTo(markerGroups["{{ $data->kabupaten }}"]);
             @else
@@ -186,9 +220,54 @@
 
     // Setelah semua `getShape` dipanggil, tambahkan `school-stats`
     setTimeout(() => {
-        html += `<div id="school-stats" style="margin-top: 10px;"></div>`;
+        // Awal HTML: Filter Jenis Sekolah
+        html = `
+            <div style="width: 250px;">
+            <div style="margin-bottom: 4px; background: #fff; border: 1px solid #ccc; padding: 6px; border-radius: 3px;">
+                <label><b>Filter Jenis Sekolah:</b></label><br>
+                <div class="checkbox-item">
+                    <input type="radio" name="jenisSekolah" value="semua" checked onchange="filterSekolah()">
+                    <label>Semua</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="radio" name="jenisSekolah" value="SMA" onchange="filterSekolah()">
+                    <label>SMA</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="radio" name="jenisSekolah" value="SMK" onchange="filterSekolah()">
+                    <label>SMK</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="radio" name="jenisSekolah" value="MA" onchange="filterSekolah()">
+                    <label>MA</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="radio" name="jenisSekolah" value="Lainnya" onchange="filterSekolah()">
+                    <label>Lainnya</label>
+                </div>
+            </div>
+            <div style="border: 1px solid #ccc; padding: 10px; border-radius: 6px; background: #fff;">
+                <div class="checkbox-item all-kabupaten">
+                    <input type="checkbox" id="chk-all" onclick="toggleAllKabupaten(this)">
+                    <label for="chk-all" style="cursor:pointer;" class="kabupaten-label"><b> Semua Kabupaten/Kota </b></label><br>
+                </div>
+        `;
+
+        // Tambahkan semua checkbox kabupaten
+        kabupatenList.forEach(item => {
+            html += `
+            <div class="checkbox-item">
+                <input type="checkbox" id="chk-${item.label}" onclick="showKabupaten(this, ${kabupatenList.findIndex(k => k.label === item.label)})">
+                <label for="chk-${item.label}" style="cursor:pointer;" class="kabupaten-label"><b> ${item.label} </b></label><br>
+            </div>
+                `;
+        });
+
+        html += `</div>
+            <div id="school-stats" style="margin-top: 10px;"></div>`; // Tutup div kabupaten
         control2.setContents(html);
-    }, 1000); // timeout kecil untuk pastikan semua shape selesai load
+    }, 1000);
+
 
     let kabupatenCheckboxStates = {};
 
@@ -240,6 +319,7 @@
 
         updateMarkersVisibility();
         updateSchoolStats();
+        filterSekolah();
     }
 
 
@@ -315,6 +395,30 @@
 
         updateMarkersVisibility();
         updateSchoolStats();
+        filterSekolah();
+    }
+
+    function filterSekolah() {
+        const selectedJenis = document.querySelector('input[name="jenisSekolah"]:checked').value;
+
+        const anyChecked = Object.values(kabupatenCheckboxStates).some(v => v === true);
+
+        for (const [kab, group] of Object.entries(markerGroups)) {
+            group.eachLayer(marker => {
+                const markerJenis = marker.options.jenis;
+
+                const match = selectedJenis === 'semua' || selectedJenis === markerJenis;
+
+                // Cek apakah kabupaten dicentang
+                const kabupatenDipilih = kabupatenCheckboxStates[kab] || !anyChecked;
+
+                if (match && kabupatenDipilih) {
+                    map.addLayer(marker);
+                } else {
+                    map.removeLayer(marker);
+                }
+            });
+        }
     }
 
 

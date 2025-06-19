@@ -48,8 +48,13 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/mahasiswa/lihat/{nim}', [dashboardAdminController::class, 'lihatMahasiswa'])->name('lihat.mahasiswa');
     
     Route::post('/mahasiswa/ganti/{nim}', [dashboardAdminController::class, 'gantiPassword'])->name('ganti.password');
-    Route::post('/mahasiswa/ganti/{nim}', [dashboardAdminController::class, 'gantiStatus'])->name('ganti.status');
-    
+    // Route::post('/mahasiswa/ganti/{nim}', [dashboardAdminController::class, 'gantiStatus'])->name('ganti.status');
+    // Tampilkan form ubah status
+    // Route::get('/mahasiswa/status/{nim}', [DashboardAdminController::class, 'formUbahStatus'])->name('status.form');
+    // Proses ubah status
+    Route::post('/mahasiswa/status/{nim}', [DashboardAdminController::class, 'prosesUbahStatus'])->name('status.proses');
+
+
     Route::get('/sekolah', [dashboardAdminController::class, 'sekolah'])->name('admin.sekolah');
     Route::get('/sekolah/tambah', [dashboardAdminController::class, 'tambahSekolah'])->name('tambah.sekolah');
     Route::post('/sekolah', [dashboardAdminController::class, 'storeSekolah'])->name('admin.store.sekolah');
