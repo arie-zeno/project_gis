@@ -43,8 +43,8 @@
                 <h2 style="color: #222e64;">Sistem Informasi Geografis <span style="color: #ff9800;">Pemetaan Persebaran Mahasiswa</span> <br>Prodi Pendidikan Komputer <br></h2>
             </div>
             <div class="col-sm-6" data-aos="fade-up">
+              <p style="text-align: center; color: #222e64; margin-bottom: 4px;">Klik peta untuk melihat persebaran mahasiswa.</p>
               <div id="map" style=" width: 100%; border-radius: 12px;"></div>
-              <p style="text-align: center; color: #222e64;">Klik peta untuk melihat persebaran mahasiswa.</p>
             </div>
         </div>
     </div>
