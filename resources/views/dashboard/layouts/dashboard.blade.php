@@ -74,7 +74,9 @@
                 style="width: 250px; transition: transform 0.3s; z-index: 999;background: #fff; position: sticky; top: 0">
                 <div class="d-flex justify-content-between align-items-center mb-2 p-3"
                     style="background: linear-gradient(135deg, #415884, #6a11cb)">
-                    <h4 class="text-light">PILKOM GIS</h4>
+                    <a href="{{ route('gis.home') }}" class="text-decoration-none">
+                        <h4 class="text-light">PILKOM GIS</h4>
+                    </a>
                     <!-- Tombol Toggle Sidebar (Selalu ditampilkan) -->
                     <button id="toggleSidebar" class="btn btn-link  p-0">
                         <i id="sidebarIcon" class="bi bi-arrow-bar-left" style="font-size: 1.5rem;color:#fff"></i>

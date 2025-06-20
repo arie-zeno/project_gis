@@ -49,7 +49,7 @@
     <div class="no-border" style="margin-top: 150px;">
         <h1>LAPORAN PERSEBARAN MAHASISWA</h1>
         <h2>PROGRAM STUDI PENDIDIKAN KOMPUTER</h2>
-        <h3>UNIVERSITAS LAMBUNG MANGKURAT</h3>
+        <h2>UNIVERSITAS LAMBUNG MANGKURAT</h2>
         <p><strong>Tanggal Cetak:</strong> {{ \Carbon\Carbon::now()->format('d-m-Y') }}</p>
     </div>
 
@@ -146,7 +146,7 @@
     <div class="page-break"></div>
 
     {{-- 4. Data Mahasiswa --}}
-    <h3>Data Mahasiswa</h3>
+    <h2>Data Mahasiswa</h2>
     <table>
         <thead>
             <tr>
@@ -164,7 +164,7 @@
             @forelse($biodata as $m)
                 <tr>
                     <td>{{ $no++ }}</td>
-                    <td>{{ $m->nama }}</td>
+                    <td style="text-align: left">{{ $m->nama }}</td>
                     <td>{{ $m->nim }}</td>
                     <td>{{ $m->angkatan }}</td>
                     <td>{{ ucfirst($m->status) }}</td>
@@ -179,8 +179,36 @@
 
     <div class="page-break"></div>
 
+    <h2 style="text-align: center">Statistik Visual</h2>
+
+    <p style="text-align: center">
+        <img src="{{ $chartStatus }}" style="max-width: 500px;">
+    </p>
+
+    <br>
+    <br>
+    
+    <p style="text-align: center">
+        <img src="{{ $chartAngkatan }}" style="max-width: 600px;">
+    </p>
+
+    <p style="text-align: center">
+        <img src="{{ $chartKabupaten }}" style="max-width: 600px;">
+    </p>
+
+    <p style="text-align: center">
+        <img src="{{ $chartAktifKab }}" style="max-width: 600px;">
+    </p>
+
+    <p style="text-align: center">
+        <img src="{{ $chartLulusKab }}" style="max-width: 600px;">
+    </p>
+
+
+    <div class="page-break"></div>
+
     {{-- 5. Analisis dan Rekomendasi --}}
-    <h3>Analisis dan Rekomendasi</h3>
+    <h2>Analisis dan Rekomendasi</h2>
     <ul>
         <li>Kabupaten yang memiliki jumlah mahasiswa masih sedikit menjadi fokus promosi lebih lanjut, <br> dengan dilakukan pendekatan ke sekolah-sekolah lokal..</li>
         <li>Mahasiswa dari luar Kalsel menunjukkan adanya potensi rekrutmen nasional.</li>
